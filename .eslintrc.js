@@ -1,4 +1,7 @@
 module.exports = {
+	'parserOptions': {
+		'ecmaVersion': 7
+	},
 	'extends': 'eslint:recommended',
 	'rules': {
 		'curly': ['error', 'all'],
