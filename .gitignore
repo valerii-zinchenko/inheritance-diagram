@@ -1,0 +1,14 @@
+# exclude *.swp files created by vim
+**/*.swp
+
+# exclude files
+npm-debug.log
+test/index.html
+
+# exclude folders
+node_modules/
+tmp/
+tmp-cov/
+coverage/
+doc/
+test/lib
