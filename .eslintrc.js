@@ -4,6 +4,7 @@ module.exports = {
 	},
 	'extends': 'eslint:recommended',
 	'rules': {
+		'no-console': 'off',
 		'curly': ['error', 'all'],
 		'default-case': 'warn',
 		'dot-location': ['error', 'property'],
@@ -68,7 +69,7 @@ module.exports = {
 		'consistent-this': ['error', '_this'],
 		'func-call-spacing': ['error', 'never'],
 		'func-style': ['error', 'declaration'],
-		'id-length': ['error', {
+		'id-length': ['warn', {
 			'min': 1,
 			'max': 20,
 			'properties': 'always'
