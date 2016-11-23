@@ -11,6 +11,8 @@ var Class = require('class-wrapper').Class;
 var GraphNode = Class(function(data, properties) {
 	this.data = data;
 
+	// set references to some raw data properties for easier access
+	// --------------------------------------------------
 	if (data.parent) {
 		this.parent = data.parent;
 	}
@@ -20,6 +22,7 @@ var GraphNode = Class(function(data, properties) {
 	if (data.mixins) {
 		this.mixins = data.mixins;
 	}
+	// --------------------------------------------------
 
 	if (properties) {
 		Object.keys(properties).forEarch(property => {
@@ -39,7 +42,7 @@ var GraphNode = Class(function(data, properties) {
 			this[property] = value;
 		});
 	}
-},{
+}, /** @lends GraphNode.prototype */{
 	/**
 	 * Name of parent node
 	 *

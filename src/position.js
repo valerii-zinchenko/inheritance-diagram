@@ -6,7 +6,7 @@ var GraphNode = require('./src/GraphNode');
  *
  * @class
  */
-var Position = Class(null, {
+var Position = Class(null, /** @lends Position.prototype */ {
 	/**
 	 * Node of interest
 	 *
