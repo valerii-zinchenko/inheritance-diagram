@@ -3,14 +3,16 @@ var Class = require('class-wrapper').Class;
 /**
  * Graph node
  *
+ * @class
+ *
  * @param {Objcet} data - Raw node data
- * @param {Object} [properties] - Additional properties for a graph node
+ * @param {Object} [properties] - Properties for a graph node. Any of already defined properties can be defined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
  */
 var GraphNode = Class(function(data, properties) {
 	this.data = data;
 
-	if (data.parents) {
-		this.parents = data.parents;
+	if (data.parent) {
+		this.parent = data.parent;
 	}
 	if (data.children) {
 		this.children = data.children;
@@ -38,14 +40,60 @@ var GraphNode = Class(function(data, properties) {
 		});
 	}
 },{
-	parents: [],
+	/**
+	 * Name of parent node
+	 *
+	 * @type {String}
+	 */
+	parent: '',
+
+	/**
+	 * An array of children node names
+	 *
+	 * @type {String[]}
+	 */
 	children: [],
+
+	/**
+	 * An array of mixin node names
+	 *
+	 * @type {String[]}
+	 */
 	mixins: [],
 
+	/**
+	 * Type of a node
+	 *
+	 * For example:
+	 * * noi - node of interest
+	 * * parent - parent node
+	 * * child - child node
+	 * * mixin - mixed in node
+	 * * no-ref - node without reference tonode data
+	 *
+	 * @type {String}
+	 */
 	type: '',
-	state: 'none',
+
+	/**
+	 * Stack of parent nodes
+	 *
+	 * @type {GraphNode}
+	 */
 	parentStack: [],
+
+	/**
+	 * X coordinate of the node
+	 *
+	 * @type {Number}
+	 */
 	x: 0,
+
+	/**
+	 * Y coordinate of the node
+	 *
+	 * @type {Number}
+	 */
 	y: 0
 });
 
