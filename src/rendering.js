@@ -1,5 +1,4 @@
 var Class = require('class-wrapper').Class;
-var GraphNode = require('./src/GraphNode');
 var d3 = require('d3-selection');
 
 /**
@@ -7,55 +6,62 @@ var d3 = require('d3-selection');
  *
  * It renders the positioned nodes and bind them with arrows.
  *
- * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
+ * @param {Object} [nodeProperties] - see [setNodeProperties]{@link Rendering#setProperties}
  */
-var Rendering = Class(function(properties) {
-	if (properties) {
-		this.setProperties(properties);
+var Rendering = Class(function(nodeProperties) {
+	if (nodeProperties) {
+		this.setNodeProperties(nodeProperties);
 	}
 }, /** @lends Rendering.prototype */ {
-	cssFile: '',
-	nodeDimensions: {
-		width: 80,
-		height: 30
+	nodeProperties: {
+		dimensions: {
+			width: 80,
+			height: 30
+		},
+		spacing: {
+			horizontal: 10,
+			vertical: 10
+		},
+		text: {
+			dx: 10,
+			dy: 20
+		}
 	},
-	spacing: {
-		horizontal: 10,
-		vertical: 10
-	},
-	text: {
-		dx: 10,
-		dy: 20,
-		'text-anchor': 'middle'
-	},
+
+	/**
+	 * Scaling factors of X and Y coordiantes
+	 *
+	 * @type {Object}
+	 * @property {Number} x - Scale factor for X coordinates
+	 * @property {Number} y - Scale factor for Y coordinates
+	 */
 	_scale: {
 		x: 100,
 		y: 50
 	},
 
 	/**
-	 * Reset the properies
+	 * Reset the node properies
 	 *
-	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
+	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added. Only property names which value is undefined will be skipped and warnong message will be displayed in the console.
 	 */
-	setProprties: function(properties) {
-		Object.keys(properties).forEarch(property => {
-			if (typeof this[property] === 'function') {
-				console.warn(`Rendering(): property ${property} is skipped because this name is already reserved for a method`);
-				return;
-			}
-
-			var value = properties[property];
+	setNodeProprties: function(properties) {
+		for (var property in properties) {
+			let value = properties[property];
 			if (typeof value === 'undefined') {
-				console.warn(`Rendering(): property ${property} is skipped because it's value is undefined`);
-				return;
+				console.warn(`Rendering.setProperties(): property ${property} is skipped because it's value is undefined`);
+				continue;
 			}
 
-			this[property] = properties[property];
-		});
+			this.nodeProperties[property] = properties[property];
+		}
 
-		this._scale.x = this.nodeDimensions.width + 2 * this.spacing.horizontal;
-		this._scale.y = this.nodeDimensions.height + 2 * this.spacing.vertical;
+		// Calculate the scaling factors for the real (rendered) coordinate system
+		// --------------------------------------------------
+		var props = this.nodeProperties;
+		this._scale.x = props.dimensions.width + 2 * props.spacing.horizontal;
+		this._scale.y = props.dimensions.height + 2 * props.spacing.vertical;
+		// --------------------------------------------------
 	},
 
 	/**
@@ -64,50 +70,105 @@ var Rendering = Class(function(properties) {
 	 * @param {GraphNode[]} nodes - Set of nodes
 	 */
 	render: function(nodes) {
-		var maxX = 0;
-		var maxY = 0;
+		var minX = Infinity;
+		var maxX = -Infinity;
+		var minY = Infinity;
+		var maxY = -Infinity;
+
+		// Create the base contained elements for the diagram
+		// --------------------------------------------------
 		var domContainer = d3.select('body');
-
 		var domSvg = domContainer.append('svg');
+		var domDiagram = domSvg.append('g')
+		// --------------------------------------------------
 
+		// Render the nodes and find the real diagram boundaries
+		// --------------------------------------------------
 		nodes.forEach(node => {
-			var domNode = this.renderNode(node, domSvg);
+			var domNode = this.renderNode(node, domDiagram);
 
 			//node's X and Y coordinates are rescaled in the method renderNode
+			if (minX > node.x) {
+				minX = node.x;
+			}
 			if (maxX < node.x) {
 				maxX = node.x;
+			}
+			if (minY > node.y) {
+				minY = node.y;
 			}
 			if (maxY < node.y) {
 				maxY = node.y;
 			}
 		});
+		// --------------------------------------------------
 
-		domSvg.attr('width', maxX + this.nodeDimensions.width + this.spacing.horizontal);
-		domSvg.attr('height', maxY + this.nodeDimensions.height + this.spacing.vertical);
+		// TODO Render connection lines
+		// --------------------------------------------------
+		// --------------------------------------------------
 
-		return domContainer;
+		// Setup the properties for the diagram containers
+		// --------------------------------------------------
+		var props = this.nodeProperties;
+		domSvg
+			.attr('width', (maxX - minX) + props.dimensions.width + props.spacing.horizontal)
+			.attr('height', (maxY - minY) + props.dimensions.height + props.spacing.vertical)
+			.attr('xmlns', 'http://www.w3.org/2000/svg')
+			.attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+			.attr('version', '1.1');
+
+		domDiagram.attr('transform', `translate(${-minx}, ${-minY}`);
+		// --------------------------------------------------
+
+		return domDiagram;
 	},
 
+	/**
+	 * Render a node
+	 *
+	 * @param {GraphNode} node - Node which will be rendered
+	 * @param {D3Selection} domContainer - DOM comntainer where the rendered node will be placed.
+	 */
 	renderNode: function(node, domContainer) {
-		node.x = (node.x + 0.5) * this._scale.x
-		node.y = (node.y + 0.5) * this._scale.y
+		var props = this.nodeProperties;
+		var domNode;
 
-		var domG = domContainer.append('g')
+		// Reposition node by taking into the account the real element dimensaions
+		// --------------------------------------------------
+		node.x = node.x * this._scale.x + props.spacing.horizontal;
+		node.y = node.y * this._scale.y + props.spacing.vertical;
+		// --------------------------------------------------
+
+		// Create a group for the all elements related to the node: rectangle, link, text
+		// --------------------------------------------------
+		domNode = domContainer.append('g')
 			.attr('class', node.type)
 			.attr('transform', `translate(${node.x}, ${node.y})`);
+		// --------------------------------------------------
 
-		var domA = domG.append('a')
-			.attr('xlink:href', node.link);
+		// App link element if possible and make that element as the main container of rectangle and text
+		// --------------------------------------------------
+		if (node.link) {
+			domNode = domNode.append('a')
+				.attr('xlink:href', node.link);
+		}
+		// --------------------------------------------------
 
-		var domBorder = domA.append('rect')
-			.attr('width', this.nodeDimensions.width)
-			.attr('height', this.nodeDimensions.height);
+		// Create rectangle element in the main container
+		// --------------------------------------------------
+		var domBorder = domNode.append('rect')
+			.attr('width', props.dimensions.width)
+			.attr('height', props.dimensions.height);
+		// --------------------------------------------------
 
-		var domText = domA.appen('text');
-		for (var attr in this.text) {
-			domText.attr(attr, this.text[attr]);
+		// Add text (node name) into the main container
+		// --------------------------------------------------
+		var domText = domNode.appen('text');
+		for (var attr in props.text) {
+			domText.attr(attr, props.text[attr]);
 		}
 		domText.text(node.name);
+		// --------------------------------------------------
 
 		return domG;
 	},
