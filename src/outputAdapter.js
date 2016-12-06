@@ -1,14 +1,24 @@
-function d3ToStandaloneSVG(d3svg, styleFileName) {
-	var css = '';
+/**
+ *
+ * @param {D3Selection} domSvgContainer - DOM element, that contains an SVG element (usually it is `body` DOM element)
+ * @param {String} [css] - String with CSS styles for a SVG
+ */
+function outputAdapter(domSvgContainer, css) {
+	var out = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
 
-	var domStyle = (domSvg.select('defs') || domSvg.append('defs'))
+	// Inline CSS styles if they were provided
+	// --------------------------------------------------
+	if (css) {
+		(domSvg.select('defs') || domSvg.append('defs'))
 			.append('style')
-			.attr('type', 'text/css');
-	domStyle.text('<![CDATA[' + css + ']]');
+				.attr('type', 'text/css');
+				.text('<![CDATA[' + css + ']]');
+	}
+	// --------------------------------------------------
 
-	var str = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
+	out += domSvgContainer.text();
 
-	str += d3svg.text();
-
-	return str;
+	return out;
 }
+
+module.exports = outputAdapter;
