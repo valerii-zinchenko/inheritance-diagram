@@ -1,5 +1,5 @@
 var Class = require('class-wrapper').Class;
-var GraphNode = require('./src/GraphNode');
+var GraphNode = require('./GraphNode');
 
 /**
  * Input adapter
@@ -81,6 +81,7 @@ var InputAdapter = Class(function(properties) {
 		}
 
 		this.noi = new GraphNode(noiData, {
+			name: noiName,
 			parentStack: noiData.parent ? this.prepareParentNodes(noiData.parent) : undefined
 		});
 
@@ -90,7 +91,8 @@ var InputAdapter = Class(function(properties) {
 	/**
 	 * Prepare parent node
 	 *
-	 * It also sets the correct type of the node.
+	 * The first node in stack is the actual parent node of the NOI. The last parent node is the root node of the inheritance chain.
+	 * It also sets the correct type of the parent node.
 	 *
 	 * @param {String} nodeName - Parent node name
 	 * @returns {GraphNode[]} - Ordered stack of parent nodes
@@ -99,6 +101,7 @@ var InputAdapter = Class(function(properties) {
 		var data = this.map[nodeName];
 
 		var stack = [new GraphNode(data, {
+			name: nodeName,
 			type: data ? 'parent' : 'no-ref'
 		})];
 
@@ -128,7 +131,9 @@ var InputAdapter = Class(function(properties) {
 			set.forEach((nodeName, index) => {
 				var data = this.map[nodeName];
 
+				// Replace node name with GraphNode
 				set[index] = new GraphNode(data, {
+					name: nodeName,
 					type: data ? groupName : 'no-ref'
 				});
 			});
