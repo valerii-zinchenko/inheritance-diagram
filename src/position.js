@@ -24,13 +24,6 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	maxChildrenInRow: 6,
 
 	/**
-	 * An array of parent nodes
-	 *
-	 * @type {Array}
-	 */
-	_parentNodes: [],
-
-	/**
 	 * An array of children nodes
 	 *
 	 * @type {Array}
@@ -73,6 +66,8 @@ var Position = Class(null, /** @lends Position.prototype */ {
 		this.positionParentNodes();
 		this.positionChildNodes();
 		this.positionMixinNodes();
+
+		return [noi].concat(noi.parentStack, noi.children, noi.mixins);
 	},
 
 	/**
@@ -87,7 +82,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position parent nodes of the NOI
 	 */
 	positionParents: function() {
-		this._parentNodes = this.noi.parentStack.map((node, index) => {
+		this.noi.parentStack.forEach((node, index) => {
 			node.x = this.noi.x;
 			node.y = index;
 		});
@@ -97,11 +92,11 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position child nodes of the NOI
 	 */
 	positionChildNodes: function() {
-		var y = this.noi.y + 1;
+		var yOffset = this.noi.y + 1;
 
-		this._childNodes = this.noi.children.map((node, index) => {
+		this.noi.children.forEach((node, index) => {
 			node.x = index;
-			node.y = y + index;
+			node.y = yOffset + index;
 		});
 	},
 
@@ -111,7 +106,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	positionMixinNodes: function() {
 		var yOffset = this.noi.y - Math.floor(this.noi.mixins.length / 2);
 
-		this._mixinNodes = this.noi.mixins.map((node, index) => {
+		this.noi.mixins.forEach((node, index) => {
 			node.x = -1;
 			node.y = yOffset + index;
 		});
