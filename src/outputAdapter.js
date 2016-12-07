@@ -1,4 +1,5 @@
 /**
+ * Outuput adapter
  *
  * @param {D3Selection} domSvgContainer - DOM element, that contains an SVG element (usually it is `body` DOM element)
  * @param {String} [css] - String with CSS styles for a SVG
@@ -9,14 +10,19 @@ function outputAdapter(domSvgContainer, css) {
 	// Inline CSS styles if they were provided
 	// --------------------------------------------------
 	if (css) {
-		(domSvg.select('defs') || domSvg.append('defs'))
-			.append('style')
-				.attr('type', 'text/css');
-				.text('<![CDATA[' + css + ']]');
+		let domDefs = domSvgContainer.select('defs');
+		if (!domDefs.node()) {
+			domDefs = domSvgContainer.select('svg').append('defs');
+		}
+		domDefs.append('style')
+			.attr('type', 'text/css')
+			.text('<![CDATA[' + css + ']]>');
+
+	console.log(domDefs.html());
 	}
 	// --------------------------------------------------
 
-	out += domSvgContainer.text();
+	out += domSvgContainer.html();
 
 	return out;
 }
