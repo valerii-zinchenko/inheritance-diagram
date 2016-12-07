@@ -58,9 +58,9 @@ var Rendering = Class(function(nodeProperties) {
 
 		// Calculate the scaling factors for the real (rendered) coordinate system
 		// --------------------------------------------------
-		var props = this.nodeProperties;
-		this._scale.x = props.dimensions.width + 2 * props.spacing.horizontal;
-		this._scale.y = props.dimensions.height + 2 * props.spacing.vertical;
+		const {dimensions, spacing} = this.nodeProperties;
+		this._scale.x = dimensions.width + 2 * spacing.horizontal;
+		this._scale.y = dimensions.height + 2 * spacing.vertical;
 		// --------------------------------------------------
 	},
 
@@ -109,18 +109,19 @@ var Rendering = Class(function(nodeProperties) {
 
 		// Setup the properties for the diagram containers
 		// --------------------------------------------------
-		var props = this.nodeProperties;
 		domSvg
-			.attr('width', (maxX - minX) + props.dimensions.width + props.spacing.horizontal)
-			.attr('height', (maxY - minY) + props.dimensions.height + props.spacing.vertical)
+			.attr('width', (maxX - minX) + this._scale.x)
+			.attr('height', (maxY - minY) + this._scale.y)
 			.attr('xmlns', 'http://www.w3.org/2000/svg')
 			.attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
 			.attr('version', '1.1');
 
-		domDiagram.attr('transform', `translate(${-minx}, ${-minY}`);
+		if (minX < 0 || minY < 0) {
+			domDiagram.attr('transform', `translate(${-minX}, ${-minY})`);
+		}
 		// --------------------------------------------------
 
-		return domDiagram;
+		return domContainer;
 	},
 
 	/**
@@ -148,9 +149,9 @@ var Rendering = Class(function(nodeProperties) {
 
 		// App link element if possible and make that element as the main container of rectangle and text
 		// --------------------------------------------------
-		if (node.link) {
+		if (node.data.link) {
 			domNode = domNode.append('a')
-				.attr('xlink:href', node.link);
+				.attr('xlink:href', node.data.link);
 		}
 		// --------------------------------------------------
 
@@ -163,16 +164,18 @@ var Rendering = Class(function(nodeProperties) {
 
 		// Add text (node name) into the main container
 		// --------------------------------------------------
-		var domText = domNode.appen('text');
+		var domText = domNode.append('text');
 		for (var attr in props.text) {
 			domText.attr(attr, props.text[attr]);
 		}
 		domText.text(node.name);
 		// --------------------------------------------------
 
-		return domG;
+		return domNode;
 	},
 
 	renderConnectionLine: function(nodeA, nodeB) {
 	}
 });
+
+module.exports = Rendering;
