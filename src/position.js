@@ -1,5 +1,5 @@
 var Class = require('class-wrapper').Class;
-var GraphNode = require('./src/GraphNode');
+var GraphNode = require('./GraphNode');
 
 /**
  * Position node of interest and all its related nodes
@@ -60,28 +60,34 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * 1. positionParentNodes
 	 * 1. positionChildNodes
 	 * 1. positionMixinNodes
+	 *
+	 * @returns {GraphNode[]} - All nodes as a single array
 	 */
 	position: function() {
-		this.positionNOI();
-		this.positionParentNodes();
-		this.positionChildNodes();
-		this.positionMixinNodes();
+		this._positionNOI();
+		this._positionParents();
+		this._positionChildNodes();
+		this._positionMixinNodes();
 
-		return [noi].concat(noi.parentStack, noi.children, noi.mixins);
+		return [this.noi].concat(this.noi.parentStack, this.noi.children, this.noi.mixins);
+	},
+
+	getConnections: function() {
+		// TODO return an array of connected GraphNode pairs, the connection direction is from the first node to the second
 	},
 
 	/**
 	 * Position node of interest
 	 */
-	positionNOI: function() {
-		this.noi.x = Math.floor(this.noi.children.length / 2);
-		this.noi.y = this.noi.parents.length + 1;
+	_positionNOI: function() {
+		this.noi.x = (this.noi.children.length - 1) / 2;
+		this.noi.y = this.noi.parentStack.length;
 	},
 
 	/**
 	 * Position parent nodes of the NOI
 	 */
-	positionParents: function() {
+	_positionParents: function() {
 		this.noi.parentStack.forEach((node, index) => {
 			node.x = this.noi.x;
 			node.y = index;
@@ -91,19 +97,19 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	/**
 	 * Position child nodes of the NOI
 	 */
-	positionChildNodes: function() {
+	_positionChildNodes: function() {
 		var yOffset = this.noi.y + 1;
 
 		this.noi.children.forEach((node, index) => {
 			node.x = index;
-			node.y = yOffset + index;
+			node.y = yOffset;
 		});
 	},
 
 	/**
 	 * Position mixin nodes of the NOI
 	 */
-	positionMixinNodes: function() {
+	_positionMixinNodes: function() {
 		var yOffset = this.noi.y - Math.floor(this.noi.mixins.length / 2);
 
 		this.noi.mixins.forEach((node, index) => {
@@ -113,3 +119,4 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	}
 });
 
+module.exports = Position;
