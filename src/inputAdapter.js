@@ -113,12 +113,8 @@ var InputAdapter = Class(function(properties) {
 	 * Prepare children and mixin nodes
 	 *
 	 * It also sets the correct type of the node.
-	 *
-	 * @returns {GraphNode[]}
 	 */
 	prepareOtherNodes: function() {
-		var others = [];
-
 		[
 			'children',
 			'mixin'
@@ -129,17 +125,15 @@ var InputAdapter = Class(function(properties) {
 				return;
 			}
 
-			set.forEach(nodeName => {
+			set.forEach((nodeName, index) => {
 				var data = this.map[nodeName];
-				others.push(new GraphNode(data, {
+
+				set[index] = new GraphNode(data, {
 					type: data ? groupName : 'no-ref'
-				}));
+				});
 			});
 		});
-
-		return others;
 	}
-
 });
 
 module.exports = InputAdapter;
