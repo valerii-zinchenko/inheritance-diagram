@@ -120,7 +120,7 @@ var InputAdapter = Class(function(properties) {
 	prepareOtherNodes: function() {
 		[
 			'children',
-			'mixin'
+			'mixins'
 		].forEach(groupName => {
 			var set = this.noi[groupName];
 
