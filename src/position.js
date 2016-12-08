@@ -73,7 +73,29 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	},
 
 	getConnections: function() {
-		// TODO return an array of connected GraphNode pairs, the connection direction is from the first node to the second
+		var connections = [];
+
+		// Connect parents
+		const parentStack = this.noi.parentStack;
+		if (parentStack.length > 0) {
+			connections.push(this.noi, parentStack[0]);
+
+			for (var n = 0, N = parentStack.length - 1; n < N; n++) {
+				connections.push(parentStack[n], parentStack[n+1]);
+			}
+		}
+
+		//Connect children
+		this.noi.children.forEach(child => {
+			connections.push(child, this.noi);
+		});
+
+		// Connect mixins
+		this.noi.mixins.forEach(mixin => {
+			connections.push(mixin, this.noi);
+		});
+
+		return connections;
 	},
 
 	/**
