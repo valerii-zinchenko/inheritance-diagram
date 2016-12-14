@@ -55,47 +55,17 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	/**
 	 * Main method that does the positioning of required nodes
 	 *
-	 * It executes in the sequence the folowing methods:
-	 * 1. positionNOI
-	 * 1. positionParentNodes
-	 * 1. positionChildNodes
-	 * 1. positionMixinNodes
-	 *
-	 * @returns {GraphNode[]} - All nodes as a single array
+	 * It executes in the sequence the folowing processors:
+	 * 1. Position node of interest
+	 * 1. Position parent nodes
+	 * 1. Position child nodes
+	 * 1. Position mixin nodes
 	 */
 	position: function() {
 		this._positionNOI();
 		this._positionParents();
 		this._positionChildNodes();
 		this._positionMixinNodes();
-
-		return [this.noi].concat(this.noi.parentStack, this.noi.children, this.noi.mixins);
-	},
-
-	getConnections: function() {
-		var connections = [];
-
-		// Connect parents
-		const parentStack = this.noi.parentStack;
-		if (parentStack.length > 0) {
-			connections.push(this.noi, parentStack[0]);
-
-			for (var n = 0, N = parentStack.length - 1; n < N; n++) {
-				connections.push(parentStack[n], parentStack[n+1]);
-			}
-		}
-
-		//Connect children
-		this.noi.children.forEach(child => {
-			connections.push(child, this.noi);
-		});
-
-		// Connect mixins
-		this.noi.mixins.forEach(mixin => {
-			connections.push(mixin, this.noi);
-		});
-
-		return connections;
 	},
 
 	/**
