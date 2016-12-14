@@ -17,8 +17,6 @@ function outputAdapter(domSvgContainer, css) {
 		domDefs.append('style')
 			.attr('type', 'text/css')
 			.text('<![CDATA[' + css + ']]>');
-
-	console.log(domDefs.html());
 	}
 	// --------------------------------------------------
 
