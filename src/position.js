@@ -38,21 +38,6 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	_mixinNodes: [],
 
 	/**
-	 * Set NOI
-	 *
-	 * @param {GraphNode} noi - Node of interest
-	 *
-	 * @throws {TypeError} "noi" argument is expected to be an instance of GraphNode class
-	 */
-	setNOI: function(noi) {
-		if (!(noi instanceof GraphNode)) {
-			throw new TypeError('"noi" argument is expected to be an instance of GraphNode class');
-		}
-
-		this.noi = noi;
-	},
-
-	/**
 	 * Main method that does the positioning of required nodes
 	 *
 	 * It executes in the sequence the folowing processors:
@@ -60,8 +45,18 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * 1. Position parent nodes
 	 * 1. Position child nodes
 	 * 1. Position mixin nodes
+	 *
+	 * @param {GraphNode} noi - Node of interest
+	 *
+	 * @throws {TypeError} "noi" argument is expected to be an instance of GraphNode class
 	 */
-	position: function() {
+	position: function(noi) {
+		if (!(noi instanceof GraphNode)) {
+			throw new TypeError('"noi" argument is expected to be an instance of GraphNode class');
+		}
+
+		this.noi = noi;
+
 		this._positionNOI();
 		this._positionParents();
 		this._positionChildNodes();
