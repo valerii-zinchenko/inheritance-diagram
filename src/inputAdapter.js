@@ -45,16 +45,8 @@ var InputAdapter = Class(function(properties) {
 	/**
 	 * Set [node map]{@link GraphNode#map}
 	 *
-	 * @param {Object} map - Map of nodes
-	 *
-	 * @throws {TypeError} "map" argument is expected to be an instance of Object class
 	 */
 	setNodeMap: function(map) {
-		if (!(map instanceof Object)) {
-			throw new TypeError('"map" argument is expected to be an instance of Object class');
-		}
-
-		this.map = map;
 	},
 
 	/**
@@ -63,29 +55,35 @@ var InputAdapter = Class(function(properties) {
 	 * It also collects and sets the parent stack for NOI
 	 *
 	 * @param {String} noiName - NOI name
+	 * @param {Object} map - Map of nodes
+	 *
 	 * @returns {GrapchNode} - NOI
 	 *
 	 * @throws {TypeError} "noi" argument is expected to be a string
+	 * @throws {TypeError} "map" argument is expected to be an instance of Object class
 	 * @throws {Error} Node data for "${noiName}" does not exist in the provided node map
 	 */
-	prepareNOI: function(noiName) {
-		this.noi = null;
-
+	prepareNOI: function(noiName, map) {
 		if (typeof noiName !== 'string') {
 			throw new TypeError('"noi" argument is expected to be a string');
 		}
+		if (!(map instanceof Object)) {
+			throw new TypeError('"map" argument is expected to be an instance of Object class');
+		}
 
-		var noiData = this.map[noiName];
+		var noiData = map[noiName];
 		if (!noiData) {
 			throw new Error(`Node data for "${noiName}" does not exist in the provided node map`);
 		}
 
-		this.noi = new GraphNode(noiData, {
+		var noi = new GraphNode(noiData, {
 			name: noiName,
-			parentStack: noiData.parent ? this.prepareParentNodes(noiData.parent) : undefined
+			parentStack: noiData.parent ? this._prepareParentNodes(noiData.parent, map) : undefined
 		});
 
-		return this.noi;
+		this._prepareOtherNodes(noi, map);
+
+		return noi;
 	},
 
 	/**
@@ -95,10 +93,11 @@ var InputAdapter = Class(function(properties) {
 	 * It also sets the correct type of the parent node.
 	 *
 	 * @param {String} nodeName - Parent node name
+	 * @param {Object} map - Map of nodes
 	 * @returns {GraphNode[]} - Ordered stack of parent nodes
 	 */
-	prepareParentNodes: function(nodeName) {
-		var data = this.map[nodeName];
+	_prepareParentNodes: function(nodeName, map) {
+		var data = map[nodeName];
 
 		var stack = [new GraphNode(data, {
 			name: nodeName,
@@ -106,7 +105,7 @@ var InputAdapter = Class(function(properties) {
 		})];
 
 		if (data && data.parent) {
-			stack = stack.concat(this.prepareParentNodes(data.parent));
+			stack = stack.concat(this._prepareParentNodes(data.parent, map));
 		}
 
 		return stack;
@@ -116,20 +115,22 @@ var InputAdapter = Class(function(properties) {
 	 * Prepare children and mixin nodes
 	 *
 	 * It also sets the correct type of the node.
+	 *
+	 * @param {Object} map - Map of nodes
 	 */
-	prepareOtherNodes: function() {
+	_prepareOtherNodes: function(noi, map) {
 		[
 			'children',
 			'mixins'
 		].forEach(groupName => {
-			var set = this.noi[groupName];
+			var set = noi[groupName];
 
 			if (!set) {
 				return;
 			}
 
 			set.forEach((nodeName, index) => {
-				var data = this.map[nodeName];
+				var data = map[nodeName];
 
 				// Replace node name with GraphNode
 				set[index] = new GraphNode(data, {
