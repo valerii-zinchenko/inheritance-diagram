@@ -9,16 +9,12 @@ var outputAdapter = require('./outputAdapter');
 global.document = require('jsdom').jsdom('<body>');
 
 var Diagram = Class(function(noiName, nodeMap, css) {
-	this.inAdapter.setNodeMap(nodeMap);
-	var noi = this.inAdapter.prepareNOI(noiName);
-	this.inAdapter.prepareOtherNodes();
+	this.noi = this.inAdapter.prepareNOI(noiName, nodeMap);
 
-	this.position.setNOI(noi);
-	var nodes = this.position.position();
+	this.positing.position(this.noi);
 
-	var domElement = this.rendering.render(nodes);
-
-	var out = this.outAdapter(domElement, css);
+	this.domContainer = this.rendering.render(this.noi);
+	var out = this.outAdapter(domContainer, css);
 
 	fs.writeFile('out.svg', out, err => {
 		if (err) {
@@ -28,8 +24,11 @@ var Diagram = Class(function(noiName, nodeMap, css) {
 		console.log('Done.');
 	});
 }, {
+	noi: null,
+	domContainer: null,
+
 	inAdapter: new InputAdapter(),
-	position: new Position(),
+	positing: new Position(),
 	rendering: new Rendering(),
 	outAdapter: outputAdapter
 });
