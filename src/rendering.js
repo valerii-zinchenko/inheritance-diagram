@@ -69,7 +69,7 @@ var Rendering = Class(function(nodeProperties) {
 	 *
 	 * @param {GraphNode[]} nodes - Set of nodes
 	 */
-	render: function(nodes) {
+	render: function(noi) {
 		var minX = Infinity;
 		var maxX = -Infinity;
 		var minY = Infinity;
@@ -79,32 +79,35 @@ var Rendering = Class(function(nodeProperties) {
 		// --------------------------------------------------
 		var domContainer = d3.select('body');
 		var domSvg = domContainer.append('svg');
-		var domDiagram = domSvg.append('g')
+		var domDiagram = domSvg.append('g');
 		// --------------------------------------------------
 
 		// Render the nodes and find the real diagram boundaries
 		// --------------------------------------------------
-		nodes.forEach(node => {
-			var domNode = this.renderNode(node, domDiagram);
+		[noi].concat(noi.parentStack, noi.children, noi.mixins)
+			.forEach(node => {
+				var domNode = this.renderNode(node, domDiagram);
 
-			//node's X and Y coordinates are rescaled in the method renderNode
-			if (minX > node.x) {
-				minX = node.x;
-			}
-			if (maxX < node.x) {
-				maxX = node.x;
-			}
-			if (minY > node.y) {
-				minY = node.y;
-			}
-			if (maxY < node.y) {
-				maxY = node.y;
-			}
-		});
+				//node's X and Y coordinates are rescaled in the method renderNode
+				if (minX > node.x) {
+					minX = node.x;
+				}
+				if (maxX < node.x) {
+					maxX = node.x;
+				}
+				if (minY > node.y) {
+					minY = node.y;
+				}
+				if (maxY < node.y) {
+					maxY = node.y;
+				}
+			});
 		// --------------------------------------------------
 
-		// TODO Render connection lines
+		// TODO: Build end marker for connecting line
+		// Render connection lines
 		// --------------------------------------------------
+		this.renderConnections(noi, domSvg);
 		// --------------------------------------------------
 
 		// Setup the properties for the diagram containers
@@ -174,7 +177,134 @@ var Rendering = Class(function(nodeProperties) {
 		return domNode;
 	},
 
-	renderConnectionLine: function(nodeA, nodeB) {
+	/**
+	 * Render all connections between nodes
+	 *
+	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
+	 *
+	 * @param {GraphNode} noi - node of interest
+	 * @param {D3Selection} domContainer - DOM comntainer where the rendered connection will be placed
+	 */
+	renderConnections: function(noi, domContainer) {
+		var connections = [];
+
+		// Connect parents
+		const parentStack = noi.parentStack;
+		if (parentStack.length > 0) {
+			this._renderVerticalConnection(noi, parentStack[0], 'parent');
+
+			for (var n = 0, N = parentStack.length - 1; n < N; n++) {
+				this._renderConnection(parentStack[n], parentStack[n+1], 'parent');
+			}
+		}
+
+		//Connect children
+		noi.children.forEach(child => {
+			this._renderVerticalConnection(child, noi, 'child');
+		});
+
+		// Connect mixins
+		noi.mixins.forEach(mixin => {
+			this._renderHorizontalConnection(mixin, noi, 'mixin');
+		});
+	},
+
+	/**
+	 * Render a connection line from the right edge of node A to the left edge of a node B
+	 *
+	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
+	 *
+	 * @param {GraphNode} nodeA - Node from which the connection will be started
+	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
+	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
+	 */
+	_renderHorizontalConnection: function(nodeA, nodeB, domContainer, type) {
+		domContainer.append('path')
+			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
+			.attr('d', this._buildHorizontalPath(nodeA, nodeB))
+			.attr('class', type || '');
+	},
+
+	/**
+	 * Render a connection line from the top edge of node A to the bottom edge of a node B
+	 *
+	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
+	 *
+	 * @param {GraphNode} nodeA - Node from which the connection will be started
+	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
+	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
+	 */
+	_renderVerticalConnection: function(nodeA, nodeB, domContainer, type) {
+		domContainer.append('path')
+			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
+			.attr('d', this._buildVerticalPath(nodeA, nodeB))
+			.attr('class', type || '');
+	},
+
+	/**
+	 * Build path for horizontal connection line
+	 *
+	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
+	 *
+	 * @param {GraphNode} nodeA - Node from which the connection will be started
+	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @return {String} - The value for `path` attribute
+	 */
+	_buildHorizontalPath: function(nodeA, nodeB) {
+		const distance = nodeB.x - nodeA.x - this.nodeProperties.dimension.width;
+
+		return (nodeA.x === nodeB.x)
+			? `M 0 0 h ${distance}`
+			: `M 0 0 h ${distance / 2} v ${nodeB.x - nodeA.x} h ${distance}`;
+	},
+
+	/**
+	 * Build path for vertical connection line
+	 *
+	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
+	 *
+	 * @param {GraphNode} nodeA - Node from which the connection will be started
+	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @return {String} - The value for `path` attribute
+	 */
+	_buildVerticalPath: function(nodeA, nodeB) {
+		const distance = nodeB.y - nodeA.y - this.nodeProperties.dimension.height;
+
+		return (nodeA.x === nodeB.x)
+			? `M 0 0 h ${distance}`
+			: `M 0 0 v ${distance / 2} h ${nodeB.x - nodeA.x} v ${distance}`;
+	},
+
+	/**
+	 * Calculate value for `transform` attridute of a horizontal path to position it near the start node
+	 *
+	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
+	 *
+	 * @param {GraphNode} nodeA - Node from which the connection will be started
+	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @return {String} - The value for `transform` attribute
+	 */
+	_buildOffsetForHorizontalPath: function(nodeA, nodeB) {
+		const {dimensions, spacing} = this.nodeProperties;
+
+		return `translate(${nodeA.x + dimensions.width + spacing.vertical}, ${nodeA.y - dimension.height / 2 - spacing.vertical})`;
+	},
+
+	/**
+	 * Calculate value for `transform` attridute of a vertical path to position it near the start node
+	 *
+	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
+	 *
+	 * @param {GraphNode} nodeA - Node from which the connection will be started
+	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @return {String} - The value for `transform` attribute
+	 */
+	_buildOffsetForVerticalPath: function(nodeA, nodeB) {
+		const {dimensions, spacing} = this.nodeProperties;
+
+		return `translate(${nodeA.x + dimensions.width / 2 + spacing.horizontal}, ${nodeA.y - spacing.vertical})`;
 	}
 });
 
