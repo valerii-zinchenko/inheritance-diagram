@@ -79,6 +79,7 @@ var Rendering = Class(function(nodeProperties) {
 		// --------------------------------------------------
 		var domContainer = d3.select('body');
 		var domSvg = domContainer.append('svg');
+		var domDefs = domSvg.append('defs');
 		var domDiagram = domSvg.append('g');
 		// --------------------------------------------------
 
@@ -105,9 +106,18 @@ var Rendering = Class(function(nodeProperties) {
 		// --------------------------------------------------
 
 		// TODO: Build end marker for connecting line
+		var domMarker = domDefs.append('marker')
+			.attr('id', 'Arrow')
+			.attr('viewBox', '0 0 10 10')
+			.attr('refX', '10')
+			.attr('refY', '5')
+			.attr('orient', 'auto');
+		domMarker.append('path')
+			.attr('d', 'M 0 0 L 10 5 L 0 10 z');
+
 		// Render connection lines
 		// --------------------------------------------------
-		this.renderConnections(noi, domSvg);
+		this.renderConnections(noi, 'Arrow', domDiagram);
 		// --------------------------------------------------
 
 		// Setup the properties for the diagram containers
@@ -183,29 +193,30 @@ var Rendering = Class(function(nodeProperties) {
 	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
 	 *
 	 * @param {GraphNode} noi - node of interest
+	 * @param {String} endMarkerId - ID of an end marker of the connection line
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered connection will be placed
 	 */
-	renderConnections: function(noi, domContainer) {
+	renderConnections: function(noi, endMarkerId, domContainer) {
 		var connections = [];
 
 		// Connect parents
 		const parentStack = noi.parentStack;
 		if (parentStack.length > 0) {
-			this._renderVerticalConnection(noi, parentStack[0], 'parent');
+			this._renderVerticalConnection(noi, parentStack[0], endMarkerId, domContainer, 'parent');
 
 			for (var n = 0, N = parentStack.length - 1; n < N; n++) {
-				this._renderConnection(parentStack[n], parentStack[n+1], 'parent');
+				this._renderVerticalConnection(parentStack[n], parentStack[n+1], endMarkerId, domContainer, 'parent');
 			}
 		}
 
 		//Connect children
 		noi.children.forEach(child => {
-			this._renderVerticalConnection(child, noi, 'child');
+			this._renderVerticalConnection(child, noi, endMarkerId, domContainer, 'child');
 		});
 
 		// Connect mixins
 		noi.mixins.forEach(mixin => {
-			this._renderHorizontalConnection(mixin, noi, 'mixin');
+			this._renderHorizontalConnection(mixin, noi, endMarkerId, domContainer, 'mixin');
 		});
 	},
 
@@ -216,13 +227,15 @@ var Rendering = Class(function(nodeProperties) {
 	 *
 	 * @param {GraphNode} nodeA - Node from which the connection will be started
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @param {String} endMarkerId - ID of an end marker for the connection line
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
 	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
 	 */
-	_renderHorizontalConnection: function(nodeA, nodeB, domContainer, type) {
+	_renderHorizontalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type) {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
 			.attr('d', this._buildHorizontalPath(nodeA, nodeB))
+			.attr('marker-end', `url(#${endMarkerId})`)
 			.attr('class', type || '');
 	},
 
@@ -233,13 +246,15 @@ var Rendering = Class(function(nodeProperties) {
 	 *
 	 * @param {GraphNode} nodeA - Node from which the connection will be started
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
+	 * @param {String} endMarkerId - ID of an end marker for the connection line
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
 	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
 	 */
-	_renderVerticalConnection: function(nodeA, nodeB, domContainer, type) {
+	_renderVerticalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type) {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
 			.attr('d', this._buildVerticalPath(nodeA, nodeB))
+			.attr('marker-end', `url(#${endMarkerId})`)
 			.attr('class', type || '');
 	},
 
@@ -253,11 +268,12 @@ var Rendering = Class(function(nodeProperties) {
 	 * @return {String} - The value for `path` attribute
 	 */
 	_buildHorizontalPath: function(nodeA, nodeB) {
-		const distance = nodeB.x - nodeA.x - this.nodeProperties.dimension.width;
+		const {dimensions, spacing} = this.nodeProperties;
+		const distance = nodeB.x - nodeA.x - dimensions.width;
 
-		return (nodeA.x === nodeB.x)
+		return (nodeA.y === nodeB.y)
 			? `M 0 0 h ${distance}`
-			: `M 0 0 h ${distance / 2} v ${nodeB.x - nodeA.x} h ${distance}`;
+			: `M 0 0 h ${spacing.horizontal} v ${nodeB.y - nodeA.y} H ${distance}`;
 	},
 
 	/**
@@ -270,11 +286,12 @@ var Rendering = Class(function(nodeProperties) {
 	 * @return {String} - The value for `path` attribute
 	 */
 	_buildVerticalPath: function(nodeA, nodeB) {
-		const distance = nodeB.y - nodeA.y - this.nodeProperties.dimension.height;
+		const {dimensions, spacing} = this.nodeProperties;
+		const distance = nodeB.y - nodeA.y + dimensions.height;
 
 		return (nodeA.x === nodeB.x)
-			? `M 0 0 h ${distance}`
-			: `M 0 0 v ${distance / 2} h ${nodeB.x - nodeA.x} v ${distance}`;
+			? `M 0 0 v ${distance}`
+			: `M 0 0 v -${spacing.vertical} h ${nodeB.x - nodeA.x} V ${distance}`;
 	},
 
 	/**
@@ -289,7 +306,7 @@ var Rendering = Class(function(nodeProperties) {
 	_buildOffsetForHorizontalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.nodeProperties;
 
-		return `translate(${nodeA.x + dimensions.width + spacing.vertical}, ${nodeA.y - dimension.height / 2 - spacing.vertical})`;
+		return `translate(${nodeA.x + dimensions.width}, ${nodeA.y + dimensions.height / 2})`;
 	},
 
 	/**
@@ -304,7 +321,7 @@ var Rendering = Class(function(nodeProperties) {
 	_buildOffsetForVerticalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.nodeProperties;
 
-		return `translate(${nodeA.x + dimensions.width / 2 + spacing.horizontal}, ${nodeA.y - spacing.vertical})`;
+		return `translate(${nodeA.x + dimensions.width / 2}, ${nodeA.y})`;
 	}
 });
 
