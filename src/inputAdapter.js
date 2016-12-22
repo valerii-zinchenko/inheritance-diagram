@@ -29,34 +29,12 @@ var InputAdapter = Class(function(properties) {
 	}
 }, /** @lends InputAdapter.prototype */{
 	/**
-	 * Node of interest
-	 *
-	 * @type {GraphNode}
-	 */
-	noi: null,
-
-	/**
-	 * Map of node name to their's raw data
-	 *
-	 * @type {Object}
-	 */
-	map: null,
-
-	/**
-	 * Set [node map]{@link GraphNode#map}
-	 *
-	 */
-	setNodeMap: function(map) {
-	},
-
-	/**
 	 * Prepare raw NOI data for the further processing
 	 *
 	 * It also collects and sets the parent stack for NOI
 	 *
 	 * @param {String} noiName - NOI name
 	 * @param {Object} map - Map of nodes
-	 *
 	 * @returns {GrapchNode} - NOI
 	 *
 	 * @throws {TypeError} "noi" argument is expected to be a string
