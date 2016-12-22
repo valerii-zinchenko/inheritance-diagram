@@ -12,6 +12,8 @@ var Rendering = Class(function(nodeProperties) {
 	if (nodeProperties) {
 		this.setNodeProperties(nodeProperties);
 	}
+
+	this.rescale();
 }, /** @lends Rendering.prototype */ {
 	nodeProperties: {
 		dimensions: {
@@ -20,11 +22,18 @@ var Rendering = Class(function(nodeProperties) {
 		},
 		spacing: {
 			horizontal: 10,
-			vertical: 10
+			vertical: 20
 		},
 		text: {
 			dx: 10,
 			dy: 20
+		}
+	},
+	connectionLineProperties: {
+		width: 2,
+		endMarker: {
+			width: 5,
+			height: 5
 		}
 	},
 
@@ -36,8 +45,8 @@ var Rendering = Class(function(nodeProperties) {
 	 * @property {Number} y - Scale factor for Y coordinates
 	 */
 	_scale: {
-		x: 100,
-		y: 50
+		x: 1,
+		y: 1
 	},
 
 	/**
@@ -56,12 +65,17 @@ var Rendering = Class(function(nodeProperties) {
 			this.nodeProperties[property] = properties[property];
 		}
 
-		// Calculate the scaling factors for the real (rendered) coordinate system
-		// --------------------------------------------------
+		this.rescale();
+	},
+
+	/**
+	 * Calculate the scaling factors for the real (rendered) coordinate system
+	 */
+	rescale: function() {
 		const {dimensions, spacing} = this.nodeProperties;
+
 		this._scale.x = dimensions.width + 2 * spacing.horizontal;
 		this._scale.y = dimensions.height + 2 * spacing.vertical;
-		// --------------------------------------------------
 	},
 
 	/**
@@ -87,7 +101,7 @@ var Rendering = Class(function(nodeProperties) {
 		// --------------------------------------------------
 		[noi].concat(noi.parentStack, noi.children, noi.mixins)
 			.forEach(node => {
-				var domNode = this.renderNode(node, domDiagram);
+				this.renderNode(node, domDiagram);
 
 				//node's X and Y coordinates are rescaled in the method renderNode
 				if (minX > node.x) {
@@ -105,15 +119,15 @@ var Rendering = Class(function(nodeProperties) {
 			});
 		// --------------------------------------------------
 
-		// TODO: Build end marker for connecting line
-		var domMarker = domDefs.append('marker')
+		const endMarker = this.connectionLineProperties.endMarker;
+		domDefs.append('marker')
 			.attr('id', 'Arrow')
-			.attr('viewBox', '0 0 10 10')
-			.attr('refX', '10')
-			.attr('refY', '5')
-			.attr('orient', 'auto');
-		domMarker.append('path')
-			.attr('d', 'M 0 0 L 10 5 L 0 10 z');
+			.attr('refY', endMarker.width/2)
+			.attr('orient', 'auto')
+			.style('overflow', 'visible')
+			.append('path')
+				.attr('d', `M 0 0 L ${endMarker.height} ${endMarker.width/2} L 0 ${endMarker.height} z`)
+				.attr('transform', 'scale(${1/this.connectionLineProperties.width})');
 
 		// Render connection lines
 		// --------------------------------------------------
@@ -143,18 +157,17 @@ var Rendering = Class(function(nodeProperties) {
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered node will be placed.
 	 */
 	renderNode: function(node, domContainer) {
-		var props = this.nodeProperties;
-		var domNode;
+		const {dimensions, spacing, text} = this.nodeProperties;
 
 		// Reposition node by taking into the account the real element dimensaions
 		// --------------------------------------------------
-		node.x = node.x * this._scale.x + props.spacing.horizontal;
-		node.y = node.y * this._scale.y + props.spacing.vertical;
+		node.x = node.x * this._scale.x + spacing.horizontal;
+		node.y = node.y * this._scale.y + spacing.vertical;
 		// --------------------------------------------------
 
 		// Create a group for the all elements related to the node: rectangle, link, text
 		// --------------------------------------------------
-		domNode = domContainer.append('g')
+		var domNode = domContainer.append('g')
 			.attr('class', node.type)
 			.attr('transform', `translate(${node.x}, ${node.y})`);
 		// --------------------------------------------------
@@ -170,15 +183,15 @@ var Rendering = Class(function(nodeProperties) {
 		// Create rectangle element in the main container
 		// --------------------------------------------------
 		var domBorder = domNode.append('rect')
-			.attr('width', props.dimensions.width)
-			.attr('height', props.dimensions.height);
+			.attr('width', dimensions.width)
+			.attr('height', dimensions.height);
 		// --------------------------------------------------
 
 		// Add text (node name) into the main container
 		// --------------------------------------------------
 		var domText = domNode.append('text');
-		for (var attr in props.text) {
-			domText.attr(attr, props.text[attr]);
+		for (var attr in text) {
+			domText.attr(attr, text[attr]);
 		}
 		domText.text(node.name);
 		// --------------------------------------------------
@@ -235,6 +248,9 @@ var Rendering = Class(function(nodeProperties) {
 			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
 			.attr('d', this._buildHorizontalPath(nodeA, nodeB))
 			.attr('marker-end', `url(#${endMarkerId})`)
+			.attr('stroke-width', this.connectionLineProperties.width)
+			.attr('stroke', 'black')
+			.attr('fill', 'none')
 			.attr('class', type || '');
 	},
 
@@ -254,6 +270,9 @@ var Rendering = Class(function(nodeProperties) {
 			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
 			.attr('d', this._buildVerticalPath(nodeA, nodeB))
 			.attr('marker-end', `url(#${endMarkerId})`)
+			.attr('stroke-width', this.connectionLineProperties.width)
+			.attr('stroke', 'black')
+			.attr('fill', 'none')
 			.attr('class', type || '');
 	},
 
@@ -268,7 +287,7 @@ var Rendering = Class(function(nodeProperties) {
 	 */
 	_buildHorizontalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.nodeProperties;
-		const distance = nodeB.x - nodeA.x - dimensions.width;
+		const distance = nodeB.x - nodeA.x - dimensions.width - this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width;
 
 		return (nodeA.y === nodeB.y)
 			? `M 0 0 h ${distance}`
@@ -286,7 +305,7 @@ var Rendering = Class(function(nodeProperties) {
 	 */
 	_buildVerticalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.nodeProperties;
-		const distance = nodeB.y - nodeA.y + dimensions.height;
+		const distance = nodeB.y - nodeA.y + dimensions.height + this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width;
 
 		return (nodeA.x === nodeB.x)
 			? `M 0 0 v ${distance}`
