@@ -9,19 +9,48 @@ var outputAdapter = require('./outputAdapter');
 global.document = require('jsdom').jsdom('<body>');
 
 var Diagram = Class(function(noiName, nodeMap, css) {
-	this.noi = this.inAdapter.prepareNOI(noiName, nodeMap);
+	var instructions = [
+		{
+			title: 'Preparing NOI',
+			action: () => {
+				this.noi = this.inAdapter.prepareNOI(noiName, nodeMap);
+			}
+		},
+		{
+			title: 'Positioning NOI',
+			action: () => {
+				this.positing.position(this.noi);
+			}
+		},
+		{
+			title: 'Rendering NOI',
+			action: () => {
+				this.domContainer = this.rendering.render(this.noi);
+			}
+		},
+		{
+			title: 'Adapting the output',
+			action: () => {
+				var out = this.outAdapter(this.domContainer, css);
 
-	this.positing.position(this.noi);
+				const fileName = 'out.svg';
+				process.stdout.write(`Wrinting to the file "${fileName}"...`);
+				fs.writeFile(fileName, out, err => {
+					if (err) {
+						throw err;
+					}
 
-	this.domContainer = this.rendering.render(this.noi);
-	var out = this.outAdapter(this.domContainer, css);
-
-	fs.writeFile('out.svg', out, err => {
-		if (err) {
-			throw err;
+					process.stdout.write('Done\n');
+				});
+			}
 		}
+	];
+	instructions.forEach(function(instruction, index) {
+		process.stdout.write(`${index+1}/${instructions.length}: ${instruction.title}...`);
 
-		console.log('Done.');
+		instruction.action();
+
+		process.stdout.write('Done\n');
 	});
 }, {
 	noi: null,
