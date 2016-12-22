@@ -97,7 +97,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position mixin nodes of the NOI
 	 */
 	_positionMixinNodes: function() {
-		var yOffset = this.noi.y - Math.floor(this.noi.mixins.length / 2);
+		var yOffset = this.noi.y - Math.ceil(this.noi.mixins.length / 2) + 1;
 
 		this.noi.mixins.forEach((node, index) => {
 			node.x = -1;
