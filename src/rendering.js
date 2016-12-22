@@ -129,9 +129,8 @@ var Rendering = Class(function(nodeProperties) {
 			.attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
 			.attr('version', '1.1');
 
-		if (minX < 0 || minY < 0) {
-			domDiagram.attr('transform', `translate(${-minX}, ${-minY})`);
-		}
+		const spacing = this.nodeProperties.spacing;
+		domDiagram.attr('transform', `translate(${-minX + spacing.horizontal}, ${-minY + spacing.vertical})`);
 		// --------------------------------------------------
 
 		return domContainer;
