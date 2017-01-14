@@ -21,6 +21,9 @@ function outputAdapter(domSvgContainer, customCSS) {
 	if (customCSS) {
 		css += customCSS;
 	}
+	css = css
+		.replace(/\n/g, '')
+		.replace(/\s+/g, ' ');
 
 	// Inline CSS styles if they were provided
 	// --------------------------------------------------
