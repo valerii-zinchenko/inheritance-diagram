@@ -80,7 +80,7 @@ var InputAdapter = Class(function(properties) {
 
 		var stack = [new GraphNode(data, {
 			name: nodeName,
-			type: data ? 'parent' : 'no-ref'
+			type: 'parent'
 		})];
 
 		if (data && data.parent) {
