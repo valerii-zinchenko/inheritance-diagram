@@ -75,9 +75,10 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position parent nodes of the NOI
 	 */
 	_positionParents: function() {
+		const top = this.noi.parentStack.length - 1;
 		this.noi.parentStack.forEach((node, index) => {
 			node.x = this.noi.x;
-			node.y = index;
+			node.y = top - index;
 		});
 	},
 
