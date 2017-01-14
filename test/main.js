@@ -1,15 +1,15 @@
-var core = require('../src/main');
+var main = require('../src/main');
 
 var Class = require('class-wrapper').Class;
 var assert = require('chai').assert;
 var sinon = require('sinon');
-var jsdom = require('jsdom').jsdom;
-var d3 = require('d3-selection');
+var fs = require('fs');
 
 
-var TestWrapper = Class(function(title, input, expected, testFn) {
+var TestWrapper = Class(function(title, noiName, nodeMap, expected, testFn) {
 	this.title = title;
-	this.input = input;
+	this.noiName = noiName;
+	this.noiMap = noiMap;
 	this.expected = expected;
 
 	if (testFn) {
@@ -17,38 +17,26 @@ var TestWrapper = Class(function(title, input, expected, testFn) {
 	}
 }, {
 	title: 'test',
-	input: null,
+	noiName: '',
+	nodeMap: null,
 	expected: null,
 
 	testFn: function() {
-		assert(false, 'Testing function is not defined');
+		//assert(false, 'Testing function is not defined');
+		assert(this.expected, new main(this.noiName, this.nodeMap).getResult());
 	},
 	run: function() {
 		test(this.title, this.testFn());
 	}
 });
-
-function createDOM(parentEl, newElConfig) {
-	var newEl = parentEl.append(newElConfig.tag);
-
-	for (var property in newElConfig.properties) {
-		newEl.attr(property, newElConfig.properties);
-	}
-
-	if (newElConfig.hasOwnProperty('content')) {
-		newEl.text(newElConfig.content);
-	} else {
-		newElConfig.children.forEach(function(childConfig) {
-			createDOM(newEl, childConfig);
-		});
-	}
-
-	return newEl;
-}
+var TestSVG = Class(TestSVG, function() {
+	this.expected = fs.readFileSync(`./expected_data/${this.title}.svg`);
+});
 
 
+// Unit tests
+// --------------------------------------------------
 suite('E2E', function() {
-	var document = jsdom('body');
 	var properties = {
 		styles: '',
 		nodeDimentions: {
@@ -66,283 +54,165 @@ suite('E2E', function() {
 		}
 	};
 
-	suite('Core', function() {
-		suiteSetup(function() {
-			document.body.innerHTML = '';
-		});
+	new TestSVG('single class', 'Class', {
+		Class: {}
+	}).run();
 
-		teardown(function() {
-			document.body.innerHTML = '';
-		});
-
-		function testFn() {
-			var expectedDOM = createDOM(d3.select(document.body, this.expected));
-
-			assert(expectedDOM.html(), resultDOM.html());
-		}
-
-		new TestWrapper('single class', [
-			{
-				name: 'Class'
-			}
-		], {
-			tag: 'svg',
-			properties: {
-				xmlns: 'http://www.w3.org/1999/xlink',
-				'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-				version: '1.1',
-				width: properties.width,
-				heigth: properties.heigth
-			},
-			children: [
-				{
-					tag: 'defs',
-					children: [
-						{
-							tag: 'style',
-							properties: {
-								type: 'text/css'
-							},
-							content: '<![CDATA[ ]]>'
-						}
-					]
-				},
-				{
-					tag: 'g',
-					properties: {
-						x: 1,
-						y: 1,
-						'class': 'current'
-					},
-					children: [
-						{
-							tag: 'a',
-							properties: {},
-							children: [
-								{
-									tag: 'rect',
-									properties: {
-										x: 1,
-										y: 1,
-										width: properties.width,
-										height: properties.height
-									}
-								},
-								{
-									tag: 'text',
-									content: 'Class',
-									properties: {
-										dx: properties.text.dx,
-										dy: properties.text.dy,
-										'text-anchor': properties.text['text-anchor']
-									}
-								}
-							]
-						}
-					]
+	suite('parents', function() {
+		[
+			new TestSVG('class with one undocumented parent', 'Class', {
+				Class: {
+					parent: 'Parent'
 				}
-			]
-		},
-			testFn
-		).run();
-
-		suite('parents', function() {
-			[
-				new TestWrapper(
-					'class with one documented parent',
-					[
-						{
-							name: 'Class',
-							parent: 'Parent'
-						},
-						{
-							name: 'Parent'
-						}
-					],
-					{},
-					testFn
-				),
-				new TestWrapper(
-					'one class with undocemented parent',
-					[
-						{
-							name: 'Class',
-							parent: 'Parent'
-						}
-					],
-					{},
-					testFn
-				),
-				new TestWrapper(
-					'five parent levels',
-					[
-						{
-							name: 'Class',
-							parent: 'Parent1'
-						},
-						{
-							name: 'Parent1',
-							parent: 'Parent2'
-						},
-						{
-							name: 'Parent2',
-							parent: 'Parent3'
-						},
-						{
-							name: 'Parent3',
-							parent: 'Parent4'
-						},
-						{
-							name: 'Parent4',
-							parent: 'Parent5'
-						}
-					],
-					{},
-					testFn
-				)
-			].forEach(function(testCase) {
-				testCase.run();
-			});
+			}),
+			new TestSVG('class with one documented parent', 'Class', {
+				Class: {
+					parent: 'Parent'
+				},
+				Parent: {
+					link: '#Parent'
+				}
+			}),
+			new TestSVG('five parent levels', 'Class', {
+				Class: {
+					parent: 'Parent1'
+				},
+				Parent1: {
+					parent: 'Parent2',
+					link: '#Parent1'
+				},
+				Parent2: {
+					parent: 'Parent3',
+					link: '#Parent2'
+				},
+				Parent3: {
+					parent: 'Parent4',
+					link: '#Parent3'
+				},
+				Parent4: {
+					parent: 'Parent5',
+					link: '#Parent4'
+				}
+			})
+		].forEach(function(testCase) {
+			testCase.run();
 		});
+	});
 
-		suite('children', function() {
-			[
-				new TestWrapper(
-					'one documented child',
-					[
-						{
-							name: 'Class',
-							children: ['Child']
-						},
-						{
-							name: 'Child',
-							parent: 'Class'
-						}
-					],
-					{},
-					testFn
-				),
-				new TestWrapper(
-					'one undocumented child',
-					[
-						{
-							name: 'Class',
-							children: ['Child']
-						},
-						{
-							name: 'Child',
-							parent: 'Class'
-						}
-					],
-					{},
-					testFn
-				),
-				new TestWrapper(
-					'five different children',
-					[
-						{
-							name: 'Class',
-							children: ['Child1', 'Child2', 'Child3', 'Child4', 'Child5']
-						},
-						{
-							name: 'Child1'
-						},
-						{
-							name: 'Child2'
-						},
-						{
-							name: 'Child4'
-						}
-					],
-					{},
-					testFn
-				)
-			].forEach(function(testCase) {
-				testCase.run();
-			});
+	suite('children', function() {
+		[
+			new TestSVG('one undocumented child', 'Class', {
+				Class: {
+					children: ['Child']
+				}
+			}),
+			new TestSVG('one documented child', 'Class', {
+				Class: {
+					children: ['Child']
+				},
+				Child: {
+					link: '#Child'
+				}
+			}),
+			new TestSVG('five different children', 'Class', {
+				Class: {
+					children: ['Child1', 'Child2', 'Child3', 'Child4', 'Child5']
+				},
+				Child1: {
+					link: '#Child5'
+},
+				Child2: {
+					link: '#Child2'
+},
+				Child4: {
+					link: '#Child4'
+}
+			})
+		].forEach(function(testCase) {
+			testCase.run();
 		});
+	});
 
-		suite('mixins', function() {
-			[
-				new TestWrapper(
-					'class with one documented mixin',
-					[
-						{
-							name: 'Class',
-							mixins: ['Mixin']
-						},
-						{
-							name: 'Mixin'
-						}
-					],
-					{},
-					testFn
-				),
-				new TestWrapper(
-					'class with one undocumented mixin',
-					[
-						{
-							name: 'Class',
-							mixins: ['Mixin']
-						}
-					],
-					{},
-					testFn
-				),
-				new TestWrapper(
-					'five different mixins',
-					[
-						{
-							name: 'Class',
-							children: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
-						},
-						{
-							name: 'Mixin1'
-						},
-						{
-							name: 'Mixin2'
-						},
-						{
-							name: 'Mixin4'
-						}
-					],
-					{},
-					testFn
-				)
-			].forEach(function(testCase) {
-				testCase.run();
-			});
+	suite('mixins', function() {
+		[
+			new TestSVG('class with one undocumented mixin', 'Class', {
+				Class: {
+					mixins: ['Mixin']
+				}
+			}),
+			new TestSVG('class with one documented mixin', 'Class', {
+				Class: {
+					mixins: ['Mixin']
+				},
+				Mixin: {
+					link: '#Mixin'
+				}
+			}),
+			new TestSVG('five different mixins', 'Class', {
+				Class: {
+					children: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
+				},
+				Mixin1: {
+					link: '#Mixin'
+				},
+				Mixin2: {
+					link: '#Mixin2'
+				},
+				Mixin4: {
+					link: '#Mixin4'
+				}
+			})
+		].forEach(function(testCase) {
+			testCase.run();
 		});
+	});
 
-		suite('complex diagrams', function() {
-			[
-				new TestWrapper(
-					'one parent, one undocumented grand parent, one documented and undocumented children and documented and undocumented mixins',
-					[
-						{
-							name: 'Class',
-							parent: 'Parent',
-							children: ['DocChild', 'UndocChild'],
-							mixins: ['DocMixin', 'UndocMixin']
-						},
-						{
-							name: 'Parent',
-							parent: 'UndocParent'
-						},
-						{
-							name: 'DocChild',
-							parent: 'Class'
-						},
-						{
-							name: 'DocMixin'
-						}
-					],
-					{},
-					testFn
-				)
-			].forEach(function(testCase) {
-				testCase.run();
-			});
+	suite('complex diagrams', function() {
+		[
+			new TestSVG('one parent, one child, one mixin', 'Class', {
+				Class: {
+					parent: 'Parent',
+					children: ['Child'],
+					mixins: ['Mixin']
+				}
+			}),
+			new TestSVG('one documented parent, one documented child, one documented mixin', 'Class', {
+				Class: {
+					parent: 'Parent',
+					children: ['Child'],
+					mixins: ['Mixin']
+				},
+				Parent: {
+					link: '#DocParent'
+				},
+				DocChild: {
+					link: '#DocChild'
+				},
+				DocMixin: {
+					link: '#DocMixin'
+				}
+			}),
+			new TestSVG('one parent, one undocumented grand parent, one documented and undocumented children and documented and undocumented mixins', 'Class', {
+				Class: {
+					parent: 'Parent',
+					children: ['DocChild', 'UndocChild'],
+					mixins: ['DocMixin', 'UndocMixin']
+				},
+				Parent: {
+					parent: 'UndocParent',
+					link: '#Parent'
+				},
+				DocChild: {
+					parent: 'Class',
+					link: '#DocChild'
+				},
+				DocMixin: {
+					link: '#DocMixin'
+				}
+			})
+		].forEach(function(testCase) {
+			testCase.run();
 		});
 	});
 });
+// --------------------------------------------------
