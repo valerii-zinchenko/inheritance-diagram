@@ -126,8 +126,7 @@ var Rendering = Class(function(nodeProperties) {
 			.attr('orient', 'auto')
 			.style('overflow', 'visible')
 			.append('path')
-				.attr('d', `M 0 0 L ${endMarker.height} ${endMarker.width/2} L 0 ${endMarker.height} z`)
-				.attr('transform', 'scale(${1/this.connectionLineProperties.width})');
+				.attr('d', `M 0 0 L ${endMarker.height} ${endMarker.width/2} L 0 ${endMarker.height} z`);
 
 		// Render connection lines
 		// --------------------------------------------------
@@ -168,20 +167,20 @@ var Rendering = Class(function(nodeProperties) {
 
 		// Create a group for the all elements related to the node: rectangle, link, text
 		// --------------------------------------------------
-		var domNode = domContainer.append('g');
+		var domNode = domGroup = domContainer.append('g');
 		// --------------------------------------------------
 
 		// App link element if possible and make that element as the main container of rectangle and text
 		// --------------------------------------------------
 		if (node.data.link) {
-			domNode = domNode.append('a')
+			domNode = domGroup.append('a')
 				.attr('xlink:href', node.data.link);
 		} else if (node.type !== 'noi') {
 			nodeClass += ' no-ref';
 		}
 		// --------------------------------------------------
-		
-		domNode
+
+		domGroup
 			.attr('class', nodeClass)
 			.attr('transform', `translate(${node.x}, ${node.y})`);
 
@@ -201,7 +200,7 @@ var Rendering = Class(function(nodeProperties) {
 		domText.text(node.name);
 		// --------------------------------------------------
 
-		return domNode;
+		return domGroup;
 	},
 
 	/**
