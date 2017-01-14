@@ -17,7 +17,7 @@ var Rendering = Class(function(nodeProperties) {
 }, /** @lends Rendering.prototype */ {
 	nodeProperties: {
 		dimensions: {
-			width: 80,
+			width: 100,
 			height: 30
 		},
 		spacing: {
@@ -158,6 +158,7 @@ var Rendering = Class(function(nodeProperties) {
 	 */
 	renderNode: function(node, domContainer) {
 		const {dimensions, spacing, text} = this.nodeProperties;
+		var nodeClass = node.type;
 
 		// Reposition node by taking into the account the real element dimensaions
 		// --------------------------------------------------
@@ -167,9 +168,7 @@ var Rendering = Class(function(nodeProperties) {
 
 		// Create a group for the all elements related to the node: rectangle, link, text
 		// --------------------------------------------------
-		var domNode = domContainer.append('g')
-			.attr('class', node.type)
-			.attr('transform', `translate(${node.x}, ${node.y})`);
+		var domNode = domContainer.append('g');
 		// --------------------------------------------------
 
 		// App link element if possible and make that element as the main container of rectangle and text
@@ -177,8 +176,14 @@ var Rendering = Class(function(nodeProperties) {
 		if (node.data.link) {
 			domNode = domNode.append('a')
 				.attr('xlink:href', node.data.link);
+		} else if (node.type !== 'noi') {
+			nodeClass += ' no-ref';
 		}
 		// --------------------------------------------------
+		
+		domNode
+			.attr('class', nodeClass)
+			.attr('transform', `translate(${node.x}, ${node.y})`);
 
 		// Create rectangle element in the main container
 		// --------------------------------------------------

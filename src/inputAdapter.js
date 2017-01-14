@@ -56,6 +56,7 @@ var InputAdapter = Class(function(properties) {
 
 		var noi = new GraphNode(noiData, {
 			name: noiName,
+			type: 'noi',
 			parentStack: noiData.parent ? this._prepareParentNodes(noiData.parent, map) : undefined
 		});
 
@@ -98,10 +99,11 @@ var InputAdapter = Class(function(properties) {
 	 */
 	_prepareOtherNodes: function(noi, map) {
 		[
-			'children',
-			'mixins'
-		].forEach(groupName => {
-			var set = noi[groupName];
+			['children', 'child'],
+			['mixins', 'mixin']
+		].forEach(setMap => {
+			const [setName, groupName] = setMap;
+			var set = noi[setName];
 
 			if (!set) {
 				return;
@@ -113,7 +115,7 @@ var InputAdapter = Class(function(properties) {
 				// Replace node name with GraphNode
 				set[index] = new GraphNode(data, {
 					name: nodeName,
-					type: data ? groupName : 'no-ref'
+					type: groupName
 				});
 			});
 		});
