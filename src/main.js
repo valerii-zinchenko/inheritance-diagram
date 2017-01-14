@@ -1,5 +1,4 @@
 var Class = require('class-wrapper').Class;
-var fs = require('fs');
 
 var InputAdapter = require('./inputAdapter');
 var Position = require('./position');
@@ -31,17 +30,7 @@ var Diagram = Class(function(noiName, nodeMap, css) {
 		{
 			title: 'Adapting the output',
 			action: () => {
-				var out = this.outAdapter(this.domContainer, css);
-
-				const fileName = 'out.svg';
-				process.stdout.write(`Wrinting to the file "${fileName}"...`);
-				fs.writeFile(fileName, out, err => {
-					if (err) {
-						throw err;
-					}
-
-					process.stdout.write('Done\n');
-				});
+				this.out = this.outAdapter(this.domContainer, css);
 			}
 		}
 	];
@@ -59,7 +48,11 @@ var Diagram = Class(function(noiName, nodeMap, css) {
 	inAdapter: new InputAdapter(),
 	positing: new Position(),
 	rendering: new Rendering(),
-	outAdapter: outputAdapter
+	outAdapter: outputAdapter,
+
+	getResult: function() {
+		return this.out;
+	}
 });
 
 module.exports = Diagram;
