@@ -8,6 +8,8 @@ var outputAdapter = require('./outputAdapter');
 global.document = require('jsdom').jsdom('<body>');
 
 var Diagram = Class(function(noiName, nodeMap, css) {
+	document.body.innerHTML = '';
+
 	var instructions = [
 		{
 			title: 'Preparing NOI',
