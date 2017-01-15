@@ -67,7 +67,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position node of interest
 	 */
 	_positionNOI: function() {
-		this.noi.x = (this.noi.children.length - 1) / 2;
+		this.noi.x = ((this.noi.children.length || 1) - 1) / 2;
 		this.noi.y = this.noi.parentStack.length;
 	},
 
