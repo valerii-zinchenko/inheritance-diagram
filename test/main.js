@@ -1,4 +1,4 @@
-var main = require('../src/main');
+var Diagram = require('../src/main');
 
 var Class = require('class-wrapper').Class;
 var assert = require('chai').assert;
@@ -9,7 +9,7 @@ var fs = require('fs');
 var TestWrapper = Class(function(title, noiName, nodeMap, expected, testFn) {
 	this.title = title;
 	this.noiName = noiName;
-	this.noiMap = noiMap;
+	this.nodeMap = nodeMap;
 	this.expected = expected;
 
 	if (testFn) {
@@ -22,15 +22,18 @@ var TestWrapper = Class(function(title, noiName, nodeMap, expected, testFn) {
 	expected: null,
 
 	testFn: function() {
-		//assert(false, 'Testing function is not defined');
-		assert(this.expected, new main(this.noiName, this.nodeMap).getResult());
+		assert(false, 'Testing function is not defined');
 	},
 	run: function() {
-		test(this.title, this.testFn());
+		test(this.title, this.testFn.bind(this));
 	}
 });
-var TestSVG = Class(TestSVG, function() {
-	this.expected = fs.readFileSync(`./expected_data/${this.title}.svg`);
+var TestSVG = Class(TestWrapper, function() {
+	this.expected = fs.readFileSync(`./test/expected_data/${this.title}.svg`, 'utf-8');
+}, {
+	testFn: function() {
+		assert.strictEqual(this.expected, new Diagram(this.noiName, this.nodeMap).getResult());
+	}
 });
 
 
@@ -119,14 +122,14 @@ suite('E2E', function() {
 					children: ['Child1', 'Child2', 'Child3', 'Child4', 'Child5']
 				},
 				Child1: {
-					link: '#Child5'
-},
+					link: '#Child1'
+				},
 				Child2: {
 					link: '#Child2'
-},
+				},
 				Child4: {
 					link: '#Child4'
-}
+				}
 			})
 		].forEach(function(testCase) {
 			testCase.run();
