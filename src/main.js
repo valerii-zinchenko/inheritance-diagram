@@ -8,7 +8,7 @@ var outputAdapter = require('./outputAdapter');
 global.document = require('jsdom').jsdom('<body>');
 
 var Diagram = Class(function(noiName, nodeMap, css) {
-	document.body.innerHTML = '';
+	global.document.body.innerHTML = '';
 
 	var instructions = [
 		{
@@ -37,7 +37,7 @@ var Diagram = Class(function(noiName, nodeMap, css) {
 		}
 	];
 	instructions.forEach(function(instruction, index) {
-		process.stdout.write(`${index+1}/${instructions.length}: ${instruction.title}...`);
+		process.stdout.write(`${index + 1}/${instructions.length}: ${instruction.title}...`);
 
 		instruction.action();
 

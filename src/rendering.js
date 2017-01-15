@@ -103,7 +103,7 @@ var Rendering = Class(function(nodeProperties) {
 			.forEach(node => {
 				this.renderNode(node, domDiagram);
 
-				//node's X and Y coordinates are rescaled in the method renderNode
+				// node's X and Y coordinates are rescaled in the method renderNode
 				if (minX > node.x) {
 					minX = node.x;
 				}
@@ -122,11 +122,11 @@ var Rendering = Class(function(nodeProperties) {
 		const endMarker = this.connectionLineProperties.endMarker;
 		domDefs.append('marker')
 			.attr('id', 'Arrow')
-			.attr('refY', endMarker.width/2)
+			.attr('refY', endMarker.width / 2)
 			.attr('orient', 'auto')
 			.style('overflow', 'visible')
 			.append('path')
-				.attr('d', `M 0 0 L ${endMarker.height} ${endMarker.width/2} L 0 ${endMarker.height} z`);
+			.attr('d', `M 0 0 L ${endMarker.height} ${endMarker.width / 2} L 0 ${endMarker.height} z`);
 
 		// Render connection lines
 		// --------------------------------------------------
@@ -167,7 +167,8 @@ var Rendering = Class(function(nodeProperties) {
 
 		// Create a group for the all elements related to the node: rectangle, link, text
 		// --------------------------------------------------
-		var domNode = domGroup = domContainer.append('g');
+		var domGroup = domContainer.append('g');
+		var domNode = domGroup;
 		// --------------------------------------------------
 
 		// App link element if possible and make that element as the main container of rectangle and text
@@ -221,11 +222,11 @@ var Rendering = Class(function(nodeProperties) {
 			this._renderVerticalConnection(noi, parentStack[0], endMarkerId, domContainer, 'parent');
 
 			for (var n = 0, N = parentStack.length - 1; n < N; n++) {
-				this._renderVerticalConnection(parentStack[n], parentStack[n+1], endMarkerId, domContainer, 'parent');
+				this._renderVerticalConnection(parentStack[n], parentStack[n + 1], endMarkerId, domContainer, 'parent');
 			}
 		}
 
-		//Connect children
+		// Connect children
 		noi.children.forEach(child => {
 			this._renderVerticalConnection(child, noi, endMarkerId, domContainer, 'child');
 		});
