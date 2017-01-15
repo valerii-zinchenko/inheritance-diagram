@@ -6,6 +6,8 @@ var d3 = require('d3-selection');
  *
  * It renders the positioned nodes and bind them with arrows.
  *
+ * @class
+ *
  * @param {Object} [nodeProperties] - see [setNodeProperties]{@link Rendering#setProperties}
  */
 var Rendering = Class(function(nodeProperties) {
@@ -74,8 +76,8 @@ var Rendering = Class(function(nodeProperties) {
 	rescale: function() {
 		const {dimensions, spacing} = this.nodeProperties;
 
-		this._scale.x = dimensions.width + 2 * spacing.horizontal;
-		this._scale.y = dimensions.height + 2 * spacing.vertical;
+		this._scale.x = dimensions.width + (2 * spacing.horizontal);
+		this._scale.y = dimensions.height + (2 * spacing.vertical);
 	},
 
 	/**
@@ -161,8 +163,8 @@ var Rendering = Class(function(nodeProperties) {
 
 		// Reposition node by taking into the account the real element dimensaions
 		// --------------------------------------------------
-		node.x = node.x * this._scale.x + spacing.horizontal;
-		node.y = node.y * this._scale.y + spacing.vertical;
+		node.x = (node.x * this._scale.x) + spacing.horizontal;
+		node.y = (node.y * this._scale.y) + spacing.vertical;
 		// --------------------------------------------------
 
 		// Create a group for the all elements related to the node: rectangle, link, text
@@ -214,8 +216,6 @@ var Rendering = Class(function(nodeProperties) {
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered connection will be placed
 	 */
 	renderConnections: function(noi, endMarkerId, domContainer) {
-		var connections = [];
-
 		// Connect parents
 		const parentStack = noi.parentStack;
 		if (parentStack.length > 0) {
@@ -292,7 +292,7 @@ var Rendering = Class(function(nodeProperties) {
 	 */
 	_buildHorizontalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.nodeProperties;
-		const distance = nodeB.x - nodeA.x - dimensions.width - this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width;
+		const distance = nodeB.x - nodeA.x - dimensions.width - (this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width);
 
 		return (nodeA.y === nodeB.y)
 			? `M 0 0 h ${distance}`
@@ -310,7 +310,7 @@ var Rendering = Class(function(nodeProperties) {
 	 */
 	_buildVerticalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.nodeProperties;
-		const distance = nodeB.y - nodeA.y + dimensions.height + this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width;
+		const distance = nodeB.y - nodeA.y + dimensions.height + (this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width);
 
 		return (nodeA.x === nodeB.x)
 			? `M 0 0 v ${distance}`
@@ -323,13 +323,12 @@ var Rendering = Class(function(nodeProperties) {
 	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
 	 *
 	 * @param {GraphNode} nodeA - Node from which the connection will be started
-	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @return {String} - The value for `transform` attribute
 	 */
-	_buildOffsetForHorizontalPath: function(nodeA, nodeB) {
-		const {dimensions, spacing} = this.nodeProperties;
+	_buildOffsetForHorizontalPath: function(nodeA) {
+		const dimensions = this.nodeProperties.dimensions;
 
-		return `translate(${nodeA.x + dimensions.width}, ${nodeA.y + dimensions.height / 2})`;
+		return `translate(${nodeA.x + dimensions.width}, ${nodeA.y + (dimensions.height / 2)})`;
 	},
 
 	/**
@@ -338,13 +337,12 @@ var Rendering = Class(function(nodeProperties) {
 	 * NOTE: This should be called after the scaling of nodes to the real coordinate system
 	 *
 	 * @param {GraphNode} nodeA - Node from which the connection will be started
-	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @return {String} - The value for `transform` attribute
 	 */
-	_buildOffsetForVerticalPath: function(nodeA, nodeB) {
-		const {dimensions, spacing} = this.nodeProperties;
+	_buildOffsetForVerticalPath: function(nodeA) {
+		const dimensions = this.nodeProperties.dimensions;
 
-		return `translate(${nodeA.x + dimensions.width / 2}, ${nodeA.y})`;
+		return `translate(${nodeA.x + (dimensions.width / 2)}, ${nodeA.y})`;
 	}
 });
 

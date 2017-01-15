@@ -6,6 +6,8 @@ var GraphNode = require('./GraphNode');
  *
  * It converts the raw objects into GraphNodes and prepares node of interest for futher processing
  *
+ * @class
+ *
  * @param {Object} [properties] - Adapter properties. Any of already defined properties can be redefined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
  */
 var InputAdapter = Class(function(properties) {
