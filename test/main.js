@@ -32,7 +32,8 @@ var TestSVG = Class(TestWrapper, function() {
 	this.expected = fs.readFileSync(`./test/expected_data/${this.title}.svg`, 'utf-8');
 }, {
 	testFn: function() {
-		assert.strictEqual(this.expected, new Diagram(this.noiName, this.nodeMap).getResult());
+		const result = new Diagram(this.noiName, this.nodeMap).getResult();
+		assert.strictEqual(result, this.expected);
 	}
 });
 
@@ -153,7 +154,7 @@ suite('E2E', function() {
 			}),
 			new TestSVG('five different mixins', 'Class', {
 				Class: {
-					children: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
+					mixins: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
 				},
 				Mixin1: {
 					link: '#Mixin'
