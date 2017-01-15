@@ -6,37 +6,27 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 
-		prepareForCoverage: {
-			instrument: {
-				files: [{
-					expand: true,
-					cwd: src,
-					src: '*.js',
-					dest: 'tmp-cov'
-				}]
-			}
-		},
 		mochaTest: {
 			test: {
 				options: {
 					reporter: 'Spec',
 					ui: 'tdd',
-					log: true,
-					logErrors: true
+					root: './src'
 				},
 				src: ['<%= pkg.directories.test %>/*.js']
-			},
-			coverage: {
+			}
+		},
+
+		mocha_istanbul: {
+			test: {
 				options: {
-					run: false,
-					reporter: 'Spec',
-					log: true,
-					logErrors: true,
+					ui: 'tdd',
+					root: './src',
 					coverage: {
 						htmlReport: '<%= pkg.directories.coverage %>'
 					}
 				},
-				src: ['<%= pkg.directories.test %>/index.html']
+				src: ['<%= pkg.directories.test %>/*.js']
 			}
 		},
 
@@ -71,10 +61,6 @@ module.exports = function(grunt) {
 				fix: true
 			},
 			target: [src + '*.js', '<%= pkg.directories.test %>/*.js', '!<%= pkg.directories.test %>/polifills.js']
-		},
-
-		clean: {
-			coverage: ['tmp-cov']
 		}
 	});
 
@@ -98,9 +84,9 @@ module.exports = function(grunt) {
 
 
 	[
-		['test', ['mocha:test']],
+		['test', ['mochaTest']],
 		['lint', ['eslint']],
-		['coverage', ['prepareForCoverage', 'mocha:coverage', 'clean:coverage']],
+		['coverage', ['mocha_istanbul']],
 		['doc', ['jsdoc']],
 		['gh-pages', ['coverage', 'doc']]
 	].forEach(function(registry){
