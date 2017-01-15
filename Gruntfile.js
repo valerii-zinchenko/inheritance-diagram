@@ -16,15 +16,15 @@ module.exports = function(grunt) {
 				}]
 			}
 		},
-		mocha: {
+		mochaTest: {
 			test: {
 				options: {
-					run: false,
 					reporter: 'Spec',
+					ui: 'tdd',
 					log: true,
 					logErrors: true
 				},
-				src: ['<%= pkg.directories.test %>/index.html']
+				src: ['<%= pkg.directories.test %>/*.js']
 			},
 			coverage: {
 				options: {
