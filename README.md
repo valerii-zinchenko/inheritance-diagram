@@ -30,6 +30,7 @@ Hope [SVG v2](https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html) will be
 var graph = new (require('inheritance-diagram'))(
 	// Node for what the diagram will be built
 	'Node',
+
 	// Full map of nodes and relationships
 	{
 		Node: {
@@ -49,11 +50,28 @@ var graph = new (require('inheritance-diagram'))(
 			link: '#Mixin3'
 		}
 	},
+
 	// Optional custom CSS
-	'.no-ref rect {fill: lightgray;}'
+	'.no-ref rect {fill: lightgray;}',
+
+	// Customize rendering properties
+	{
+		node: {
+			dimensions: {
+				width: 80
+			},
+			spacing: {
+				horizontal: 30,
+				vertical: 30
+			},
+			text: {
+				dx: 20
+			}
+		}
+	}
 );
 ```
 
-### Output
+## Output example
 
 ![Example of an inheritance diagram](example.png)
