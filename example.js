@@ -17,7 +17,15 @@ var graph = new (require('./'))('node', {
 	mixin3: {
 		link: '#mixin3'
 	}
-}, '.no-ref rect {fill: lightgray;}');
+}, '.no-ref rect {fill: lightgray;}', {
+	rendering: {
+		node: {
+			dimensions: {
+				width: 200
+			}
+		}
+	}
+});
 
 
 const fileName = 'out.svg';
