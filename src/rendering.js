@@ -1,4 +1,5 @@
 var Class = require('class-wrapper').Class;
+var utils = require('class-wrapper').utils;
 var d3 = require('d3-selection');
 
 /**
@@ -8,34 +9,41 @@ var d3 = require('d3-selection');
  *
  * @class
  *
- * @param {Object} [nodeProperties] - see [setNodeProperties]{@link Rendering#setProperties}
+ * @param {Object} [properties] - see [setNodeProperties]{@link Rendering#setProperties}
  */
-var Rendering = Class(function(nodeProperties) {
-	if (nodeProperties) {
-		this.setNodeProperties(nodeProperties);
+var Rendering = Class(function(properties) {
+	if (properties) {
+		this.setProperties(properties);
 	}
 
 	this.rescale();
 }, /** @lends Rendering.prototype */ {
-	nodeProperties: {
-		dimensions: {
-			width: 100,
-			height: 30
+	/**
+	 * Rendering properties
+	 *
+	 * @type {Object}
+	 */
+	properties: {
+		node: {
+			dimensions: {
+				width: 100,
+				height: 30
+			},
+			spacing: {
+				horizontal: 10,
+				vertical: 20
+			},
+			text: {
+				dx: 10,
+				dy: 20
+			}
 		},
-		spacing: {
-			horizontal: 10,
-			vertical: 20
-		},
-		text: {
-			dx: 10,
-			dy: 20
-		}
-	},
-	connectionLineProperties: {
-		width: 2,
-		endMarker: {
-			width: 5,
-			height: 5
+		line: {
+			width: 2,
+			endMarker: {
+				width: 5,
+				height: 5
+			}
 		}
 	},
 
@@ -52,20 +60,14 @@ var Rendering = Class(function(nodeProperties) {
 	},
 
 	/**
-	 * Reset the node properies
+	 * Reset properies
 	 *
-	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added. Only property names which value is undefined will be skipped and warnong message will be displayed in the console.
+	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
 	 */
-	setNodeProprties: function(properties) {
-		for (var property in properties) {
-			let value = properties[property];
-			if (typeof value === 'undefined') {
-				console.warn(`Rendering.setProperties(): property ${property} is skipped because it's value is undefined`);
-				continue;
-			}
-
-			this.nodeProperties[property] = properties[property];
-		}
+	setProprties: function(properties) {
+		console.log(this.properties.node.dimensions.width);
+		utils.deepCopy(this.properties, properties);
+		console.log(this.properties.node.dimensions.width);
 
 		this.rescale();
 	},
@@ -74,7 +76,7 @@ var Rendering = Class(function(nodeProperties) {
 	 * Calculate the scaling factors for the real (rendered) coordinate system
 	 */
 	rescale: function() {
-		const {dimensions, spacing} = this.nodeProperties;
+		const {dimensions, spacing} = this.properties.node;
 
 		this._scale.x = dimensions.width + (2 * spacing.horizontal);
 		this._scale.y = dimensions.height + (2 * spacing.vertical);
@@ -121,7 +123,7 @@ var Rendering = Class(function(nodeProperties) {
 			});
 		// --------------------------------------------------
 
-		const endMarker = this.connectionLineProperties.endMarker;
+		const endMarker = this.properties.line.endMarker;
 		domDefs.append('marker')
 			.attr('id', 'Arrow')
 			.attr('refY', endMarker.width / 2)
@@ -144,7 +146,7 @@ var Rendering = Class(function(nodeProperties) {
 			.attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
 			.attr('version', '1.1');
 
-		const spacing = this.nodeProperties.spacing;
+		const spacing = this.properties.node.spacing;
 		domDiagram.attr('transform', `translate(${-minX + spacing.horizontal}, ${-minY + spacing.vertical})`);
 		// --------------------------------------------------
 
@@ -158,7 +160,7 @@ var Rendering = Class(function(nodeProperties) {
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered node will be placed.
 	 */
 	renderNode: function(node, domContainer) {
-		const {dimensions, spacing, text} = this.nodeProperties;
+		const {dimensions, spacing, text} = this.properties.node;
 		var nodeClass = node.type;
 
 		// Reposition node by taking into the account the real element dimensaions
@@ -253,7 +255,7 @@ var Rendering = Class(function(nodeProperties) {
 			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
 			.attr('d', this._buildHorizontalPath(nodeA, nodeB))
 			.attr('marker-end', `url(#${endMarkerId})`)
-			.attr('stroke-width', this.connectionLineProperties.width)
+			.attr('stroke-width', this.properties.line.width)
 			.attr('stroke', 'black')
 			.attr('fill', 'none')
 			.attr('class', type || '');
@@ -275,7 +277,7 @@ var Rendering = Class(function(nodeProperties) {
 			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
 			.attr('d', this._buildVerticalPath(nodeA, nodeB))
 			.attr('marker-end', `url(#${endMarkerId})`)
-			.attr('stroke-width', this.connectionLineProperties.width)
+			.attr('stroke-width', this.properties.line.width)
 			.attr('stroke', 'black')
 			.attr('fill', 'none')
 			.attr('class', type || '');
@@ -291,8 +293,8 @@ var Rendering = Class(function(nodeProperties) {
 	 * @return {String} - The value for `path` attribute
 	 */
 	_buildHorizontalPath: function(nodeA, nodeB) {
-		const {dimensions, spacing} = this.nodeProperties;
-		const distance = nodeB.x - nodeA.x - dimensions.width - (this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width);
+		const {dimensions, spacing} = this.properties.node;
+		const distance = nodeB.x - nodeA.x - dimensions.width - (this.properties.line.endMarker.height * this.properties.line.width);
 
 		return (nodeA.y === nodeB.y)
 			? `M 0 0 h ${distance}`
@@ -309,8 +311,8 @@ var Rendering = Class(function(nodeProperties) {
 	 * @return {String} - The value for `path` attribute
 	 */
 	_buildVerticalPath: function(nodeA, nodeB) {
-		const {dimensions, spacing} = this.nodeProperties;
-		const distance = nodeB.y - nodeA.y + dimensions.height + (this.connectionLineProperties.endMarker.height * this.connectionLineProperties.width);
+		const {dimensions, spacing} = this.properties.node;
+		const distance = nodeB.y - nodeA.y + dimensions.height + (this.properties.line.endMarker.height * this.properties.line.width);
 
 		return (nodeA.x === nodeB.x)
 			? `M 0 0 v ${distance}`
@@ -326,7 +328,7 @@ var Rendering = Class(function(nodeProperties) {
 	 * @return {String} - The value for `transform` attribute
 	 */
 	_buildOffsetForHorizontalPath: function(nodeA) {
-		const dimensions = this.nodeProperties.dimensions;
+		const dimensions = this.properties.node.dimensions;
 
 		return `translate(${nodeA.x + dimensions.width}, ${nodeA.y + (dimensions.height / 2)})`;
 	},
@@ -340,7 +342,7 @@ var Rendering = Class(function(nodeProperties) {
 	 * @return {String} - The value for `transform` attribute
 	 */
 	_buildOffsetForVerticalPath: function(nodeA) {
-		const dimensions = this.nodeProperties.dimensions;
+		const dimensions = this.properties.node.dimensions;
 
 		return `translate(${nodeA.x + (dimensions.width / 2)}, ${nodeA.y})`;
 	}

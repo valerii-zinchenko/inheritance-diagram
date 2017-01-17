@@ -7,8 +7,12 @@ var outputAdapter = require('./outputAdapter');
 
 global.document = require('jsdom').jsdom('<body>');
 
-var Diagram = Class(function(noiName, nodeMap, css) {
+var Diagram = Class(function(noiName, nodeMap, css, options) {
 	global.document.body.innerHTML = '';
+
+	if (options && options instanceof Object && options.rendering) {
+		this.rendering.setProprties(options.rendering);
+	}
 
 	var instructions = [
 		{
