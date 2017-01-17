@@ -40,4 +40,4 @@ var graph = new (require('inheritance-diagram'))(
 
 ### Output
 
-![Example of an inheritance diagram](./example.svg)
+![Example of an inheritance diagram](example.png)
