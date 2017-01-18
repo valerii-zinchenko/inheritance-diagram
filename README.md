@@ -1,12 +1,8 @@
 # Inheritance diagram builder
 
-## Description
-
-This build an inheritance diagram for a some node of interest and is designed to be used in documentations. Parent stack, child nodes and mixed in nodes will be displayed.
+This builds an inheritance diagram for a some node of interest. Initially it is designed to use in documentations with class description to show parent stack, child nodes and mixed in nodes.
 
 Nodes that contains `link` property will be highlighted and behave as usual link element to allow fast jumping to the next interested node in the documentation.
-
-The output is a SVG string.
 
 
 ## Limitations
@@ -71,6 +67,29 @@ var graph = new (require('inheritance-diagram'))(
 	}
 );
 ```
+
+The output is a string of SVG element. So if you want to save the output into the file, then you should write an additional code that will do this. The example of such is below:
+
+```js
+require('fs').writeFile('out.svg', graph.getResult(), err => {
+	if (err) {
+		throw err;
+	}
+});
+```
+
+The similar task is required if you want to get the CSS from a file. The example is below:
+
+```js
+require('fs').readFile('styles.css', 'utf8', (err, data) => {
+	if (err) {
+		throw err;
+	}
+
+	var graph = new (require('inheritance-diagram'))('...', {...}, data);
+});
+```
+
 
 ## Output example
 
