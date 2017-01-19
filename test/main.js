@@ -141,12 +141,12 @@ suite('E2E', function() {
 		[
 			new TestSVG('class with one undocumented mixin', 'Class', {
 				Class: {
-					mixins: ['Mixin']
+					mixes: ['Mixin']
 				}
 			}),
 			new TestSVG('class with one documented mixin', 'Class', {
 				Class: {
-					mixins: ['Mixin']
+					mixes: ['Mixin']
 				},
 				Mixin: {
 					link: '#Mixin'
@@ -154,7 +154,7 @@ suite('E2E', function() {
 			}),
 			new TestSVG('five different mixins', 'Class', {
 				Class: {
-					mixins: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
+					mixes: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
 				},
 				Mixin1: {
 					link: '#Mixin'
@@ -177,14 +177,14 @@ suite('E2E', function() {
 				Class: {
 					parent: 'Parent',
 					children: ['Child'],
-					mixins: ['Mixin']
+					mixes: ['Mixin']
 				}
 			}),
 			new TestSVG('one documented parent, one documented child, one documented mixin', 'Class', {
 				Class: {
 					parent: 'Parent',
 					children: ['Child'],
-					mixins: ['Mixin']
+					mixes: ['Mixin']
 				},
 				Parent: {
 					link: '#DocParent'
@@ -200,7 +200,7 @@ suite('E2E', function() {
 				Class: {
 					parent: 'Parent',
 					children: ['DocChild', 'UndocChild'],
-					mixins: ['DocMixin', 'UndocMixin']
+					mixes: ['DocMixin', 'UndocMixin']
 				},
 				Parent: {
 					parent: 'UndocParent',

@@ -103,7 +103,7 @@ var Rendering = Class(function(properties) {
 
 		// Render the nodes and find the real diagram boundaries
 		// --------------------------------------------------
-		[noi].concat(noi.parentStack, noi.children, noi.mixins)
+		[noi].concat(noi.parentStack, noi.children, noi.mixes)
 			.forEach(node => {
 				this.renderNode(node, domDiagram);
 
@@ -233,8 +233,8 @@ var Rendering = Class(function(properties) {
 			this._renderVerticalConnection(child, noi, endMarkerId, domContainer, 'child');
 		});
 
-		// Connect mixins
-		noi.mixins.forEach(mixin => {
+		// Connect mixes
+		noi.mixes.forEach(mixin => {
 			this._renderHorizontalConnection(mixin, noi, endMarkerId, domContainer, 'mixin');
 		});
 	},

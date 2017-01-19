@@ -32,7 +32,7 @@ var graph = new (require('inheritance-diagram'))(
 		Node: {
 			parent: 'ParentNode',
 			children: ['Child', 'Child2'],
-			mixins:['Mixin', 'Mixin2', 'Mixin3']
+			mixes:['Mixin', 'Mixin2', 'Mixin3']
 		},
 		ParentNode: {
 			parent: 'Object',

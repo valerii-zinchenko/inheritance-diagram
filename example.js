@@ -4,7 +4,7 @@ var graph = new (require('./'))('node', {
 	node: {
 		parent: 'parentNode',
 		children: ['child', 'child2'],
-		mixins:['mixin', 'mixin2', 'mixin3']
+		mixes:['mixin', 'mixin2', 'mixin3']
 	},
 	parentNode: {
 		parent: 'Object',

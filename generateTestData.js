@@ -3,7 +3,7 @@
 const testName = 'five different mixins';
 var graph = new (require('./'))('Class', {
 				Class: {
-					mixins: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
+					mixes: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
 				},
 				Mixin1: {
 					link: '#Mixin'

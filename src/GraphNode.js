@@ -20,8 +20,8 @@ var GraphNode = Class(function(data, properties) {
 		if (data.children) {
 			this.children = data.children;
 		}
-		if (data.mixins) {
-			this.mixins = data.mixins;
+		if (data.mixes) {
+			this.mixes = data.mixes;
 		}
 		// --------------------------------------------------
 	}
@@ -78,7 +78,7 @@ var GraphNode = Class(function(data, properties) {
 	 *
 	 * @type {String[]}
 	 */
-	mixins: [],
+	mixes: [],
 
 	/**
 	 * Type of a node

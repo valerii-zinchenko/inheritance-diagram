@@ -102,7 +102,7 @@ var InputAdapter = Class(function(properties) {
 	_prepareOtherNodes: function(noi, map) {
 		[
 			['children', 'child'],
-			['mixins', 'mixin']
+			['mixes', 'mixin']
 		].forEach(setMap => {
 			const [setName, groupName] = setMap;
 			var set = noi[setName];
