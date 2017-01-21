@@ -1,7 +1,7 @@
 {
   "name": "inheritance-diagram",
   "version": "0.1.0",
-  "description": "Build an inheritance diagram from a set of objects",
+  "description": "Build an inheritance diagram for a class",
   "main": "src/main.js",
   "directories": {
     "doc": "doc",

@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2017  Valerii Zinchenko
+ * Licensed under MIT (https://github.com/valerii-zinchenko/inheritance-diagram/blob/master/LICENSE.txt)
+ * All source files are available at: https://github.com/valerii-zinchenko/inheritance-diagram
+ */
+'use strict';
+
 var Class = require('class-wrapper').Class;
 var GraphNode = require('./GraphNode');
 
