@@ -65,9 +65,20 @@ suite('E2E', function() {
 		}
 	};
 
-	new TestSVG('single class', 'Class', {
-		Class: {}
-	}).run();
+	suite('single class', function() {
+		[
+			new TestSVG('without link', 'Class', {
+				Class: {}
+			}),
+			new TestSVG('with link', 'Class', {
+				Class: {
+					link: '#Class'
+				}
+			})
+		].forEach(function(testCase) {
+			testCase.run();
+		});
+	});
 
 	suite('parents', function() {
 		[

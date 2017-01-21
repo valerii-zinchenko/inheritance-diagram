@@ -184,11 +184,13 @@ var Rendering = Class(function(properties) {
 
 		// App link element if possible and make that element as the main container of rectangle and text
 		// --------------------------------------------------
-		if (node.data.link) {
-			domNode = domGroup.append('a')
-				.attr('xlink:href', node.data.link);
-		} else if (node.type !== 'noi') {
-			nodeClass += ' no-ref';
+		if (node.type !== 'noi') {
+			if (node.data.link) {
+				domNode = domGroup.append('a')
+					.attr('xlink:href', node.data.link);
+			} else {
+				nodeClass += ' no-ref';
+			}
 		}
 		// --------------------------------------------------
 
