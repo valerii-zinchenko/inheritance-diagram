@@ -9,10 +9,10 @@ var Diagram = require('../src/main');
 
 var Class = require('class-wrapper').Class;
 var assert = require('chai').assert;
-var sinon = require('sinon');
 var fs = require('fs');
 
 
+// eslint-disable-next-line new-cap
 var TestWrapper = Class(function(title, noiName, nodeMap, expected, testFn) {
 	this.title = title;
 	this.noiName = noiName;
@@ -35,6 +35,7 @@ var TestWrapper = Class(function(title, noiName, nodeMap, expected, testFn) {
 		test(this.title, this.testFn.bind(this));
 	}
 });
+// eslint-disable-next-line new-cap
 var TestSVG = Class(TestWrapper, function() {
 	this.expected = fs.readFileSync(`./test/expected_data/${this.title}.svg`, 'utf-8');
 }, {
@@ -48,23 +49,6 @@ var TestSVG = Class(TestWrapper, function() {
 // Unit tests
 // --------------------------------------------------
 suite('E2E', function() {
-	var properties = {
-		styles: '',
-		nodeDimentions: {
-			width: 100,
-			heidth: 40
-		},
-		spacing: {
-			horizontal: 20,
-			vertical: 20
-		},
-		textPadding: {
-			dx: 10,
-			dy: 5,
-			'text-anchor': 'middle'
-		}
-	};
-
 	suite('single class', function() {
 		[
 			new TestSVG('without link', 'Class', {

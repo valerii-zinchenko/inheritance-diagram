@@ -18,6 +18,7 @@ var d3 = require('d3-selection');
  *
  * @param {Object} [properties] - see [setNodeProperties]{@link Rendering#setProperties}
  */
+// eslint-disable-next-line new-cap
 var Rendering = Class(function(properties) {
 	if (properties) {
 		this.setProperties(properties);
@@ -85,8 +86,11 @@ var Rendering = Class(function(properties) {
 	rescale: function() {
 		const {dimensions, spacing} = this.properties.node;
 
+		/* eslint-disable no-magic-numbers */
+		// 2 means for both sides
 		this._scale.x = dimensions.width + (2 * spacing.horizontal);
 		this._scale.y = dimensions.height + (2 * spacing.vertical);
+		/* eslint-enable no-magic-numbers */
 	},
 
 	/**
@@ -130,6 +134,7 @@ var Rendering = Class(function(properties) {
 			});
 		// --------------------------------------------------
 
+		/* eslint-disable no-magic-numbers */
 		const endMarker = this.properties.line.endMarker;
 		domDefs.append('marker')
 			.attr('id', 'Arrow')
@@ -138,6 +143,7 @@ var Rendering = Class(function(properties) {
 			.style('overflow', 'visible')
 			.append('path')
 			.attr('d', `M 0 0 L ${endMarker.height} ${endMarker.width / 2} L 0 ${endMarker.height} z`);
+		/* eslint-enable no-magic-numbers */
 
 		// Render connection lines
 		// --------------------------------------------------
@@ -229,6 +235,7 @@ var Rendering = Class(function(properties) {
 	renderConnections: function(noi, endMarkerId, domContainer) {
 		// Connect parents
 		const parentStack = noi.parentStack;
+		/* eslint-disable no-magic-numbers */
 		if (parentStack.length > 0) {
 			this._renderVerticalConnection(noi, parentStack[0], endMarkerId, domContainer, 'parent');
 
@@ -236,6 +243,7 @@ var Rendering = Class(function(properties) {
 				this._renderVerticalConnection(parentStack[n], parentStack[n + 1], endMarkerId, domContainer, 'parent');
 			}
 		}
+		/* eslint-enable no-magic-numbers */
 
 		// Connect children
 		noi.children.forEach(child => {
@@ -259,6 +267,7 @@ var Rendering = Class(function(properties) {
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
 	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
 	 */
+	// eslint-disable-next-line id-length
 	_renderHorizontalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type) {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
@@ -281,6 +290,7 @@ var Rendering = Class(function(properties) {
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
 	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
 	 */
+	// eslint-disable-next-line id-length
 	_renderVerticalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type) {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
@@ -336,9 +346,11 @@ var Rendering = Class(function(properties) {
 	 * @param {GraphNode} nodeA - Node from which the connection will be started
 	 * @return {String} - The value for `transform` attribute
 	 */
+	// eslint-disable-next-line id-length
 	_buildOffsetForHorizontalPath: function(nodeA) {
 		const dimensions = this.properties.node.dimensions;
 
+		// eslint-disable-next-line no-magic-numbers
 		return `translate(${nodeA.x + dimensions.width}, ${nodeA.y + (dimensions.height / 2)})`;
 	},
 
@@ -350,9 +362,11 @@ var Rendering = Class(function(properties) {
 	 * @param {GraphNode} nodeA - Node from which the connection will be started
 	 * @return {String} - The value for `transform` attribute
 	 */
+	// eslint-disable-next-line id-length
 	_buildOffsetForVerticalPath: function(nodeA) {
 		const dimensions = this.properties.node.dimensions;
 
+		// eslint-disable-next-line no-magic-numbers
 		return `translate(${nodeA.x + (dimensions.width / 2)}, ${nodeA.y})`;
 	}
 });

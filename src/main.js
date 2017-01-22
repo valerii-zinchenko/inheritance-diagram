@@ -14,6 +14,7 @@ var outputAdapter = require('./outputAdapter');
 
 global.document = require('jsdom').jsdom('<body>');
 
+// eslint-disable-next-line new-cap
 var Diagram = Class(function(noiName, nodeMap, css, options) {
 	global.document.body.innerHTML = '';
 
@@ -49,6 +50,7 @@ var Diagram = Class(function(noiName, nodeMap, css, options) {
 		}
 	];
 	instructions.forEach(function(instruction, index) {
+		// eslint-disable-next-line no-magic-numbers
 		process.stdout.write(`\t${index + 1}/${instructions.length}: ${instruction.title}...`);
 
 		instruction.action();

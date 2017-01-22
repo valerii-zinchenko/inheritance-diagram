@@ -15,6 +15,7 @@ var GraphNode = require('./GraphNode');
  *
  * @class
  */
+// eslint-disable-next-line new-cap
 var Position = Class(null, /** @lends Position.prototype */ {
 	/**
 	 * Node of interest
@@ -74,6 +75,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position node of interest
 	 */
 	_positionNOI: function() {
+		// eslint-disable-next-line no-magic-numbers
 		this.noi.x = ((this.noi.children.length || 1) - 1) / 2;
 		this.noi.y = this.noi.parentStack.length;
 	},
@@ -82,6 +84,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position parent nodes of the NOI
 	 */
 	_positionParents: function() {
+		// eslint-disable-next-line no-magic-numbers
 		const top = this.noi.parentStack.length - 1;
 		this.noi.parentStack.forEach((node, index) => {
 			node.x = this.noi.x;
@@ -93,6 +96,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position child nodes of the NOI
 	 */
 	_positionChildNodes: function() {
+		// eslint-disable-next-line no-magic-numbers
 		var yOffset = this.noi.y + 1;
 
 		this.noi.children.forEach((node, index) => {
@@ -105,6 +109,7 @@ var Position = Class(null, /** @lends Position.prototype */ {
 	 * Position mixin nodes of the NOI
 	 */
 	_positionMixinNodes: function() {
+		// eslint-disable-next-line no-magic-numbers
 		var yOffset = this.noi.y - Math.ceil(this.noi.mixes.length / 2) + 1;
 
 		this.noi.mixes.forEach((node, index) => {

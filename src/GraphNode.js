@@ -15,6 +15,7 @@ var Class = require('class-wrapper').Class;
  * @param {Objcet} data - Raw node data
  * @param {Object} [properties] - Properties for a graph node. Any of already defined properties can be defined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
  */
+// eslint-disable-next-line new-cap
 var GraphNode = Class(function(data, properties) {
 	if (data) {
 		this.data = data;
