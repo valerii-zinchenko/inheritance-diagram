@@ -30,7 +30,8 @@
   "homepage": "https://github.com/valerii-zinchenko/inheritance-diagram#readme",
   "dependencies": {
     "class-wrapper": "^1.0.1",
-    "d3-selection": "^1.0.2"
+    "d3-selection": "^1.0.2",
+    "jsdom": "^9.9.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -42,7 +43,6 @@
     "grunt-mocha-istanbul": "^5.0.2",
     "grunt-mocha-test": "^0.13.2",
     "istanbul": "^0.4.5",
-    "jsdom": "^9.8.3",
     "load-grunt-tasks": "^3.5.2",
     "mocha": "^3.1.2",
     "sinon": "^1.17.6"
