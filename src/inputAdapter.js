@@ -17,26 +17,7 @@ var GraphNode = require('./GraphNode');
  *
  * @param {Object} [properties] - Adapter properties. Any of already defined properties can be redefined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
  */
-var InputAdapter = Class(function(properties) {
-	if (properties) {
-		Object.keys(properties).forEarch(property => {
-			if (typeof this[property] === 'function') {
-				console.warn(`InputAdapter(): property ${property} is skipped because this name is already reserved for a method`);
-
-				return;
-			}
-
-			var value = properties[property];
-			if (typeof value === 'undefined') {
-				console.warn(`InputAdapter(): property ${property} is skipped because it's value is undefined`);
-
-				return;
-			}
-
-			this[property] = properties[property];
-		});
-	}
-}, /** @lends InputAdapter.prototype */{
+var InputAdapter = Class(null, /** @lends InputAdapter.prototype */{
 	/**
 	 * Prepare raw NOI data for the further processing
 	 *
