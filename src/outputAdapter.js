@@ -22,8 +22,6 @@ var css = `
  * @param {String} [customCSS] - String with custom CSS styles
  */
 function outputAdapter(domSvgContainer, customCSS) {
-	var out = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
-
 	// Add cusom CSS to the default CSS
 	if (customCSS) {
 		css += customCSS;
@@ -43,9 +41,7 @@ function outputAdapter(domSvgContainer, customCSS) {
 		.text('<![CDATA[' + css + ']]>');
 	// --------------------------------------------------
 
-	out += domSvgContainer.html();
-
-	return out;
+	return domSvgContainer.html();
 }
 
 module.exports = outputAdapter;
