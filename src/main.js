@@ -21,21 +21,22 @@ var Diagram = Class(function(noiName, nodeMap, css, options) {
 		this.rendering.setProprties(options.rendering);
 	}
 
+	process.stdout.write(`Building diagram for "${noiName}":\n`);
 	var instructions = [
 		{
-			title: 'Preparing NOI',
+			title: 'Preparing',
 			action: () => {
 				this.noi = this.inAdapter.prepareNOI(noiName, nodeMap);
 			}
 		},
 		{
-			title: 'Positioning NOI',
+			title: 'Positioning',
 			action: () => {
 				this.positing.position(this.noi);
 			}
 		},
 		{
-			title: 'Rendering NOI',
+			title: 'Rendering',
 			action: () => {
 				this.domContainer = this.rendering.render(this.noi);
 			}
@@ -48,12 +49,13 @@ var Diagram = Class(function(noiName, nodeMap, css, options) {
 		}
 	];
 	instructions.forEach(function(instruction, index) {
-		process.stdout.write(`${index + 1}/${instructions.length}: ${instruction.title}...`);
+		process.stdout.write(`\t${index + 1}/${instructions.length}: ${instruction.title}...`);
 
 		instruction.action();
 
 		process.stdout.write('Done\n');
 	});
+	process.stdout.write('Done\n');
 }, {
 	noi: null,
 	domContainer: null,
