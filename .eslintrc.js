@@ -4,7 +4,7 @@ module.exports = {
 	},
 	'extends': 'eslint:recommended',
 	'rules': {
-		'no-console': 'off',
+		'no-console': 'warn',
 		'curly': ['error', 'all'],
 		'default-case': 'warn',
 		'dot-location': ['error', 'property'],
