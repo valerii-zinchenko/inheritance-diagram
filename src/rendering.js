@@ -73,9 +73,7 @@ var Rendering = Class(function(properties) {
 	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
 	 */
 	setProprties: function(properties) {
-		console.log(this.properties.node.dimensions.width);
 		utils.deepCopy(this.properties, properties);
-		console.log(this.properties.node.dimensions.width);
 
 		this.rescale();
 	},
