@@ -6,6 +6,7 @@
 'use strict';
 
 var Class = require('class-wrapper').Class;
+var Parent = require('./ProcessingNode');
 var GraphNode = require('./GraphNode');
 
 /**
@@ -16,7 +17,7 @@ var GraphNode = require('./GraphNode');
  * @class
  */
 // eslint-disable-next-line new-cap
-var Position = Class(null, /** @lends Position.prototype */ {
+var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	/**
 	 * Node of interest
 	 *

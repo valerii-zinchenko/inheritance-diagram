@@ -6,6 +6,7 @@
 'use strict';
 
 var Class = require('class-wrapper').Class;
+var Parent = require('./ProcessingNode');
 var GraphNode = require('./GraphNode');
 
 /**
@@ -18,7 +19,11 @@ var GraphNode = require('./GraphNode');
  * @param {Object} [properties] - Adapter properties. Any of already defined properties can be redefined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
  */
 // eslint-disable-next-line new-cap
-var InputAdapter = Class(null, /** @lends InputAdapter.prototype */{
+var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
+	properties: {
+		externalLinks: {}
+	},
+
 	/**
 	 * Prepare raw NOI data for the further processing
 	 *
@@ -69,10 +74,7 @@ var InputAdapter = Class(null, /** @lends InputAdapter.prototype */{
 	_prepareParentNodes: function(nodeName, map) {
 		var data = map[nodeName];
 
-		var stack = [new GraphNode(data, {
-			name: nodeName,
-			type: 'parent'
-		})];
+		var stack = [this._createGraphNode(nodeName, map, 'parent')];
 
 		if (data && data.parent) {
 			stack = stack.concat(this._prepareParentNodes(data.parent, map));
@@ -96,19 +98,35 @@ var InputAdapter = Class(null, /** @lends InputAdapter.prototype */{
 			const [setName, groupName] = setMap;
 			var set = noi[setName];
 
-			if (!set) {
-				return;
-			}
-
 			set.forEach((nodeName, index) => {
-				var data = map[nodeName];
-
 				// Replace node name with GraphNode
-				set[index] = new GraphNode(data, {
-					name: nodeName,
-					type: groupName
-				});
+				set[index] = this._createGraphNode(nodeName, map, groupName);
 			});
+		});
+	},
+
+	/**
+	 * Create GraphNode from the map of nodes
+	 *
+	 * @param {String} nodeName - Name of a node from a node map
+	 * @param {Object} map - Map of node names and their's data
+	 * @param {String} type - Type of a node: parent, child, mixin
+	 * @return {GraphNode}
+	 */
+	_createGraphNode: function(nodeName, map, type) {
+		var data = map[nodeName];
+
+		// If no 'data' - means that node is not documented,
+		// but if some external link is provided - create a node data with link info only
+		if (!data && this.properties.externalLinks[nodeName]) {
+			data = {
+				link: this.properties.externalLinks[nodeName]
+			};
+		}
+
+		return new GraphNode(data, {
+			name: nodeName,
+			type: type
 		});
 	}
 });

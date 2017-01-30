@@ -6,7 +6,7 @@
 'use strict';
 
 var Class = require('class-wrapper').Class;
-var utils = require('class-wrapper').utils;
+var Parent = require('./ProcessingNode');
 var d3 = require('d3-selection');
 
 /**
@@ -19,11 +19,7 @@ var d3 = require('d3-selection');
  * @param {Object} [properties] - see [setNodeProperties]{@link Rendering#setProperties}
  */
 // eslint-disable-next-line new-cap
-var Rendering = Class(function(properties) {
-	if (properties) {
-		this.setProperties(properties);
-	}
-
+var Rendering = Class(Parent, function(properties) {
 	this.rescale();
 }, /** @lends Rendering.prototype */ {
 	/**
@@ -72,8 +68,8 @@ var Rendering = Class(function(properties) {
 	 *
 	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
 	 */
-	setProprties: function(properties) {
-		utils.deepCopy(this.properties, properties);
+	setProperties: function(properties) {
+		Parent.prototype.setProperties.apply(this, arguments);
 
 		this.rescale();
 	},

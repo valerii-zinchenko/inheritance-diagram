@@ -15,13 +15,16 @@ var outputAdapter = require('./outputAdapter');
 global.document = require('jsdom').jsdom('<body>');
 
 // eslint-disable-next-line new-cap
-var Diagram = Class(function(noiName, nodeMap, css, options) {
+var Diagram = Class(function(noiName, nodeMap, css = null, options = {}) {
 	global.document.body.innerHTML = '';
 
-	if (options && options instanceof Object && options.rendering) {
-		this.rendering.setProprties(options.rendering);
+	// Populate properties to pcrocessing services
+	if (options && options instanceof Object) {
+		this.inAdapter.setProperties(options);
+		this.rendering.setProperties(options);
 	}
 
+	// Organize processing chain
 	process.stdout.write(`Building diagram for "${noiName}":\n`);
 	var instructions = [
 		{
