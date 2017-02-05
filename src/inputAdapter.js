@@ -15,11 +15,27 @@ var GraphNode = require('./GraphNode');
  * It converts the raw objects into GraphNodes and prepares node of interest for futher processing
  *
  * @class
+ * @augments ProcessingNode
  *
- * @param {Object} [properties] - Adapter properties. Any of already defined properties can be redefined and new one can be added. Only property names which are already defined for methods or if the value is undefined, then such properties will be skipped and warnong message will be displayed in the console.
+ * @param {Object} [properties] - [Adapter properties]{@link InputAdapter#properties}
  */
 // eslint-disable-next-line new-cap
 var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
+	/**
+	 * Input adapter properties
+	 *
+	 * @example
+	 * properties: {
+	 * 	externalLinks: {
+	 * 		ExternalClass: 'http://link.to/some/external/class.html',
+	 * 		ExternalClass2: 'http://link.to/some/external/class2.html'
+	 * 	}
+	 * }
+	 *
+	 * @type {Object}
+	 *
+	 * @property {Object} [externalLinks = {}] - Map of external links. Usefull to have a direct link to the documentation of 3rd-party class.
+	 */
 	properties: {
 		externalLinks: {}
 	},
@@ -37,7 +53,7 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 * @throws {TypeError} "map" argument is expected to be an instance of Object class
 	 * @throws {Error} Node data for "${noiName}" does not exist in the provided node map
 	 */
-	prepareNOI: function(noiName, map) {
+	process: function(noiName, map) {
 		if (typeof noiName !== 'string') {
 			throw new TypeError('"noi" argument is expected to be a string');
 		}

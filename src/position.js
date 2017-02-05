@@ -15,6 +15,7 @@ var GraphNode = require('./GraphNode');
  * The position is relative to the top left corner
  *
  * @class
+ * @augments ProcessingNode
  */
 // eslint-disable-next-line new-cap
 var Position = Class(Parent, null, /** @lends Position.prototype */ {
@@ -59,7 +60,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 *
 	 * @throws {TypeError} "noi" argument is expected to be an instance of GraphNode class
 	 */
-	position: function(noi) {
+	process: function(noi) {
 		if (!(noi instanceof GraphNode)) {
 			throw new TypeError('"noi" argument is expected to be an instance of GraphNode class');
 		}

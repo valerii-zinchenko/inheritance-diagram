@@ -15,17 +15,36 @@ var d3 = require('d3-selection');
  * It renders the positioned nodes and bind them with arrows.
  *
  * @class
+ * @augments ProcessingNode
  *
- * @param {Object} [properties] - see [setNodeProperties]{@link Rendering#setProperties}
+ * @param {Object} [properties] - Set of [properties]{@link Rendering#properties}
  */
 // eslint-disable-next-line new-cap
-var Rendering = Class(Parent, function(properties) {
+var Rendering = Class(Parent, function() {
 	this.rescale();
 }, /** @lends Rendering.prototype */ {
 	/**
 	 * Rendering properties
 	 *
+	 * All number values are in pixels
+	 *
 	 * @type {Object}
+	 *
+	 * @property {Object} node - Properties of a rendered node
+	 * @property {Object} node.dimensions - Node dimensions
+	 * @property {Number} [node.dimensions.width = 100] - Node width
+	 * @property {Number} [node.dimensions.height = 30] - Node height
+	 * @property {Object} node.spacing - Spacing between nodes
+	 * @property {Number} [node.spacing.horizontal = 10] - Horizontal spacing between nodes
+	 * @property {Number} [node.spacing.vertical = 20] - Vertical spacing between nodes
+	 * @property {Object} node.text - Properties of a text inside the node
+	 * @property {Number} [node.text.dx = 10] - Offset of a text from the left node edge
+	 * @property {Number} [node.text.dy = 20] - Offset of a text from the top node edge
+	 * @property {Object} line - Connecting line properties
+	 * @property {Number} [line.width = 2] - Line width
+	 * @property {Object} line.endMarker - Properties of an end marker
+	 * @property {Number} [line.endMarker.width = 5] - Width of an end marker
+	 * @property {Number} [line.endMarker.height = 5] - Height of an end marker
 	 */
 	properties: {
 		node: {
@@ -92,7 +111,7 @@ var Rendering = Class(Parent, function(properties) {
 	 *
 	 * @param {GraphNode[]} nodes - Set of nodes
 	 */
-	render: function(noi) {
+	process: function(noi) {
 		var minX = Infinity;
 		var maxX = -Infinity;
 		var minY = Infinity;

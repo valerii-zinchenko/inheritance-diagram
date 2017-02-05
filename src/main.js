@@ -10,7 +10,7 @@ var Class = require('class-wrapper').Class;
 var InputAdapter = require('./inputAdapter');
 var Position = require('./position');
 var Rendering = require('./rendering');
-var outputAdapter = require('./outputAdapter');
+var OutputAdapter = require('./outputAdapter');
 
 global.document = require('jsdom').jsdom('<body>');
 
@@ -21,7 +21,9 @@ var Diagram = Class(function(noiName, nodeMap, css = null, options = {}) {
 	// Populate properties to pcrocessing services
 	if (options && options instanceof Object) {
 		this.inAdapter.setProperties(options);
+		this.positioning.setProperties(options);
 		this.rendering.setProperties(options);
+		this.outAdapter.setProperties(options);
 	}
 
 	// Organize processing chain
@@ -30,25 +32,25 @@ var Diagram = Class(function(noiName, nodeMap, css = null, options = {}) {
 		{
 			title: 'Preparing',
 			action: () => {
-				this.noi = this.inAdapter.prepareNOI(noiName, nodeMap);
+				this.noi = this.inAdapter.process(noiName, nodeMap);
 			}
 		},
 		{
 			title: 'Positioning',
 			action: () => {
-				this.positing.position(this.noi);
+				this.positioning.process(this.noi);
 			}
 		},
 		{
 			title: 'Rendering',
 			action: () => {
-				this.domContainer = this.rendering.render(this.noi);
+				this.domContainer = this.rendering.process(this.noi);
 			}
 		},
 		{
 			title: 'Adapting the output',
 			action: () => {
-				this.out = this.outAdapter(this.domContainer, css);
+				this.out = this.outAdapter.process(this.domContainer);
 			}
 		}
 	];
@@ -66,9 +68,9 @@ var Diagram = Class(function(noiName, nodeMap, css = null, options = {}) {
 	domContainer: null,
 
 	inAdapter: new InputAdapter(),
-	positing: new Position(),
+	positioning: new Position(),
 	rendering: new Rendering(),
-	outAdapter: outputAdapter,
+	outAdapter: new OutputAdapter(),
 
 	getResult: function() {
 		return this.out;

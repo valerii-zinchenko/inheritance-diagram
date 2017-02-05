@@ -8,6 +8,14 @@
 var Class = require('class-wrapper').Class;
 var utils = require('class-wrapper').utils;
 
+
+/**
+ * Abstract processing node
+ *
+ * @class
+ *
+ * @param {Object} [properties] - Set of properties for a processor
+ */
 // eslint-disable-next-line new-cap
 var ProcessingNode = Class(function(properties) {
 	if (properties) {
@@ -15,7 +23,7 @@ var ProcessingNode = Class(function(properties) {
 	}
 }, /** @lends ProcessingNode.prototype */ {
 	/**
-	 * Rendering properties
+	 * Set of properties
 	 *
 	 * @type {Object}
 	 */
@@ -28,7 +36,14 @@ var ProcessingNode = Class(function(properties) {
 	 */
 	setProperties: function(properties) {
 		utils.deepCopy(this.properties, properties);
-	}
+	},
+
+	/**
+	 * Main processing method
+	 *
+	 * @abstract
+	 */
+	process: function() {}
 });
 
 module.exports = ProcessingNode;
