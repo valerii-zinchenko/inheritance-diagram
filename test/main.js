@@ -41,7 +41,7 @@ var TestSVG = Class(TestWrapper, function() {
 	this.expected = fs.readFileSync(`./test/expected_data/${this.title}.svg`, 'utf-8');
 }, {
 	testFn: function() {
-		const result = new Diagram(this.noiName, this.nodeMap, null, this.options).getResult();
+		const result = new Diagram(this.noiName, this.nodeMap, this.options).getResult();
 		assert.strictEqual(result, this.expected);
 	}
 });
