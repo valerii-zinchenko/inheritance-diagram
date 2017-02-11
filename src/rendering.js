@@ -107,9 +107,10 @@ var Rendering = Class(Parent, function() {
 	},
 
 	/**
-	 * Set nodes, which will be rendered
 	 *
-	 * @param {GraphNode[]} nodes - Set of nodes
+	 * Main processing routine
+	 *
+	 * @param {GraphNode} noi - Node of interest with resolved dependecies
 	 */
 	process: function(noi) {
 		var minX = Infinity;
@@ -278,10 +279,10 @@ var Rendering = Class(Parent, function() {
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @param {String} endMarkerId - ID of an end marker for the connection line
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
-	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
+	 * @param {String} [type = ''] - Type of a connection line. This will be directly added to the class attribute
 	 */
 	// eslint-disable-next-line id-length
-	_renderHorizontalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type) {
+	_renderHorizontalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type = '') {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
 			.attr('d', this._buildHorizontalPath(nodeA, nodeB))
@@ -289,7 +290,7 @@ var Rendering = Class(Parent, function() {
 			.attr('stroke-width', this.properties.line.width)
 			.attr('stroke', 'black')
 			.attr('fill', 'none')
-			.attr('class', type || '');
+			.attr('class', type);
 	},
 
 	/**
@@ -301,10 +302,10 @@ var Rendering = Class(Parent, function() {
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @param {String} endMarkerId - ID of an end marker for the connection line
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
-	 * @param {String} [type=''] - Type of a connection line. This will be directly added to the class attribute
+	 * @param {String} [type = ''] - Type of a connection line. This will be directly added to the class attribute
 	 */
 	// eslint-disable-next-line id-length
-	_renderVerticalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type) {
+	_renderVerticalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type = '') {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
 			.attr('d', this._buildVerticalPath(nodeA, nodeB))
@@ -312,7 +313,7 @@ var Rendering = Class(Parent, function() {
 			.attr('stroke-width', this.properties.line.width)
 			.attr('stroke', 'black')
 			.attr('fill', 'none')
-			.attr('class', type || '');
+			.attr('class', type);
 	},
 
 	/**

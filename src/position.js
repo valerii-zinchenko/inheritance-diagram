@@ -48,7 +48,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	_mixinNodes: [],
 
 	/**
-	 * Main method that does the positioning of required nodes
+	 * Main processing routine
 	 *
 	 * It executes in the sequence the folowing processors:
 	 * 1. Position node of interest

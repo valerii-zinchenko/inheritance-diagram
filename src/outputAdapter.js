@@ -47,6 +47,7 @@ var OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ {
 	},
 
 	/**
+	 * Main processing routine
 	 *
 	 * @param {D3Selection} domSvgContainer - DOM element, that contains an SVG element (usually it is `body` DOM element)
 	 */

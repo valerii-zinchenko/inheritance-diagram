@@ -39,7 +39,7 @@ var ProcessingNode = Class(function(properties) {
 	},
 
 	/**
-	 * Main processing method
+	 * Main processing routine
 	 *
 	 * @abstract
 	 */

@@ -14,8 +14,17 @@ var OutputAdapter = require('./outputAdapter');
 
 global.document = require('jsdom').jsdom('<body>');
 
+/**
+ * Diagram builder
+ *
+ * @class
+ *
+ * @param {String} noiName - Name of a node for what the diagram should be built
+ * @param {Object} nodeMap - Map of nodes, where key is a node name and the value is an object of node properties
+ * @param {Object} options - Options for processing nodes
+ */
 // eslint-disable-next-line new-cap
-var Diagram = Class(function(noiName, nodeMap, css = null, options = {}) {
+var Diagram = Class(function(noiName, nodeMap, options = {}) {
 	global.document.body.innerHTML = '';
 
 	// Populate properties to pcrocessing services
@@ -64,14 +73,49 @@ var Diagram = Class(function(noiName, nodeMap, css = null, options = {}) {
 	});
 	process.stdout.write('Done\n');
 }, {
+	/**
+	 * Node of interest
+	 *
+	 * @type {GraphNode}
+	 */
 	noi: null,
+	/**
+	 * Resulting SVG element
+	 *
+	 * @type {D3Selection}
+	 */
 	domContainer: null,
 
+	/**
+	 * Input adapter
+	 *
+	 * @type {InputAdapter}
+	 */
 	inAdapter: new InputAdapter(),
+	/**
+	 * Positioning processor
+	 *
+	 * @type {Position}
+	 */
 	positioning: new Position(),
+	/**
+	 * Rendering processor
+	 *
+	 * @type {Rendering}
+	 */
 	rendering: new Rendering(),
+	/**
+	 * Output adapter
+	 *
+	 * @type {OutputAdapter}
+	 */
 	outAdapter: new OutputAdapter(),
 
+	/**
+	 * Get the diagram result
+	 *
+	 * @return {String}
+	 */
 	getResult: function() {
 		return this.out;
 	}
