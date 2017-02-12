@@ -12,7 +12,7 @@ var assert = require('chai').assert;
 var fs = require('fs');
 
 
-// eslint-disable-next-line new-cap
+// eslint-disable-next-line new-cap, max-params
 var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, testFn) {
 	this.title = title;
 	this.noiName = noiName;

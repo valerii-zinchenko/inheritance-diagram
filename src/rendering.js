@@ -266,7 +266,7 @@ var Rendering = Class(Parent, function() {
 
 		// Connect mixes
 		noi.mixes.forEach(mixin => {
-			this._renderHorizontalConnection(mixin, noi, endMarkerId, domContainer, 'mixin');
+			this._renderHorizontalConnection(noi, mixin, endMarkerId, domContainer, 'mixin');
 		});
 	},
 
@@ -327,11 +327,12 @@ var Rendering = Class(Parent, function() {
 	 */
 	_buildHorizontalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.properties.node;
-		const distance = nodeB.x - nodeA.x - dimensions.width - (this.properties.line.endMarker.height * this.properties.line.width);
+		const endMarkerLength = this.properties.line.endMarker.height * this.properties.line.width;
+		const distance = nodeB.x - nodeA.x + dimensions.width + endMarkerLength;
 
 		return (nodeA.y === nodeB.y)
 			? `M 0 0 h ${distance}`
-			: `M 0 0 h ${spacing.horizontal} v ${nodeB.y - nodeA.y} H ${distance}`;
+			: `M 0 0 h ${distance - spacing.horizontal + endMarkerLength} v ${nodeB.y - nodeA.y} H ${distance}`;
 	},
 
 	/**
@@ -365,7 +366,7 @@ var Rendering = Class(Parent, function() {
 		const dimensions = this.properties.node.dimensions;
 
 		// eslint-disable-next-line no-magic-numbers
-		return `translate(${nodeA.x + dimensions.width}, ${nodeA.y + (dimensions.height / 2)})`;
+		return `translate(${nodeA.x}, ${nodeA.y + (dimensions.height / 2)})`;
 	},
 
 	/**
