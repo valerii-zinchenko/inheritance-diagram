@@ -46,12 +46,13 @@ var graph = new (require('inheritance-diagram'))(
 			link: '#Mixin3'
 		}
 	},
-
-	// Optional custom CSS
-	'.no-ref rect {fill: lightgray;}',
-
-	// Customize rendering properties
+	
+	// Additional options
 	{
+		// Optional custom CSS
+		css: '.no-ref rect {fill: lightgray;}',
+
+		// Customize rendering properties
 		node: {
 			dimensions: {
 				width: 80
@@ -86,7 +87,7 @@ require('fs').readFile('styles.css', 'utf8', (err, data) => {
 		throw err;
 	}
 
-	var graph = new (require('inheritance-diagram'))('...', {...}, data);
+	var graph = new (require('inheritance-diagram'))('...', {...}, {css: data});
 });
 ```
 
