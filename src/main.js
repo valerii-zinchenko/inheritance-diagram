@@ -72,7 +72,7 @@ var Diagram = Class(function(noiName, nodeMap, options = {}) {
 		process.stdout.write('Done\n');
 	});
 	process.stdout.write('Done\n');
-}, {
+}, /** @lends Diagram.prototype */{
 	/**
 	 * Node of interest
 	 *
