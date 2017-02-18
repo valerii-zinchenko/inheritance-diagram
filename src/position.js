@@ -89,6 +89,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 		const x = this.noi.x;
 		this.noi.parentStack.forEach((node, index) => {
 			node.x = x;
+			// eslint-disable-next-line no-magic-numbers
 			node.y = -1 - index;
 		});
 	},

@@ -193,7 +193,7 @@ var Rendering = Class(Parent, function() {
 		// Reposition node by taking into the account the real element dimensions
 		// --------------------------------------------------
 		node.x = (node.x * this._scale.x) + spacing.horizontal;
-		node.y = node.y * this._scale.y;
+		node.y *= this._scale.y;
 		// --------------------------------------------------
 
 		// Create a group for the all elements related to the node: rectangle, link, text
@@ -328,7 +328,7 @@ var Rendering = Class(Parent, function() {
 	_buildHorizontalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.properties.node;
 		const distance = nodeB.x - nodeA.x + dimensions.width + spacing.vertical;
-		const endPoint = distance - this.properties.line.endMarker.height * this.properties.line.width;
+		const endPoint = distance - (this.properties.line.endMarker.height * this.properties.line.width);
 
 		return (nodeA.y === nodeB.y)
 			? `M 0 0 h ${endPoint}`
