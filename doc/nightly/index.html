@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Inheritance diagram builder</h1><p>This builds an inheritance diagram for a some node of interest. Initially it is designed to use in documentations with class description to show parent stack, child nodes and mixed in nodes.</p>
+<p>Nodes that contains <code>link</code> property will be highlighted and behave as usual link element to allow fast jumping to the next interested node in the documentation. Also it is possible to set the links to the external classes over <code>externalLinks</code> property, in order to have all links on a single diagram.</p>
+<h2>Limitations</h2><ol>
+<li><p>Rectangle dimensions around the text (node name) and text offset should be defined manually. SVG v1.1 does not have the feature like <code>box-model</code> for an element in HTML+CSS, so it is not possible to automatically calculate the border for a text by taking into account the font size and paddings.</p>
+<ul>
+<li><a href="https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html">SVG v2</a> will have some interisting features which should simplify this: <a href="https://www.w3.org/TR/2016/CR-SVG2-20160915/text.html#TextLayoutContentArea">Text layout – Content Area</a></li>
+</ul>
+</li>
+<li><p>Arrows at the end of connection line cannot inherit the line styles (colors).</p>
+<ul>
+<li><a href="https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html">SVG v2</a> will fix this by defining the context: <a href="https://www.w3.org/TR/2016/CR-SVG2-20160915/painting.html#TermContextElement">Specifying paint</a></li>
+</ul>
+</li>
+</ol>
+<p>Due to upcomming features/improvements in <a href="https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html">SVG v2</a> the above limitations will not have coded workarounds and you should manually tune them.</p>
+<p>Hope <a href="https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html">SVG v2</a> will be released and implemented by browsers soon :)</p>
+<h2>Usage exmaple</h2><pre class="prettyprint source lang-js"><code>var graph = new (require('inheritance-diagram'))(
+    // Node for what the diagram will be built
+    'Node',
+
+    // Full map of nodes and relationships
+    {
+        Node: {
+            parent: 'ParentNode',
+            children: ['Child', 'Child2'],
+            mixes:['Mixin', 'Mixin2', 'Mixin3']
+        },
+        ParentNode: {
+            parent: 'Object',
+            children: ['Node'],
+            link: '#ParentNode'
+        },
+        Child2: {
+            link: '#Child2'
+        },
+        Mixin3: {
+            link: '#Mixin3'
+        }
+    },
+
+    // Additional options
+    {
+        // Optional custom CSS
+        css: '.no-ref rect {fill: lightgray;}',
+
+        // Customize rendering properties
+        node: {
+            dimensions: {
+                width: 80
+            },
+            spacing: {
+                horizontal: 30,
+                vertical: 30
+            },
+            text: {
+                dx: 20
+            }
+        },
+
+        // External links to 3rd-party classes
+        externalLinks: {
+            Mixin: 'http://link.to/mixin/class.html'
+        }
+    }
+);</code></pre><p>The output is a string of SVG element. So if you want to save the output into the file, then you should write an additional code that will do this. The example of such is below:</p>
+<pre class="prettyprint source lang-js"><code>require('fs').writeFile('out.svg', graph.getResult(), err => {
+    if (err) {
+        throw err;
+    }
+});</code></pre><p>The similar task is required if you want to get the CSS from a file. The example is below:</p>
+<pre class="prettyprint source lang-js"><code>require('fs').readFile('styles.css', 'utf8', (err, data) => {
+    if (err) {
+        throw err;
+    }
+
+    var graph = new (require('inheritance-diagram'))('...', {...}, {css: data});
+});</code></pre><h2>Output example</h2><p><img src="example.png" alt="Example of an inheritance diagram"></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Diagram.html">Diagram</a></li><li><a href="GraphNode.html">GraphNode</a></li><li><a href="InputAdapter.html">InputAdapter</a></li><li><a href="OutputAdapter.html">OutputAdapter</a></li><li><a href="Position.html">Position</a></li><li><a href="ProcessingNode.html">ProcessingNode</a></li><li><a href="Rendering.html">Rendering</a></li></ul><h3>Global</h3><ul><li><a href="global.html#domContainer">domContainer</a></li><li><a href="global.html#getResult">getResult</a></li><li><a href="global.html#inAdapter">inAdapter</a></li><li><a href="global.html#noi">noi</a></li><li><a href="global.html#outAdapter">outAdapter</a></li><li><a href="global.html#positioning">positioning</a></li><li><a href="global.html#rendering">rendering</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Feb 19 2017 01:04:22 GMT+0200 (EET)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
