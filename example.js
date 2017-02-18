@@ -1,30 +1,24 @@
 #!/usr/bin/env node
 
-var graph = new (require('./'))('node', {
-	node: {
-		parent: 'parentNode',
-		children: ['child', 'child2'],
-		mixes:['mixin', 'mixin2', 'mixin3']
+var graph = new (require('./'))('Node', {
+	Node: {
+		parent: 'ParentNode',
+		children: ['Child', 'Child2'],
+		mixes:['Mixin', 'Mixin2', 'Mixin3']
 	},
-	parentNode: {
+	ParentNode: {
 		parent: 'Object',
-		children: ['node'],
+		children: ['Node'],
 		link: '#parentNode'
 	},
-	child2: {
+	Child2: {
 		link: '#child2'
 	},
-	mixin3: {
+	Mixin3: {
 		link: '#mixin3'
 	}
-}, '.no-ref rect {fill: lightgray;}', {
-	rendering: {
-		node: {
-			dimensions: {
-				width: 200
-			}
-		}
-	}
+},  {
+	css: '.no-ref rect {fill: lightgray;}'
 });
 
 

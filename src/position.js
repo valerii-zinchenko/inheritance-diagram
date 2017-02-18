@@ -79,18 +79,17 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	_positionNOI: function() {
 		// eslint-disable-next-line no-magic-numbers
 		this.noi.x = ((this.noi.children.length || 1) - 1) / 2;
-		this.noi.y = this.noi.parentStack.length;
+		this.noi.y = 0;
 	},
 
 	/**
 	 * Position parent nodes of the NOI
 	 */
 	_positionParents: function() {
-		// eslint-disable-next-line no-magic-numbers
-		const top = this.noi.parentStack.length - 1;
+		const x = this.noi.x;
 		this.noi.parentStack.forEach((node, index) => {
-			node.x = this.noi.x;
-			node.y = top - index;
+			node.x = x;
+			node.y = -1 - index;
 		});
 	},
 
@@ -115,7 +114,9 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 		var yOffset = this.noi.y - Math.ceil(this.noi.mixes.length / 2) + 1;
 
 		this.noi.mixes.forEach((node, index) => {
-			node.x = -1;
+			// I do not like this -1.3, but this is fastest way for now to increase the distance between NOI and mixin
+			// eslint-disable-next-line no-magic-numbers
+			node.x = -1.3;
 			node.y = yOffset + index;
 		});
 	}
