@@ -1,8 +1,15 @@
 {
-	"plugins":["plugins/markdown"],
+	"plugins":["plugins/markdown", "node_modules/jsdoc-inheritance-diagram"],
 	"opts": {
 		"destination": "doc",
 		"readme": "README.md",
-		"private": true
+		"private": true,
+		"inheritance-diagram": {
+			"node": {
+				"dimensions": {
+					"width": 120
+				}
+			}
+		}
 	}
 }

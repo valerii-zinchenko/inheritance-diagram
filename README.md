@@ -100,3 +100,9 @@ require('fs').readFile('styles.css', 'utf8', (err, data) => {
 ## Output example
 
 ![Example of an inheritance diagram](example.png)
+
+
+## Useful links
+
+* [API](http://valerii-zinchenko.github.io/inheritance-diagram/doc/nightly/index.html)
+* [Code coverage](http://valerii-zinchenko.github.io/inheritance-diagram/coverage/lcov-report/index.html)
