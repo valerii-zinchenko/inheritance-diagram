@@ -17,7 +17,6 @@ var GraphNode = require('./GraphNode');
  * @class
  * @augments ProcessingNode
  */
-// eslint-disable-next-line new-cap
 var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	/**
 	 * Node of interest

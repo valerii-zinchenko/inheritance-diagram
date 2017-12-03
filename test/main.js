@@ -12,7 +12,7 @@ var assert = require('chai').assert;
 var fs = require('fs');
 
 
-// eslint-disable-next-line new-cap, max-params
+// eslint-disable-next-line max-params
 var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, testFn) {
 	this.title = title;
 	this.noiName = noiName;
@@ -36,7 +36,7 @@ var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, tes
 		test(this.title, this.testFn.bind(this));
 	}
 });
-// eslint-disable-next-line new-cap
+
 var TestSVG = Class(TestWrapper, function() {
 	this.expected = fs.readFileSync(`./test/expected_data/${this.title}.svg`, 'utf-8');
 }, {

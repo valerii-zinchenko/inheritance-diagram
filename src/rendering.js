@@ -19,7 +19,6 @@ var d3 = require('d3-selection');
  *
  * @param {Object} [properties] - Set of [properties]{@link Rendering#properties}
  */
-// eslint-disable-next-line new-cap
 var Rendering = Class(Parent, function() {
 	this.rescale();
 }, /** @lends Rendering.prototype */ {

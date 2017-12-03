@@ -16,7 +16,6 @@ var utils = require('class-wrapper').utils;
  *
  * @param {Object} [properties] - Set of properties for a processor
  */
-// eslint-disable-next-line new-cap
 var ProcessingNode = Class(function(properties) {
 	if (properties) {
 		this.setProperties(properties);

@@ -96,7 +96,8 @@ module.exports = {
 		'max-statements': ['warn', 50],
 		'new-cap': ['warn', {
 			'newIsCap': true,
-			'properties': true
+			'properties': true,
+			'capIsNewExceptions': ['Class']
 		}],
 		'new-parens': 'error',
 		'newline-before-return': 'error',

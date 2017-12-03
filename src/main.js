@@ -23,7 +23,6 @@ global.document = require('jsdom').jsdom('<body>');
  * @param {Object} nodeMap - Map of nodes, where key is a node name and the value is an object of node properties
  * @param {Object} options - Options for processing nodes
  */
-// eslint-disable-next-line new-cap
 var Diagram = Class(function(noiName, nodeMap, options = {}) {
 	global.document.body.innerHTML = '';
 

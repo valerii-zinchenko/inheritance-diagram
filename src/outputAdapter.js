@@ -17,7 +17,6 @@ var Parent = require('./ProcessingNode');
  *
  * @param {Object} [properties] - [Adapter properties]{@link OutputAdapter#properties}
  */
-// eslint-disable-next-line new-cap
 var OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ {
 	/**
 	 * Default CSS for a diagram

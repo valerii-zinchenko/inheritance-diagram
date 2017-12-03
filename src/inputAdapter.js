@@ -19,7 +19,6 @@ var GraphNode = require('./GraphNode');
  *
  * @param {Object} [properties] - [Adapter properties]{@link InputAdapter#properties}
  */
-// eslint-disable-next-line new-cap
 var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	/**
 	 * Input adapter properties
