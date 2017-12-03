@@ -110,14 +110,10 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 * Position mixin nodes of the NOI
 	 */
 	_positionMixinNodes: function() {
-		// eslint-disable-next-line no-magic-numbers
-		var yOffset = this.noi.y - Math.ceil(this.noi.mixes.length / 2) + 1;
-
 		this.noi.mixes.forEach((node, index) => {
 			// I do not like this -1.3, but this is fastest way for now to increase the distance between NOI and mixin
-			// eslint-disable-next-line no-magic-numbers
 			node.x = -1.3;
-			node.y = yOffset + index;
+			node.y = index;
 		});
 	}
 });
