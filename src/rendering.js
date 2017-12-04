@@ -166,8 +166,7 @@ var Rendering = Class(Parent, function() {
 		// Setup the properties for the diagram containers
 		// --------------------------------------------------
 		domSvg
-			.attr('width', (maxX - minX) + this._scale.x)
-			.attr('height', (maxY - minY) + this._scale.y)
+			.attr('viewBox', `0 0 ${(maxX - minX) + this._scale.x} ${(maxY - minY) + this._scale.y}`)
 			.attr('xmlns', 'http://www.w3.org/2000/svg')
 			.attr('xmlns:xlink', 'http://www.w3.org/1999/xlink')
 			.attr('version', '1.1');
