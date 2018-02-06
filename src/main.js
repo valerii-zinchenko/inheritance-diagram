@@ -12,7 +12,7 @@ const Position = require('./position');
 const Rendering = require('./rendering');
 const OutputAdapter = require('./outputAdapter');
 
-global.document = require('jsdom').jsdom('<body>');
+global.document = new (require('jsdom').JSDOM)('<body>').window.document;
 
 /**
  * Diagram builder
