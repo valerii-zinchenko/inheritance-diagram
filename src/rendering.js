@@ -345,8 +345,8 @@ var Rendering = Class(Parent, function() {
 	 */
 	_buildHorizontalPath: function(nodeA, nodeB) {
 		const {dimensions, spacing} = this.properties.node;
-		const distance = nodeB.x - nodeA.x + dimensions.width + spacing.vertical;
-		const endPoint = distance - (this.properties.line.endMarker.height * this.properties.line.width);
+		const endPoint = nodeB.x - nodeA.x + dimensions.width + (this.properties.line.endMarker.width * this.properties.line.width);
+		const distance = endPoint + spacing.horizontal;
 
 		return (nodeA.y === nodeB.y)
 			? `M 0 0 h ${endPoint}`
