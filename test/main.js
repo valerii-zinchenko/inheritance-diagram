@@ -29,10 +29,10 @@ var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, tes
 	nodeMap: null,
 	expected: null,
 
-	testFn: function() {
+	testFn() {
 		assert(false, 'Testing function is not defined');
 	},
-	run: function() {
+	run() {
 		test(this.title, this.testFn.bind(this));
 	}
 });
@@ -40,7 +40,7 @@ var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, tes
 var TestSVG = Class(TestWrapper, function() {
 	this.expected = fs.readFileSync(`./test/expected_data/${this.title}.svg`, 'utf-8');
 }, {
-	testFn: function() {
+	testFn() {
 		const result = new Diagram(this.noiName, this.nodeMap, this.options).getResult();
 		assert.strictEqual(result, this.expected);
 	}

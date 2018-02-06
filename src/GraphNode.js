@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var Class = require('class-wrapper').Class;
+const Class = require('class-wrapper').Class;
 
 /**
  * Graph node
@@ -15,7 +15,7 @@ var Class = require('class-wrapper').Class;
  * @param {Objcet} data - Raw node data
  * @param {Object} [properties] - Properties for a graph node. Any of already defined properties can be defined and new one can be added. Only property names which are already defined as class methods or if the value is undefined, then such properties will be skipped.
  */
-var GraphNode = Class(function(data, properties) {
+const GraphNode = Class(function(data, properties) {
 	if (data) {
 		this.data = data;
 

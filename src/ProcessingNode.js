@@ -5,8 +5,8 @@
  */
 'use strict';
 
-var Class = require('class-wrapper').Class;
-var utils = require('class-wrapper').utils;
+const Class = require('class-wrapper').Class;
+const utils = require('class-wrapper').utils;
 
 
 /**
@@ -16,7 +16,7 @@ var utils = require('class-wrapper').utils;
  *
  * @param {Object} [properties] - Set of properties for a processor
  */
-var ProcessingNode = Class(function(properties) {
+const ProcessingNode = Class(function(properties) {
 	if (properties) {
 		this.setProperties(properties);
 	}
@@ -33,7 +33,7 @@ var ProcessingNode = Class(function(properties) {
 	 *
 	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
 	 */
-	setProperties: function(properties) {
+	setProperties(properties) {
 		utils.deepCopy(this.properties, properties);
 	},
 
@@ -42,7 +42,7 @@ var ProcessingNode = Class(function(properties) {
 	 *
 	 * @abstract
 	 */
-	process: function() {}
+	process() {}
 });
 
 module.exports = ProcessingNode;

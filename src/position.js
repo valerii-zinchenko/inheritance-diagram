@@ -5,9 +5,9 @@
  */
 'use strict';
 
-var Class = require('class-wrapper').Class;
-var Parent = require('./ProcessingNode');
-var GraphNode = require('./GraphNode');
+const Class = require('class-wrapper').Class;
+const Parent = require('./ProcessingNode');
+const GraphNode = require('./GraphNode');
 
 /**
  * Position node of interest and all its related nodes
@@ -17,7 +17,7 @@ var GraphNode = require('./GraphNode');
  * @class
  * @augments ProcessingNode
  */
-var Position = Class(Parent, null, /** @lends Position.prototype */ {
+const Position = Class(Parent, null, /** @lends Position.prototype */ {
 	/**
 	 * Node of interest
 	 *
@@ -60,7 +60,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 * @param {GraphNode} noi - Node of interest
 	 * @return {Array[]} 2D grid with positioned nodes. A cell can be "undefied" or an instance of {@link GraphNode}
 	 */
-	process: function(noi) {
+	process(noi) {
 		if (!(noi instanceof GraphNode)) {
 			throw new TypeError('"noi" argument is expected to be an instance of GraphNode class');
 		}
@@ -85,7 +85,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 *
 	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionNOI: function(grid) {
+	_positionNOI(grid) {
 		// eslint-disable-next-line no-magic-numbers
 		this.noi.x = 0;
 		this.noi.y = grid.length;
@@ -98,7 +98,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 *
 	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionParents: function(grid) {
+	_positionParents(grid) {
 		this.noi.parentStack.forEach((node, index) => {
 			node.x = this.noi.x;
 			// eslint-disable-next-line no-magic-numbers
@@ -113,12 +113,12 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 *
 	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionChildNodes: function(grid) {
-		var nextY = grid.length;
+	_positionChildNodes(grid) {
+		const nextY = grid.length;
 		// eslint-disable-next-line no-magic-numbers
-		var row = grid[nextY - 1];
-		var nextRow = [];
-		var anyMoreChildren = false;
+		const row = grid[nextY - 1];
+		const nextRow = [];
+		let anyMoreChildren = false;
 
 		row.forEach(item => {
 			// eslint-disable-next-line no-magic-numbers
@@ -146,7 +146,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 *
 	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionMixinNodes: function(grid) {
+	_positionMixinNodes(grid) {
 		this.noi.mixes.forEach((node, index) => {
 			// I do not like this -1.3, but this is fastest way for now to increase the distance between NOI and mixin
 			node.x = -1.3;
@@ -161,7 +161,7 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 *
 	 * @param {Array[]} grid - 2D grid
 	 */
-	_center: function(grid) {
+	_center(grid) {
 		const offsets = [];
 		/* eslint-disable no-magic-numbers */
 		grid[grid.length - 1].forEach(() => offsets.push(0));

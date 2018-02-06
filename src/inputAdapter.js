@@ -5,9 +5,9 @@
  */
 'use strict';
 
-var Class = require('class-wrapper').Class;
-var Parent = require('./ProcessingNode');
-var GraphNode = require('./GraphNode');
+const Class = require('class-wrapper').Class;
+const Parent = require('./ProcessingNode');
+const GraphNode = require('./GraphNode');
 
 /**
  * Input adapter
@@ -19,7 +19,7 @@ var GraphNode = require('./GraphNode');
  *
  * @param {Object} [properties] - [Adapter properties]{@link InputAdapter#properties}
  */
-var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
+const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	/**
 	 * Input adapter properties
 	 *
@@ -52,7 +52,7 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 * @throws {TypeError} "map" argument is expected to be an instance of Object class
 	 * @throws {Error} Node data for "${noiName}" does not exist in the provided node map
 	 */
-	process: function(noiName, map) {
+	process(noiName, map) {
 		if (typeof noiName !== 'string') {
 			throw new TypeError('"noi" argument is expected to be a string');
 		}
@@ -60,12 +60,12 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 			throw new TypeError('"map" argument is expected to be an instance of Object class');
 		}
 
-		var noiData = map[noiName];
+		const noiData = map[noiName];
 		if (!noiData) {
 			throw new Error(`Node data for "${noiName}" does not exist in the provided node map`);
 		}
 
-		var noi = new GraphNode(noiData, {
+		const noi = new GraphNode(noiData, {
 			name: noiName,
 			type: 'noi',
 			parentStack: noiData.parent ? this._prepareParentNodes(noiData.parent, map) : undefined
@@ -87,10 +87,10 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 * @param {Object} map - Map of nodes
 	 * @returns {GraphNode[]} - Ordered stack of parent nodes
 	 */
-	_prepareParentNodes: function(nodeName, map) {
-		var data = map[nodeName];
+	_prepareParentNodes(nodeName, map) {
+		const data = map[nodeName];
 
-		var stack = [this._createGraphNode(nodeName, map, 'parent')];
+		let stack = [this._createGraphNode(nodeName, map, 'parent')];
 
 		if (data && data.parent) {
 			stack = stack.concat(this._prepareParentNodes(data.parent, map));
@@ -104,8 +104,8 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 *
 	 * @param {Object} map - Map of nodes
 	 */
-	_prepareChildNodes: function(noi, map) {
-		var set = noi.children;
+	_prepareChildNodes(noi, map) {
+		const set = noi.children;
 
 		set.forEach((nodeName, index) => {
 			// Replace node name with GraphNode
@@ -120,8 +120,8 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 *
 	 * @param {Object} map - Map of nodes
 	 */
-	_prepareMixinNodes: function(noi, map) {
-		var set = noi.mixes;
+	_prepareMixinNodes(noi, map) {
+		const set = noi.mixes;
 
 		set.forEach((nodeName, index) => {
 			// Replace node name with GraphNode
@@ -137,8 +137,8 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 * @param {String} type - Type of a node: parent, child, mixin
 	 * @return {GraphNode}
 	 */
-	_createGraphNode: function(nodeName, map, type) {
-		var data = map[nodeName];
+	_createGraphNode(nodeName, map, type) {
+		let data = map[nodeName];
 
 		// If no 'data' - means that node is not documented,
 		// but if some external link is provided - create a node data with link info only

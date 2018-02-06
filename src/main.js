@@ -5,12 +5,12 @@
  */
 'use strict';
 
-var Class = require('class-wrapper').Class;
+const Class = require('class-wrapper').Class;
 
-var InputAdapter = require('./inputAdapter');
-var Position = require('./position');
-var Rendering = require('./rendering');
-var OutputAdapter = require('./outputAdapter');
+const InputAdapter = require('./inputAdapter');
+const Position = require('./position');
+const Rendering = require('./rendering');
+const OutputAdapter = require('./outputAdapter');
 
 global.document = require('jsdom').jsdom('<body>');
 
@@ -23,20 +23,24 @@ global.document = require('jsdom').jsdom('<body>');
  * @param {Object} nodeMap - Map of nodes, where key is a node name and the value is an object of node properties
  * @param {Object} [options] - Options for processing nodes
  */
-var Diagram = Class(function(noiName, nodeMap, options) {
+const Diagram = Class(function(noiName, nodeMap, options) {
 	global.document.body.innerHTML = '';
 
 	// Populate properties to processing services
 	if (options && options instanceof Object) {
-		this.inAdapter.setProperties(options);
-		this.positioning.setProperties(options);
-		this.rendering.setProperties(options);
-		this.outAdapter.setProperties(options);
+		[
+			this.inAdapter,
+			this.positioning,
+			this.rendering,
+			this.outAdapter
+		].forEach((processor) => {
+			processor.setProperties(options);
+		});
 	}
 
 	// Organize processing chain
 	process.stdout.write(`Building diagram for "${noiName}":\n`);
-	var instructions = [
+	const instructions = [
 		{
 			title: 'Preparing',
 			action: () => {
@@ -121,7 +125,7 @@ var Diagram = Class(function(noiName, nodeMap, options) {
 	 *
 	 * @return {String}
 	 */
-	getResult: function() {
+	getResult() {
 		return this.out;
 	}
 });

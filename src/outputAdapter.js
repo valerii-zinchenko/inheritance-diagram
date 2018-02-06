@@ -5,8 +5,8 @@
  */
 'use strict';
 
-var Class = require('class-wrapper').Class;
-var Parent = require('./ProcessingNode');
+const Class = require('class-wrapper').Class;
+const Parent = require('./ProcessingNode');
 
 
 /**
@@ -17,7 +17,7 @@ var Parent = require('./ProcessingNode');
  *
  * @param {Object} [properties] - [Adapter properties]{@link OutputAdapter#properties}
  */
-var OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ {
+const OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ {
 	/**
 	 * Default CSS for a diagram
 	 *
@@ -50,10 +50,9 @@ var OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ {
 	 *
 	 * @param {D3Selection} domSvgContainer - DOM element, that contains an SVG element (usually it is `body` DOM element)
 	 */
-	process: function(domSvgContainer) {
+	process(domSvgContainer) {
 		// Add cusom CSS to the default CSS
-		var styles = this._css + this.properties.css;
-		styles = styles
+		const styles = (this._css + this.properties.css)
 			.trim()
 			.replace(/\n/g, '')
 			.replace(/\s+/g, ' ');

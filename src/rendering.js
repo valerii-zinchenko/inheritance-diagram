@@ -5,9 +5,9 @@
  */
 'use strict';
 
-var Class = require('class-wrapper').Class;
-var Parent = require('./ProcessingNode');
-var d3 = require('d3-selection');
+const Class = require('class-wrapper').Class;
+const Parent = require('./ProcessingNode');
+const d3 = require('d3-selection');
 
 /**
  * Rendering engine
@@ -19,7 +19,7 @@ var d3 = require('d3-selection');
  *
  * @param {Object} [properties] - Set of [properties]{@link Rendering#properties}
  */
-var Rendering = Class(Parent, function() {
+const Rendering = Class(Parent, function() {
 	this.rescale();
 }, /** @lends Rendering.prototype */ {
 	/**
@@ -87,7 +87,7 @@ var Rendering = Class(Parent, function() {
 	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
 	 */
 	// eslint-disable-next-line no-unused-vars
-	setProperties: function(properties) {
+	setProperties(properties) {
 		Parent.prototype.setProperties.apply(this, arguments);
 
 		this.rescale();
@@ -96,7 +96,7 @@ var Rendering = Class(Parent, function() {
 	/**
 	 * Calculate the scaling factors for the real (rendered) coordinate system
 	 */
-	rescale: function() {
+	rescale() {
 		const {dimensions, spacing} = this.properties.node;
 
 		/* eslint-disable no-magic-numbers */
@@ -112,18 +112,18 @@ var Rendering = Class(Parent, function() {
 	 * @param {Array[]} grid - 2D grid with positioned nodes. A cell can be "undefied" or an instance of {@link GraphNode}
 	 * @param {GraphNode} noi - Node of interest with resolved dependecies
 	 */
-	process: function(grid, noi) {
-		var minX = Infinity;
-		var maxX = -Infinity;
-		var minY = Infinity;
-		var maxY = -Infinity;
+	process(grid, noi) {
+		let minX = Infinity;
+		let maxX = -Infinity;
+		let minY = Infinity;
+		let maxY = -Infinity;
 
 		// Create the base contained elements for the diagram
 		// --------------------------------------------------
-		var domContainer = d3.select('body');
-		var domSvg = domContainer.append('svg');
-		var domDefs = domSvg.append('defs');
-		var domDiagram = domSvg.append('g');
+		const domContainer = d3.select('body');
+		const domSvg = domContainer.append('svg');
+		const domDefs = domSvg.append('defs');
+		const domDiagram = domSvg.append('g');
 		// --------------------------------------------------
 
 		// Render the nodes and find the real diagram boundaries
@@ -190,9 +190,9 @@ var Rendering = Class(Parent, function() {
 	 * @param {GraphNode} node - Node which will be rendered
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered node will be placed.
 	 */
-	renderNode: function(node, domContainer) {
+	renderNode(node, domContainer) {
 		const {dimensions, spacing, text} = this.properties.node;
-		var nodeClass = node.type;
+		let nodeClass = node.type;
 
 		// Reposition node by taking into the account the real element dimensions
 		// --------------------------------------------------
@@ -202,8 +202,8 @@ var Rendering = Class(Parent, function() {
 
 		// Create a group for the all elements related to the node: rectangle, link, text
 		// --------------------------------------------------
-		var domGroup = domContainer.append('g');
-		var domNode = domGroup;
+		const domGroup = domContainer.append('g');
+		let domNode = domGroup;
 		// --------------------------------------------------
 
 		// App link element if possible and make that element as the main container of rectangle and text
@@ -225,15 +225,15 @@ var Rendering = Class(Parent, function() {
 		// Create rectangle element in the main container
 		// --------------------------------------------------
 		// eslint-disable-next-line no-unused-vars
-		var domBorder = domNode.append('rect')
+		const domBorder = domNode.append('rect')
 			.attr('width', dimensions.width)
 			.attr('height', dimensions.height);
 		// --------------------------------------------------
 
 		// Add text (node name) into the main container
 		// --------------------------------------------------
-		var domText = domNode.append('text');
-		for (var attr in text) {
+		const domText = domNode.append('text');
+		for (let attr in text) {
 			domText.attr(attr, text[attr]);
 		}
 		domText.text(node.name);
@@ -251,14 +251,14 @@ var Rendering = Class(Parent, function() {
 	 * @param {String} endMarkerId - ID of an end marker of the connection line
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered connection will be placed
 	 */
-	renderConnections: function(noi, endMarkerId, domContainer) {
+	renderConnections(noi, endMarkerId, domContainer) {
 		// Connect parents
 		const parentStack = noi.parentStack;
 		/* eslint-disable no-magic-numbers */
 		if (parentStack.length > 0) {
 			this._renderVerticalConnection(noi, parentStack[0], endMarkerId, domContainer, 'parent');
 
-			for (var n = 0, N = parentStack.length - 1; n < N; n++) {
+			for (let n = 0, N = parentStack.length - 1; n < N; n++) {
 				this._renderVerticalConnection(parentStack[n], parentStack[n + 1], endMarkerId, domContainer, 'parent');
 			}
 		}
@@ -280,7 +280,7 @@ var Rendering = Class(Parent, function() {
 	 * @param {String} endMarkerId - ID of an end marker of the connection line
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered connection will be placed
 	 */
-	_connectChildren: function(node, endMarkerId, domContainer) {
+	_connectChildren(node, endMarkerId, domContainer) {
 		node.children.forEach(child => {
 			this._renderVerticalConnection(child, node, endMarkerId, domContainer, 'child');
 
@@ -300,7 +300,7 @@ var Rendering = Class(Parent, function() {
 	 * @param {String} [type = ''] - Type of a connection line. This will be directly added to the class attribute
 	 */
 	// eslint-disable-next-line id-length
-	_renderHorizontalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type = '') {
+	_renderHorizontalConnection(nodeA, nodeB, endMarkerId, domContainer, type = '') {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
 			.attr('d', this._buildHorizontalPath(nodeA, nodeB))
@@ -323,7 +323,7 @@ var Rendering = Class(Parent, function() {
 	 * @param {String} [type = ''] - Type of a connection line. This will be directly added to the class attribute
 	 */
 	// eslint-disable-next-line id-length
-	_renderVerticalConnection: function(nodeA, nodeB, endMarkerId, domContainer, type = '') {
+	_renderVerticalConnection(nodeA, nodeB, endMarkerId, domContainer, type = '') {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
 			.attr('d', this._buildVerticalPath(nodeA, nodeB))
@@ -343,7 +343,7 @@ var Rendering = Class(Parent, function() {
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @return {String} - The value for `path` attribute
 	 */
-	_buildHorizontalPath: function(nodeA, nodeB) {
+	_buildHorizontalPath(nodeA, nodeB) {
 		const {dimensions, spacing} = this.properties.node;
 		const endPoint = nodeB.x - nodeA.x + dimensions.width + (this.properties.line.endMarker.width * this.properties.line.width);
 		const distance = endPoint + spacing.horizontal;
@@ -362,7 +362,7 @@ var Rendering = Class(Parent, function() {
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @return {String} - The value for `path` attribute
 	 */
-	_buildVerticalPath: function(nodeA, nodeB) {
+	_buildVerticalPath(nodeA, nodeB) {
 		const {dimensions, spacing} = this.properties.node;
 		const distance = nodeB.y - nodeA.y + dimensions.height + (this.properties.line.endMarker.height * this.properties.line.width);
 
@@ -380,7 +380,7 @@ var Rendering = Class(Parent, function() {
 	 * @return {String} - The value for `transform` attribute
 	 */
 	// eslint-disable-next-line id-length
-	_buildOffsetForHorizontalPath: function(nodeA) {
+	_buildOffsetForHorizontalPath(nodeA) {
 		const dimensions = this.properties.node.dimensions;
 
 		// eslint-disable-next-line no-magic-numbers
@@ -396,7 +396,7 @@ var Rendering = Class(Parent, function() {
 	 * @return {String} - The value for `transform` attribute
 	 */
 	// eslint-disable-next-line id-length
-	_buildOffsetForVerticalPath: function(nodeA) {
+	_buildOffsetForVerticalPath(nodeA) {
 		const dimensions = this.properties.node.dimensions;
 
 		// eslint-disable-next-line no-magic-numbers
