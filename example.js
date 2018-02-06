@@ -16,9 +16,18 @@ var graph = new (require('./'))(
 			children: ['Node'],
 			link: '#Parent'
 		},
+		Child: {
+			link: '#Child',
+		},
 		Child2: {
 			link: '#Child2',
 			children: ['Child3', 'Child4']
+		},
+		Child3: {
+			link: '#Child3',
+		},
+		Child4: {
+			link: '#Child4',
 		},
 		Mixin3: {
 			link: '#Mixin3'
