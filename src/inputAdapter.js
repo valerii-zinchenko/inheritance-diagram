@@ -71,7 +71,8 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 			parentStack: noiData.parent ? this._prepareParentNodes(noiData.parent, map) : undefined
 		});
 
-		this._prepareOtherNodes(noi, map);
+		this._prepareChildNodes(noi, map);
+		this._prepareMixinNodes(noi, map);
 
 		return noi;
 	},
@@ -99,24 +100,32 @@ var InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	},
 
 	/**
-	 * Prepare children and mixin nodes
-	 *
-	 * It also sets the correct type of the node.
+	 * Prepare children nodes
 	 *
 	 * @param {Object} map - Map of nodes
 	 */
-	_prepareOtherNodes: function(noi, map) {
-		[
-			['children', 'child'],
-			['mixes', 'mixin']
-		].forEach(setMap => {
-			const [setName, groupName] = setMap;
-			var set = noi[setName];
+	_prepareChildNodes: function(noi, map) {
+		var set = noi.children;
 
-			set.forEach((nodeName, index) => {
-				// Replace node name with GraphNode
-				set[index] = this._createGraphNode(nodeName, map, groupName);
-			});
+		set.forEach((nodeName, index) => {
+			// Replace node name with GraphNode
+			let childNode = set[index] = this._createGraphNode(nodeName, map, 'child');
+
+			this._prepareChildNodes(childNode, map);
+		});
+	},
+
+	/**
+	 * Prepare mixin nodes
+	 *
+	 * @param {Object} map - Map of nodes
+	 */
+	_prepareMixinNodes: function(noi, map) {
+		var set = noi.mixes;
+
+		set.forEach((nodeName, index) => {
+			// Replace node name with GraphNode
+			set[index] = this._createGraphNode(nodeName, map, 'mixin');
 		});
 	},
 

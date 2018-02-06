@@ -21,12 +21,12 @@ global.document = require('jsdom').jsdom('<body>');
  *
  * @param {String} noiName - Name of a node for what the diagram should be built
  * @param {Object} nodeMap - Map of nodes, where key is a node name and the value is an object of node properties
- * @param {Object} options - Options for processing nodes
+ * @param {Object} [options] - Options for processing nodes
  */
-var Diagram = Class(function(noiName, nodeMap, options = {}) {
+var Diagram = Class(function(noiName, nodeMap, options) {
 	global.document.body.innerHTML = '';
 
-	// Populate properties to pcrocessing services
+	// Populate properties to processing services
 	if (options && options instanceof Object) {
 		this.inAdapter.setProperties(options);
 		this.positioning.setProperties(options);
@@ -46,13 +46,13 @@ var Diagram = Class(function(noiName, nodeMap, options = {}) {
 		{
 			title: 'Positioning',
 			action: () => {
-				this.positioning.process(this.noi);
+				this.grid = this.positioning.process(this.noi);
 			}
 		},
 		{
 			title: 'Rendering',
 			action: () => {
-				this.domContainer = this.rendering.process(this.noi);
+				this.domContainer = this.rendering.process(this.grid, this.noi);
 			}
 		},
 		{
@@ -78,6 +78,12 @@ var Diagram = Class(function(noiName, nodeMap, options = {}) {
 	 * @type {GraphNode}
 	 */
 	noi: null,
+	/**
+	 * 2D grid with positioned nodes
+	 *
+	 * @type {Array[]}
+	 */
+	grid: [],
 	/**
 	 * Resulting SVG element
 	 *

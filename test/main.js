@@ -16,8 +16,8 @@ var fs = require('fs');
 var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, testFn) {
 	this.title = title;
 	this.noiName = noiName;
-	this.options = options;
 	this.nodeMap = nodeMap;
+	this.options = options;
 	this.expected = expected;
 
 	if (testFn) {
@@ -182,6 +182,68 @@ suite('E2E', function() {
 		});
 	});
 
+	suite('position multiple levels of children', function() {
+		[
+			new TestSVG('two levels with one children', 'Class', {
+				Class: {
+					children: ['Child0']
+				},
+				Child0: {
+					children: ['Child1']
+				}
+			}),
+			new TestSVG('two levels with two children on the second level', 'Class', {
+				Class: {
+					children: ['Child0']
+				},
+				Child0: {
+					children: ['Child10', 'Child11']
+				}
+			}),
+			new TestSVG('two levels with three children on 1 and two children on the 2 level', 'Class', {
+				Class: {
+					children: ['Child00', 'Child01', 'Child02']
+				},
+				Child01: {
+					children: ['Child10', 'Child11']
+				}
+			}),
+			new TestSVG('three levels', 'Class', {
+				Class: {
+					children: ['Child00', 'Child01', 'Child02', 'Child03']
+				},
+				Child01: {
+					children: ['Child10', 'Child11']
+				},
+				Child03: {
+					children: ['Child13']
+				},
+				Child10: {
+					children: ['Child20', 'Child21']
+				}
+			}),
+			new TestSVG('shifting of the last top children', 'Class', {
+				Class: {
+					children: ['Child00', 'Child01', 'Child02']
+				},
+				Child00: {
+					children: ['Child10', 'Child11']
+				},
+				Child02: {
+					children: ['Child13']
+				},
+				Child10: {
+					children: ['Child20', 'Child21', 'Child22']
+				},
+				Child11: {
+					children: ['Child23', 'Child24']
+				}
+			})
+		].forEach(function(testCase) {
+			testCase.run();
+		});
+	});
+
 	suite('mixins', function() {
 		[
 			new TestSVG('class with one undocumented mixin', 'Class', {
@@ -301,6 +363,33 @@ suite('E2E', function() {
 					UndocExtParent: 'http://link.to/parent/class.html',
 					UndocExtChild: 'http://link.to/child/class.html',
 					UndocExtMixin: 'http://link.to/mixin/class.html'
+				}
+			}),
+			new TestSVG('few parents, few mixins, few levels of children', 'Class', {
+				Class: {
+					children: ['Child00', 'Child01', 'Child02', 'Child03'],
+					parent: 'Parent1',
+					mixes: ['Mixin0', 'Mixin1', 'Mixin2']
+				},
+				Parent1: {
+					parent: 'Parent0',
+					children: ['Class', 'SomeOtherClass'],
+					mixes: ['Mix']
+				},
+				Parent0: {
+					parent: 'Parent'
+				},
+				Child01: {
+					children: ['Child10', 'Child11']
+				},
+				Child03: {
+					children: ['Child13']
+				},
+				Child10: {
+					children: ['Child20', 'Child21']
+				},
+				Child13: {
+					children: ['Child23', 'Child24']
 				}
 			})
 		].forEach(function(testCase) {

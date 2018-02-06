@@ -10,6 +10,9 @@
   },
   "scripts": {
     "test": "grunt test",
+    "coverage": "grunt coverage",
+    "lint": "grunt lint",
+    "doc": "grunt doc",
     "preversion": "grunt test lint"
   },
   "repository": {

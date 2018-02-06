@@ -86,6 +86,7 @@ var Rendering = Class(Parent, function() {
 	 *
 	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
 	 */
+	// eslint-disable-next-line no-unused-vars
 	setProperties: function(properties) {
 		Parent.prototype.setProperties.apply(this, arguments);
 
@@ -106,12 +107,12 @@ var Rendering = Class(Parent, function() {
 	},
 
 	/**
-	 *
 	 * Main processing routine
 	 *
+	 * @param {Array[]} grid - 2D grid with positioned nodes. A cell can be "undefied" or an instance of {@link GraphNode}
 	 * @param {GraphNode} noi - Node of interest with resolved dependecies
 	 */
-	process: function(noi) {
+	process: function(grid, noi) {
 		var minX = Infinity;
 		var maxX = -Infinity;
 		var minY = Infinity;
@@ -127,8 +128,12 @@ var Rendering = Class(Parent, function() {
 
 		// Render the nodes and find the real diagram boundaries
 		// --------------------------------------------------
-		[noi].concat(noi.parentStack, noi.children, noi.mixes)
-			.forEach(node => {
+		grid.forEach(row => {
+			row.forEach(node => {
+				if (!node) {
+					return;
+				}
+
 				this.renderNode(node, domDiagram);
 
 				// node's X and Y coordinates are rescaled in the method renderNode
@@ -145,6 +150,7 @@ var Rendering = Class(Parent, function() {
 					maxY = node.y;
 				}
 			});
+		});
 		// --------------------------------------------------
 
 		/* eslint-disable no-magic-numbers */
@@ -218,6 +224,7 @@ var Rendering = Class(Parent, function() {
 
 		// Create rectangle element in the main container
 		// --------------------------------------------------
+		// eslint-disable-next-line no-unused-vars
 		var domBorder = domNode.append('rect')
 			.attr('width', dimensions.width)
 			.attr('height', dimensions.height);
@@ -258,13 +265,26 @@ var Rendering = Class(Parent, function() {
 		/* eslint-enable no-magic-numbers */
 
 		// Connect children
-		noi.children.forEach(child => {
-			this._renderVerticalConnection(child, noi, endMarkerId, domContainer, 'child');
-		});
+		this._connectChildren(noi, endMarkerId, domContainer);
 
 		// Connect mixes
 		noi.mixes.forEach(mixin => {
 			this._renderHorizontalConnection(noi, mixin, endMarkerId, domContainer, 'mixin');
+		});
+	},
+
+	/**
+	 * Render the connections between a node and his children
+	 *
+	 * @param {GraphNode} node - node of interest
+	 * @param {String} endMarkerId - ID of an end marker of the connection line
+	 * @param {D3Selection} domContainer - DOM comntainer where the rendered connection will be placed
+	 */
+	_connectChildren: function(node, endMarkerId, domContainer) {
+		node.children.forEach(child => {
+			this._renderVerticalConnection(child, node, endMarkerId, domContainer, 'child');
+
+			this._connectChildren(child, endMarkerId, domContainer);
 		});
 	},
 

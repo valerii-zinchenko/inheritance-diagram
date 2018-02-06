@@ -55,9 +55,10 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 * 1. Position child nodes
 	 * 1. Position mixin nodes
 	 *
-	 * @param {GraphNode} noi - Node of interest
-	 *
 	 * @throws {TypeError} "noi" argument is expected to be an instance of GraphNode class
+	 *
+	 * @param {GraphNode} noi - Node of interest
+	 * @return {Array[]} 2D grid with positioned nodes. A cell can be "undefied" or an instance of {@link GraphNode}
 	 */
 	process: function(noi) {
 		if (!(noi instanceof GraphNode)) {
@@ -66,55 +67,131 @@ var Position = Class(Parent, null, /** @lends Position.prototype */ {
 
 		this.noi = noi;
 
-		this._positionNOI();
-		this._positionParents();
-		this._positionChildNodes();
-		this._positionMixinNodes();
+		const grid = [];
+
+		this._positionNOI(grid);
+		this._positionChildNodes(grid);
+
+		this._center(grid);
+
+		this._positionParents(grid);
+		this._positionMixinNodes(grid);
+
+		return grid;
 	},
 
 	/**
 	 * Position node of interest
+	 *
+	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionNOI: function() {
+	_positionNOI: function(grid) {
 		// eslint-disable-next-line no-magic-numbers
-		this.noi.x = ((this.noi.children.length || 1) - 1) / 2;
-		this.noi.y = 0;
+		this.noi.x = 0;
+		this.noi.y = grid.length;
+
+		grid.push([this.noi]);
 	},
 
 	/**
 	 * Position parent nodes of the NOI
+	 *
+	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionParents: function() {
-		const x = this.noi.x;
+	_positionParents: function(grid) {
 		this.noi.parentStack.forEach((node, index) => {
-			node.x = x;
+			node.x = this.noi.x;
 			// eslint-disable-next-line no-magic-numbers
 			node.y = -1 - index;
+
+			grid.unshift([node]);
 		});
 	},
 
 	/**
 	 * Position child nodes of the NOI
+	 *
+	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionChildNodes: function() {
+	_positionChildNodes: function(grid) {
+		var nextY = grid.length;
 		// eslint-disable-next-line no-magic-numbers
-		var yOffset = this.noi.y + 1;
+		var row = grid[nextY - 1];
+		var nextRow = [];
+		var anyMoreChildren = false;
 
-		this.noi.children.forEach((node, index) => {
-			node.x = index;
-			node.y = yOffset;
+		row.forEach(item => {
+			// eslint-disable-next-line no-magic-numbers
+			if (item && item.children.length > 0) {
+				anyMoreChildren = true;
+
+				item.children.forEach(node => {
+					node.x = nextRow.length;
+					node.y = nextY;
+					nextRow.push(node);
+				});
+			} else {
+				nextRow.push(undefined);
+			}
 		});
+
+		if (anyMoreChildren) {
+			grid.push(nextRow);
+			this._positionChildNodes(grid);
+		}
 	},
 
 	/**
 	 * Position mixin nodes of the NOI
+	 *
+	 * @param {Array[]} grid - 2D grid
 	 */
-	_positionMixinNodes: function() {
+	_positionMixinNodes: function(grid) {
 		this.noi.mixes.forEach((node, index) => {
 			// I do not like this -1.3, but this is fastest way for now to increase the distance between NOI and mixin
 			node.x = -1.3;
 			node.y = index;
 		});
+
+		grid.push(this.noi.mixes);
+	},
+
+	/**
+	 * Center the nodes
+	 *
+	 * @param {Array[]} grid - 2D grid
+	 */
+	_center: function(grid) {
+		const offsets = [];
+		/* eslint-disable no-magic-numbers */
+		grid[grid.length - 1].forEach(() => offsets.push(0));
+
+		// The centering is going from bottom to top relative to the last row. So the last row is taking as is and there is no reason to center it.
+		for (let n = grid.length - 2; n >= 0; n--) {
+			grid[n].forEach((node, m) => {
+				// propagate offset to the next cell
+				if (offsets[m] > offsets[m + 1]) {
+					offsets[m + 1] = offsets[m];
+				}
+
+				if (!node) {
+					return;
+				}
+
+				if (node.children.length > 0) {
+					// center the node relative to his children
+					node.x = (node.children[node.children.length - 1].x + node.children[0].x) / 2;
+
+					// update offset for current and next cells
+					const dx = node.children.length - 1;
+					offsets[m] += dx;
+					offsets[m + 1] += dx;
+				} else {
+					node.x += offsets[m];
+				}
+			});
+		}
+		/* eslint-disable no-magic-numbers */
 	}
 });
 
