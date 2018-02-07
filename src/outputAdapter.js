@@ -26,8 +26,9 @@ const OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ 
 	 */
 	_css: `
 		rect {stroke-width: 2; stroke: black; fill: white;}
+		a {cursor: pointer;}
 		a text {fill: blue; text-decoration: underline;}
-		path {stroke-width: 2; stroke: black; fill: none}
+		path {stroke-width: 2; stroke: black; fill: none;}
 		marker path {stroke-width:0; fill:black;}
 
 		.child rect, .parent rect {stroke: blue;}

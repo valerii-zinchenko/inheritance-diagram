@@ -30,7 +30,7 @@ suite('outputAdapter processor (edge cases only)', () => {
 			const domContainer = d3.select('body');
 			domContainer.append('svg');
 
-			assert.equal(module.process(domContainer), '<svg><defs><style type="text/css"><![CDATA[rect {stroke-width: 2; stroke: black; fill: white;} a text {fill: blue; text-decoration: underline;} path {stroke-width: 2; stroke: black; fill: none} marker path {stroke-width:0; fill:black;} .child rect, .parent rect {stroke: blue;} .mixin rect {stroke: green;}]]></style></defs></svg>');
+			assert.equal(module.process(domContainer), '<svg><defs><style type="text/css"><![CDATA[rect {stroke-width: 2; stroke: black; fill: white;} a {cursor: pointer;} a text {fill: blue; text-decoration: underline;} path {stroke-width: 2; stroke: black; fill: none;} marker path {stroke-width:0; fill:black;} .child rect, .parent rect {stroke: blue;} .mixin rect {stroke: green;}]]></style></defs></svg>');
 		});
 	});
 });
