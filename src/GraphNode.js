@@ -35,7 +35,7 @@ const GraphNode = Class(function(data, properties) {
 
 	if (properties) {
 		Object.keys(properties).forEach(property => {
-			var value = properties[property];
+			const value = properties[property];
 			if (typeof value === 'undefined' || typeof this[property] === 'function') {
 				return;
 			}

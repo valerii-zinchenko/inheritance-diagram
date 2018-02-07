@@ -21,7 +21,7 @@ global.document = new (require('jsdom').JSDOM)('<body>').window.document;
  *
  * @param {String} noiName - Name of a node for what the diagram should be built
  * @param {Object} nodeMap - Map of nodes, where key is a node name and the value is an object of node properties
- * @param {Object} [options] - Options for processing nodes
+ * @param {Object} [options] - Options for processing nodes: [InputAdapter]{@link InputAdapter#properties}, [Position]{@link Position#properties}, [Rendering]{@link Rendering#properties}, [OutputAdapter]{@link OutputAdapter#properties}
  */
 const Diagram = Class(function(noiName, nodeMap, options) {
 	global.document.body.innerHTML = '';

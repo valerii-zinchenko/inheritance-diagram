@@ -48,13 +48,13 @@ const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 * @param {Object} map - Map of nodes
 	 * @returns {GrapchNode} - NOI
 	 *
-	 * @throws {TypeError} "noi" argument is expected to be a string
+	 * @throws {TypeError} "noi" argument is expected to be a non-empty string
 	 * @throws {TypeError} "map" argument is expected to be an instance of Object class
 	 * @throws {Error} Node data for "${noiName}" does not exist in the provided node map
 	 */
 	process(noiName, map) {
-		if (typeof noiName !== 'string') {
-			throw new TypeError('"noi" argument is expected to be a string');
+		if (typeof noiName !== 'string' || !noiName) {
+			throw new TypeError('"noi" argument is expected to be a non-empty string');
 		}
 		if (!(map instanceof Object)) {
 			throw new TypeError('"map" argument is expected to be an instance of Object class');

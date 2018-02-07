@@ -8,6 +8,7 @@
 const Class = require('class-wrapper').Class;
 const Parent = require('./ProcessingNode');
 const d3 = require('d3-selection');
+const GraphNode = require('../src/GraphNode');
 
 /**
  * Rendering engine
@@ -109,10 +110,21 @@ const Rendering = Class(Parent, function() {
 	/**
 	 * Main processing routine
 	 *
+	 * @throws {TypeError} "grid" argument should be an array
+	 * @throws {TypeError} "noi" argument should be an instance of GraphNode
+	 *
 	 * @param {Array[]} grid - 2D grid with positioned nodes. A cell can be "undefied" or an instance of {@link GraphNode}
 	 * @param {GraphNode} noi - Node of interest with resolved dependecies
+	 * @return {D3Selection} DOM element, that contains SVG diagram
 	 */
 	process(grid, noi) {
+		if ( !(grid instanceof Array) ) {
+			throw new TypeError('"grid" argument should be an array');
+		}
+		if ( !(noi instanceof GraphNode) ) {
+			throw new TypeError('"noi" argument should be an instance of GraphNode');
+		}
+
 		let minX = Infinity;
 		let maxX = -Infinity;
 		let minY = Infinity;

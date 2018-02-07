@@ -5,15 +5,15 @@
  */
 'use strict';
 
-var Diagram = require('../src/main');
+const Diagram = require('../src/main');
 
-var Class = require('class-wrapper').Class;
-var assert = require('chai').assert;
-var fs = require('fs');
+const Class = require('class-wrapper').Class;
+const assert = require('chai').assert;
+const fs = require('fs');
 
 
 // eslint-disable-next-line max-params
-var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, testFn) {
+const TestWrapper = Class(function(title, noiName, nodeMap, options, expected, testFn) {
 	this.title = title;
 	this.noiName = noiName;
 	this.nodeMap = nodeMap;
@@ -37,7 +37,7 @@ var TestWrapper = Class(function(title, noiName, nodeMap, options, expected, tes
 	}
 });
 
-var TestSVG = Class(TestWrapper, function() {
+const TestSVG = Class(TestWrapper, function() {
 	this.expected = fs.readFileSync(`./test/expected_data/${this.title}.svg`, 'utf-8');
 }, {
 	testFn() {
@@ -390,6 +390,48 @@ suite('E2E', function() {
 				},
 				Child13: {
 					children: ['Child23', 'Child24']
+				}
+			}),
+			new TestSVG('complex diagram with nondefault properties', 'Class', {
+				Class: {
+					parent: 'Parent',
+					children: ['Child', 'Child2'],
+					mixes: ['Mixin', 'Mixin2', 'Mixin3']
+				},
+				Parent: {
+					parent: 'Object',
+					children: ['Node'],
+					link: '#Parent'
+				},
+				Child: {
+					link: '#Child'
+				},
+				Child2: {
+					link: '#Child2',
+					children: ['Child3', 'Child4']
+				},
+				Child4: {
+					link: '#Child4'
+				},
+				Mixin3: {
+					link: '#Mixin3'
+				}
+			}, {
+				css: '.no-ref rect {fill: lightgray;}',
+				node: {
+					dimensions: {
+						width: 120
+					},
+					spacing: {
+						horizontal: 20,
+						vertical: 30
+					},
+					text: {
+						dx: 20
+					}
+				},
+				externalLinks: {
+					Mixin: 'http://link.to/mixin/class.html'
 				}
 			})
 		].forEach(function(testCase) {

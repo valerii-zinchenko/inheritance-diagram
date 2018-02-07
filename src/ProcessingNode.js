@@ -13,14 +13,8 @@ const utils = require('class-wrapper').utils;
  * Abstract processing node
  *
  * @class
- *
- * @param {Object} [properties] - Set of properties for a processor
  */
-const ProcessingNode = Class(function(properties) {
-	if (properties) {
-		this.setProperties(properties);
-	}
-}, /** @lends ProcessingNode.prototype */ {
+const ProcessingNode = Class(null, /** @lends ProcessingNode.prototype */ {
 	/**
 	 * Set of properties
 	 *
