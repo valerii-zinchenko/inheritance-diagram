@@ -6,6 +6,7 @@
 'use strict';
 
 const Diagram = require('../src/main');
+const GraphNode = require('../src/GraphNode');
 
 const Class = require('class-wrapper').Class;
 const assert = require('chai').assert;
@@ -80,6 +81,17 @@ suite('E2E', function() {
 					link: '#Parent'
 				}
 			}),
+			new TestSVG('class with one parent already converted into GraphNode', 'Class', {
+				Class: {
+					parent: 'Parent'
+				},
+				Parent: new GraphNode({
+						link: '#Parent'
+					}, {
+						name: 'Parent',
+						type: 'parent'
+					})
+			}),
 			new TestSVG('five parent levels', 'Class', {
 				Class: {
 					parent: 'Parent1'
@@ -119,6 +131,18 @@ suite('E2E', function() {
 				},
 				Child: {
 					link: '#Child'
+				}
+			}),
+			new TestSVG('one child already converted into GraphNode', 'Class', {
+				Class: {
+					children: [
+						new GraphNode({
+							link: '#Child'
+						}, {
+							name: 'Child',
+							type: 'child'
+						})
+					]
 				}
 			}),
 			new TestSVG('five different children', 'Class', {
@@ -217,6 +241,18 @@ suite('E2E', function() {
 					link: '#Mixin'
 				}
 			}),
+			new TestSVG('one mixin already converted into GraphNode', 'Class', {
+				Class: {
+					mixes: [
+						new GraphNode({
+							link: '#Mixin'
+						}, {
+							name: 'Mixin',
+							type: 'mixin'
+						})
+					]
+				}
+			}),
 			new TestSVG('five different mixins', 'Class', {
 				Class: {
 					mixes: ['Mixin1', 'Mixin2', 'Mixin3', 'Mixin4', 'Mixin5']
@@ -281,7 +317,7 @@ suite('E2E', function() {
 			}),
 			new TestSVG('mix of documented and undocumented classes', 'Class', {
 				Class: {
-					parent: ['DocParent'],
+					parent: 'DocParent',
 					children: ['DocChild', 'UndocChild'],
 					mixes: ['DocMixin', 'UndocMixin']
 				},

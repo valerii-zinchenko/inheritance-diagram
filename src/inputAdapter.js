@@ -16,8 +16,6 @@ const GraphNode = require('./GraphNode');
  *
  * @class
  * @augments ProcessingNode
- *
- * @param {Object} [properties] - [Adapter properties]{@link InputAdapter#properties}
  */
 const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	/**
@@ -64,14 +62,21 @@ const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 * The first node in stack is the actual parent node of the NOI. The last parent node is the root node of the inheritance chain.
 	 * It also sets the correct type of the parent node.
 	 *
+	 * @throws {TypeError} The parent for a node should be either a name of a parent node or be already an instance of GraphNode
+	 *
 	 * @param {String} nodeName - Parent node name
 	 * @param {Object} map - Map of nodes
 	 * @returns {GraphNode[]} - Ordered stack of parent nodes
 	 */
 	_prepareParentNodes(nodeName, map) {
+		if (typeof nodeName !== 'string') {
+			throw new TypeError('The parent for a node should be either a name of a parent node or be already an instance of GraphNode');
+		}
+
 		const data = map[nodeName];
 
-		let stack = [this._createGraphNode(nodeName, map, 'parent')];
+		// the nodes in the map can be already converted into GraphNode
+		let stack = [data instanceof GraphNode ? data : this._createGraphNode(nodeName, map, 'parent')];
 
 		if (data && data.parent) {
 			stack = stack.concat(this._prepareParentNodes(data.parent, map));
@@ -83,12 +88,22 @@ const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	/**
 	 * Prepare children nodes
 	 *
+	 * @throws {TypeError} The children for a node should contain either name of a child node or be already an instance of GraphNode
+	 *
 	 * @param {Object} map - Map of nodes
 	 */
 	_prepareChildNodes(noi, map) {
 		const set = noi.children;
 
 		set.forEach((nodeName, index) => {
+			// the nodes in the map can be already converted into GraphNode
+			if (nodeName instanceof GraphNode) {
+				return;
+			}
+			if (typeof nodeName !== 'string' || !nodeName) {
+				throw new TypeError('The children for a node should contain either name of a child node or be already an instance of GraphNode');
+			}
+
 			// Replace node name with GraphNode
 			let childNode = set[index] = this._createGraphNode(nodeName, map, 'child');
 
@@ -99,12 +114,22 @@ const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	/**
 	 * Prepare mixin nodes
 	 *
+	 * @throws {TypeError} The mixes for a node should contain either name of a mixin node or be already an instance of GraphNode
+	 *
 	 * @param {Object} map - Map of nodes
 	 */
 	_prepareMixinNodes(noi, map) {
 		const set = noi.mixes;
 
 		set.forEach((nodeName, index) => {
+			// the nodes in the map can be already converted into GraphNode
+			if (nodeName instanceof GraphNode) {
+				return;
+			}
+			if (typeof nodeName !== 'string' || !nodeName) {
+				throw new TypeError('The mixes for a node should contain either name of a mixin node or be already an instance of GraphNode');
+			}
+
 			// Replace node name with GraphNode
 			set[index] = this._createGraphNode(nodeName, map, 'mixin');
 		});

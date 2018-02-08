@@ -61,6 +61,77 @@ suite('inputAdapter processor (edge cases only)', () => {
 				});
 			});
 
+			suite('exception should be thrown if name of parent is not a string or an empty string', () => {
+				// "false" statements (undefined, null, ...) are filtered inside the processor in trenary operator
+				[
+					true,
+					1,
+					{},
+					function() {},
+					[]
+				].forEach(testCase => {
+					test(`type: ${Object.prototype.toString.apply(testCase)}; value: ${testCase}`, () => {
+						assert.throw(() => {
+							module.process('noi', {
+								noi: {
+									parent: testCase
+								}
+							});
+						}, TypeError, 'The parent for a node should be either a name of a parent node or be already an instance of GraphNode');
+					});
+				});
+			});
+
+			suite('exception should be thrown if name of child is not a string or an empty string', () => {
+				[
+					undefined,
+					null,
+					false,
+					true,
+					0,
+					1,
+					{},
+					function() {},
+					[],
+					''
+				].forEach(testCase => {
+					test(`type: ${Object.prototype.toString.apply(testCase)}; value: ${testCase}`, () => {
+						assert.throw(() => {
+							module.process('noi', {
+								noi: {
+									children: [testCase]
+								}
+							});
+						}, TypeError, 'The children for a node should contain either name of a child node or be already an instance of GraphNode');
+					});
+				});
+			});
+
+			suite('exception should be thrown if name of mixin is not a string or an empty string', () => {
+				[
+					undefined,
+					null,
+					false,
+					true,
+					0,
+					1,
+					{},
+					function() {},
+					[],
+					''
+				].forEach(testCase => {
+					test(`type: ${Object.prototype.toString.apply(testCase)}; value: ${testCase}`, () => {
+						assert.throw(() => {
+							module.process('noi', {
+								noi: {
+									mixes: [testCase]
+								}
+							});
+						}, TypeError, 'The mixes for a node should contain either name of a mixin node or be already an instance of GraphNode');
+					});
+				});
+			});
+
 			test('exception should be thrown if name of NOI is not in map of nodes', () => {
 				assert.throw(() => {
 					module.process('noi', {});
