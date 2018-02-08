@@ -12,3 +12,4 @@ tmp-cov/
 coverage/
 doc/
 test/lib
+.nyc_output/

@@ -9,8 +9,8 @@
     "coverage": "coverage"
   },
   "scripts": {
-    "test": "grunt test",
-    "coverage": "grunt coverage",
+    "test": "mocha --ui tdd --reporter spec",
+    "coverage": "nyc --reporter=html --reporter=text-summary npm test",
     "lint": "grunt lint",
     "doc": "grunt doc",
     "preversion": "grunt test lint"
@@ -41,13 +41,10 @@
     "eslint": "^4.17.0",
     "grunt": "^1.0.1",
     "grunt-eslint": "^20.1.0",
-    "grunt-istanbul": "^0.8.0",
     "grunt-jsdoc": "^2.2.1",
-    "grunt-mocha-istanbul": "^5.0.2",
-    "grunt-mocha-test": "^0.13.2",
-    "istanbul": "^0.4.5",
     "jsdoc-inheritance-diagram": "^1.1.1",
     "load-grunt-tasks": "^3.5.2",
-    "mocha": "^5.0.0"
+    "mocha": "^5.0.0",
+    "nyc": "^11.4.1"
   }
 }
