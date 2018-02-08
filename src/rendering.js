@@ -116,10 +116,10 @@ const Rendering = Class(Parent, function() {
 	 * @return {D3Selection} DOM element, that contains SVG diagram
 	 */
 	process(grid, noi) {
-		if ( !(grid instanceof Array) ) {
+		if (!(grid instanceof Array)) {
 			throw new TypeError('"grid" argument should be an array');
 		}
-		if ( !(noi instanceof GraphNode) ) {
+		if (!(noi instanceof GraphNode)) {
 			throw new TypeError('"noi" argument should be an instance of GraphNode');
 		}
 
@@ -308,10 +308,10 @@ const Rendering = Class(Parent, function() {
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @param {String} endMarkerId - ID of an end marker for the connection line
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
-	 * @param {String} [type = ''] - Type of a connection line. This will be directly added to the class attribute
+	 * @param {String} type - Type of a connection line. This will be directly added to the class attribute
 	 */
 	// eslint-disable-next-line id-length
-	_renderHorizontalConnection(nodeA, nodeB, endMarkerId, domContainer, type = '') {
+	_renderHorizontalConnection(nodeA, nodeB, endMarkerId, domContainer, type) {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForHorizontalPath(nodeA, nodeB))
 			.attr('d', this._buildHorizontalPath(nodeA, nodeB))
@@ -331,10 +331,10 @@ const Rendering = Class(Parent, function() {
 	 * @param {GraphNode} nodeB - Node where the connection will be ended
 	 * @param {String} endMarkerId - ID of an end marker for the connection line
 	 * @param {D3Selection} domContainer - DOM container where the connection line will be inserted
-	 * @param {String} [type = ''] - Type of a connection line. This will be directly added to the class attribute
+	 * @param {String} type - Type of a connection line. This will be directly added to the class attribute
 	 */
 	// eslint-disable-next-line id-length
-	_renderVerticalConnection(nodeA, nodeB, endMarkerId, domContainer, type = '') {
+	_renderVerticalConnection(nodeA, nodeB, endMarkerId, domContainer, type) {
 		domContainer.append('path')
 			.attr('transform', this._buildOffsetForVerticalPath(nodeA, nodeB))
 			.attr('d', this._buildVerticalPath(nodeA, nodeB))

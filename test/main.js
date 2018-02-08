@@ -85,12 +85,14 @@ suite('E2E', function() {
 				Class: {
 					parent: 'Parent'
 				},
+				/* eslint-disable indent */
 				Parent: new GraphNode({
 						link: '#Parent'
 					}, {
 						name: 'Parent',
 						type: 'parent'
 					})
+				/* eslint-disable indent */
 			}),
 			new TestSVG('five parent levels', 'Class', {
 				Class: {
