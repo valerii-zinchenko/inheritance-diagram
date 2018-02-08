@@ -2,7 +2,7 @@
 
 This builds an inheritance diagram for some node of interest. Initially it is designed to use in documentations with class description to show parent stack, mixed in nodes and the whole tree of children.
 
-Nodes that contains `link` property will be highlighted and behave as usual link element to allow fast jumping to the next interested node in the documentation. Also it is possible to set the links to the external classes over `externalLinks` property, in order to have all links on a single diagram.
+Nodes that contains `link` property will be highlighted and behave as usual link element to allow fast jumping to the next interested node in the documentation.
 
 
 ## Limitations
@@ -74,11 +74,6 @@ var graph = new (require('inheritance-diagram'))(
 			text: {
 				dx: 10
 			}
-		},
-
-		// External links to 3rd-party classes
-		externalLinks: {
-			Mixin: 'http://link.to/mixin/class.html'
 		}
 	}
 );
