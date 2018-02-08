@@ -13,7 +13,7 @@
     "coverage": "nyc --reporter=html --reporter=text-summary npm test",
     "lint": "grunt lint",
     "doc": "grunt doc",
-    "preversion": "grunt test lint"
+    "preversion": "npm test && npm run lint"
   },
   "repository": {
     "type": "git",
