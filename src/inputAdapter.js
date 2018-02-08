@@ -21,25 +21,6 @@ const GraphNode = require('./GraphNode');
  */
 const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	/**
-	 * Input adapter properties
-	 *
-	 * @example
-	 * properties: {
-	 * 	externalLinks: {
-	 * 		ExternalClass: 'http://link.to/some/external/class.html',
-	 * 		ExternalClass2: 'http://link.to/some/external/class2.html'
-	 * 	}
-	 * }
-	 *
-	 * @type {Object}
-	 *
-	 * @property {Object} [externalLinks = {}] - Map of external links. Usefull to have a direct link to the documentation of 3rd-party class.
-	 */
-	properties: {
-		externalLinks: {}
-	},
-
-	/**
 	 * Prepare raw NOI data for the further processing
 	 *
 	 * It also collects and sets the parent stack for NOI
@@ -138,17 +119,7 @@ const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 	 * @return {GraphNode}
 	 */
 	_createGraphNode(nodeName, map, type) {
-		let data = map[nodeName];
-
-		// If no 'data' - means that node is not documented,
-		// but if some external link is provided - create a node data with link info only
-		if (!data && this.properties.externalLinks[nodeName]) {
-			data = {
-				link: this.properties.externalLinks[nodeName]
-			};
-		}
-
-		return new GraphNode(data, {
+		return new GraphNode(map[nodeName], {
 			name: nodeName,
 			type: type
 		});

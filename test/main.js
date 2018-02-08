@@ -100,27 +100,6 @@ suite('E2E', function() {
 					parent: 'Parent5',
 					link: '#Parent4'
 				}
-			}),
-			new TestSVG('undocumented parent class with external link', 'Class', {
-				Class: {
-					parent: 'Parent'
-				}
-			}, {
-				externalLinks: {
-					Parent: 'http://link.to/parent/class.html'
-				}
-			}),
-			new TestSVG('documented parent class with provided external link', 'Class', {
-				Class: {
-					parent: 'Parent'
-				},
-				Parent: {
-					link: '#Parent'
-				}
-			}, {
-				externalLinks: {
-					Parent: 'http://link.to/parent/class.html'
-				}
 			})
 		].forEach(function(testCase) {
 			testCase.run();
@@ -154,27 +133,6 @@ suite('E2E', function() {
 				},
 				Child4: {
 					link: '#Child4'
-				}
-			}),
-			new TestSVG('undocumented child class with external link', 'Class', {
-				Class: {
-					children: ['Child']
-				}
-			}, {
-				externalLinks: {
-					Child: 'http://link.to/child/class.html'
-				}
-			}),
-			new TestSVG('documented child class with provided external link', 'Class', {
-				Class: {
-					children: ['Child']
-				},
-				Child: {
-					link: '#Child'
-				}
-			}, {
-				externalLinks: {
-					Child: 'http://link.to/child/class.html'
 				}
 			})
 		].forEach(function(testCase) {
@@ -272,27 +230,6 @@ suite('E2E', function() {
 				Mixin4: {
 					link: '#Mixin4'
 				}
-			}),
-			new TestSVG('undocumented mixin class with external link', 'Class', {
-				Class: {
-					mixes: ['Mixin']
-				}
-			}, {
-				externalLinks: {
-					Mixin: 'http://link.to/mixin/class.html'
-				}
-			}),
-			new TestSVG('documented mixin class with provided external link', 'Class', {
-				Class: {
-					mixes: ['Mixin']
-				},
-				Mixin: {
-					link: '#Mixin'
-				}
-			}, {
-				externalLinks: {
-					Mixin: 'http://link.to/mixin/class.html'
-				}
 			})
 		].forEach(function(testCase) {
 			testCase.run();
@@ -342,14 +279,13 @@ suite('E2E', function() {
 					link: '#DocMixin'
 				}
 			}),
-			new TestSVG('mix of documented, undocumented and undocumented classes with external links', 'Class', {
+			new TestSVG('mix of documented and undocumented classes', 'Class', {
 				Class: {
 					parent: ['DocParent'],
-					children: ['DocChild', 'UndocChild', 'UndocExtChild'],
-					mixes: ['DocMixin', 'UndocMixin', 'UndocExtMixin']
+					children: ['DocChild', 'UndocChild'],
+					mixes: ['DocMixin', 'UndocMixin']
 				},
 				DocParent: {
-					parent: 'UndocExtParent',
 					link: '#DocParent'
 				},
 				DocChild: {
@@ -357,12 +293,6 @@ suite('E2E', function() {
 				},
 				DocMixin: {
 					link: '#DocMixin'
-				}
-			}, {
-				externalLinks: {
-					UndocExtParent: 'http://link.to/parent/class.html',
-					UndocExtChild: 'http://link.to/child/class.html',
-					UndocExtMixin: 'http://link.to/mixin/class.html'
 				}
 			}),
 			new TestSVG('few parents, few mixins, few levels of children', 'Class', {
