@@ -17,8 +17,6 @@ const GraphNode = require('../src/GraphNode');
  *
  * @class
  * @augments ProcessingNode
- *
- * @param {Object} [properties] - Set of [properties]{@link Rendering#properties}
  */
 const Rendering = Class(Parent, function() {
 	this.rescale();
@@ -85,7 +83,7 @@ const Rendering = Class(Parent, function() {
 	/**
 	 * Reset properies
 	 *
-	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
+	 * @param {Object} properties - Set of [properties]{@link Rendering#properties}. Any of already defined properties can be redefined and new one can be added
 	 */
 	// eslint-disable-next-line no-unused-vars
 	setProperties(properties) {

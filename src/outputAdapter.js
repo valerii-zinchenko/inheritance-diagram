@@ -14,8 +14,6 @@ const Parent = require('./ProcessingNode');
  *
  * @class
  * @augments ProcessingNode
- *
- * @param {Object} [properties] - [Adapter properties]{@link OutputAdapter#properties}
  */
 const OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ {
 	/**

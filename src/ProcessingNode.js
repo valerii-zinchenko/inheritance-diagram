@@ -25,7 +25,7 @@ const ProcessingNode = Class(null, /** @lends ProcessingNode.prototype */ {
 	/**
 	 * Reset properies
 	 *
-	 * @param {Object} [properties] - Properties. Any of already defined properties can be redefined and new one can be added
+	 * @param {Object} properties - Properties. Any of already defined properties can be redefined and new one can be added
 	 */
 	setProperties(properties) {
 		utils.deepCopy(this.properties, properties);
