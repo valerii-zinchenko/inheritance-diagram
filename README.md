@@ -1,8 +1,8 @@
 # Inheritance diagram builder
 
-This builds an inheritance diagram for a some node of interest. Initially it is designed to use in documentations with class description to show parent stack, child nodes and mixed in nodes.
+This builds an inheritance diagram for some node of interest. Initially it is designed to use in documentations with class description to show parent stack, mixed in nodes and the whole tree of children.
 
-Nodes that contains `link` property will be highlighted and behave as usual link element to allow fast jumping to the next interested node in the documentation. Also it is possible to set the links to the external classes over `externalLinks` property, in order to have all links on a single diagram.
+Nodes that contains `link` property will be highlighted and behave as usual link element to allow fast jumping to the next interested node in the documentation.
 
 
 ## Limitations
@@ -30,23 +30,33 @@ var graph = new (require('inheritance-diagram'))(
 	// Full map of nodes and relationships
 	{
 		Node: {
-			parent: 'ParentNode',
+			parent: 'Parent',
 			children: ['Child', 'Child2'],
 			mixes:['Mixin', 'Mixin2', 'Mixin3']
 		},
-		ParentNode: {
+		Parent: {
 			parent: 'Object',
 			children: ['Node'],
-			link: '#ParentNode'
+			link: '#Parent'
+		},
+		Child: {
+			link: '#Child',
 		},
 		Child2: {
-			link: '#Child2'
+			link: '#Child2',
+			children: ['Child3', 'Child4']
+		},
+		Child3: {
+			link: '#Child3',
+		},
+		Child4: {
+			link: '#Child4',
 		},
 		Mixin3: {
 			link: '#Mixin3'
 		}
 	},
-	
+
 	// Additional options
 	{
 		// Optional custom CSS
@@ -62,13 +72,8 @@ var graph = new (require('inheritance-diagram'))(
 				vertical: 30
 			},
 			text: {
-				dx: 20
+				dx: 10
 			}
-		},
-
-		// External links to 3rd-party classes
-		externalLinks: {
-			Mixin: 'http://link.to/mixin/class.html'
 		}
 	}
 );
@@ -84,7 +89,7 @@ require('fs').writeFile('out.svg', graph.getResult(), err => {
 });
 ```
 
-The similar task is required if you want to get the CSS from a file. The example is below:
+The similar task is required if you want to get the CSS from an external file and apply it to the diagram. The example is below:
 
 ```js
 require('fs').readFile('styles.css', 'utf8', (err, data) => {
