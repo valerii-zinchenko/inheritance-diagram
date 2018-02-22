@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>InputAdapter</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>InputAdapter<span class="signature">()</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -40,14 +40,16 @@
 
     
 
-    <h4 class="name" id="InputAdapter"><span class="type-signature"></span>new InputAdapter<span class="signature">(properties<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+    <h4 class="name" id="InputAdapter"><span class="type-signature"></span>new InputAdapter<span class="signature">()</span><span class="type-signature"></span></h4>
+    
 
     
 
 
 
 <div class="description">
-    <div class="class-diagram"><svg width="140" height="140" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><defs><marker id="Arrow" refY="2.5" orient="auto" style="overflow: visible;"><path d="M 0 0 L 5 2.5 L 0 5 z"></path></marker><style type="text/css"><![CDATA[rect {stroke-width: 2; stroke: black; fill: white;} a text {fill: blue; text-decoration: underline;} path {stroke-width: 2; stroke: black; fill: none} marker path {stroke-width:0; fill:black;} .child rect, .parent rect {stroke: blue;} .mixin rect {stroke: green;}]]></style></defs><g transform="translate(0, 90)"><g class="noi" transform="translate(10, 0)"><rect width="120" height="30"></rect><text dx="10" dy="20">InputAdapter</text></g><g class="parent" transform="translate(10, -70)"><a href="ProcessingNode.html"><rect width="120" height="30"></rect><text dx="10" dy="20">ProcessingNode</text></a></g><path transform="translate(70, 0)" d="M 0 0 v -30" marker-end="url(#Arrow)" stroke-width="2" stroke="black" fill="none" class="parent"></path></g></svg></div><p>Input adapter</p>
+    <div class="class-diagram"><svg width="150" height="140" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><defs><marker id="Arrow" refY="2.5" orient="auto" style="overflow: visible;"><path d="M 0 0 L 5 2.5 L 0 5 z"></path></marker><style type="text/css"><![CDATA[rect {stroke-width: 2; stroke: black; fill: white;} a {cursor: pointer;} a text {fill: blue; text-decoration: underline;} path {stroke-width: 2; stroke: black; fill: none;} marker path {stroke-width:0; fill:black;} .child rect, .parent rect {stroke: blue;} .mixin rect {stroke: green;}]]></style></defs><g transform="translate(0, 90)"><g class="parent" transform="translate(10, -70)"><a href="ProcessingNode.html"><rect width="130" height="30"></rect><text dx="10" dy="20">ProcessingNode</text></a></g><g class="noi" transform="translate(10, 0)"><rect width="130" height="30"></rect><text dx="10" dy="20">InputAdapter</text></g><path transform="translate(75, 0)" d="M 0 0 v -30" marker-end="url(#Arrow)" stroke-width="2" stroke="black" fill="none" class="parent"></path></g></svg></div><p>Input adapter</p>
 <p>It converts the raw objects into GraphNodes and prepares node of interest for futher processing</p>
 </div>
 
@@ -57,67 +59,6 @@
 
 
 
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>properties</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p><a href="InputAdapter.html#properties">Adapter properties</a></p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -153,7 +94,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line23">line 23</a>
+        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -163,6 +104,8 @@
 
     
 </dl>
+
+
 
 
 
@@ -199,7 +142,9 @@
 
     
 
-     
+    
+
+    
 
     
 
@@ -214,7 +159,7 @@
 
 
 <div class="description">
-    <p>Input adapter properties</p>
+    <p>Set of properties</p>
 </div>
 
 
@@ -233,76 +178,6 @@
 
 
 
-    <h5 class="subsection-title">Properties:</h5>
-
-    
-
-<table class="props">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>externalLinks</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    {}
-                
-                </td>
-            
-
-            <td class="description last"><p>Map of external links. Usefull to have a direct link to the documentation of 3rd-party class.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
 <dl class="details">
 
     
@@ -310,10 +185,8 @@
     
 
     
-
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
         <a href="ProcessingNode.html#properties">ProcessingNode#properties</a>
     </li></ul></dd>
     
@@ -335,9 +208,11 @@
     
 
     
+
+    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line39">line 39</a>
+        <a href="ProcessingNode.js.html">ProcessingNode.js</a>, <a href="ProcessingNode.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -352,16 +227,6 @@
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>properties: {
-	externalLinks: {
-		ExternalClass: 'http://link.to/some/external/class.html',
-		ExternalClass2: 'http://link.to/some/external/class2.html'
-	}
-}</code></pre>
-
-
 
         
     
@@ -374,7 +239,9 @@
 
     
 
+    
     <h4 class="name" id="_createGraphNode"><span class="type-signature"></span>_createGraphNode<span class="signature">(nodeName, map, type)</span><span class="type-signature"> &rarr; {<a href="GraphNode.html">GraphNode</a>}</span></h4>
+    
 
     
 
@@ -520,7 +387,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line132">line 132</a>
+        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line146">line 146</a>
     </li></ul></dd>
     
 
@@ -564,20 +431,23 @@
 
 
 
+
+
         
             
 
     
 
-    <h4 class="name" id="_prepareOtherNodes"><span class="type-signature"></span>_prepareOtherNodes<span class="signature">(map)</span><span class="type-signature"></span></h4>
+    
+    <h4 class="name" id="_prepareChildNodes"><span class="type-signature"></span>_prepareChildNodes<span class="signature">(map)</span><span class="type-signature"></span></h4>
+    
 
     
 
 
 
 <div class="description">
-    <p>Prepare children and mixin nodes</p>
-<p>It also sets the correct type of the node.</p>
+    <p>Prepare children nodes</p>
 </div>
 
 
@@ -670,7 +540,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line109">line 109</a>
+        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -691,6 +561,37 @@
 
 
 
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>The children for a node should contain either name of a child node or be already an instance of GraphNode</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
 
 
 
@@ -701,7 +602,173 @@
 
     
 
+    
+    <h4 class="name" id="_prepareMixinNodes"><span class="type-signature"></span>_prepareMixinNodes<span class="signature">(map)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Prepare mixin nodes</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>map</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Map of nodes</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line121">line 121</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>The mixes for a node should contain either name of a mixin node or be already an instance of GraphNode</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="_prepareParentNodes"><span class="type-signature"></span>_prepareParentNodes<span class="signature">(nodeName, map)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="GraphNode.html">GraphNode</a>>}</span></h4>
+    
 
     
 
@@ -826,7 +893,7 @@ It also sets the correct type of the parent node.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line90">line 90</a>
+        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -847,6 +914,35 @@ It also sets the correct type of the parent node.</p>
 
 
 
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>The parent for a node should be either a name of a parent node or be already an instance of GraphNode</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
 
 
 <h5>Returns:</h5>
@@ -876,12 +972,16 @@ It also sets the correct type of the parent node.</p>
 
 
 
+
+
         
             
 
     
 
+    
     <h4 class="name" id="process"><span class="type-signature"></span>process<span class="signature">(noiName, map)</span><span class="type-signature"> &rarr; {GrapchNode}</span></h4>
+    
 
     
 
@@ -1010,7 +1110,7 @@ It also sets the correct type of the parent node.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line56">line 56</a>
+        <a href="inputAdapter.js.html">inputAdapter.js</a>, <a href="inputAdapter.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -1038,7 +1138,7 @@ It also sets the correct type of the parent node.</p>
 <dl>
     <dt>
         <div class="param-desc">
-        <p>&quot;noi&quot; argument is expected to be a string</p>
+        <p>&quot;noi&quot; argument is expected to be a non-empty string</p>
         </div>
     </dt>
     <dd></dd>
@@ -1143,12 +1243,16 @@ It also sets the correct type of the parent node.</p>
 
 
 
+
+
         
             
 
     
 
-    <h4 class="name" id="setProperties"><span class="type-signature"></span>setProperties<span class="signature">(properties<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+    <h4 class="name" id="setProperties"><span class="type-signature"></span>setProperties<span class="signature">(properties)</span><span class="type-signature"></span></h4>
+    
 
     
 
@@ -1179,8 +1283,6 @@ It also sets the correct type of the parent node.</p>
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -1205,16 +1307,6 @@ It also sets the correct type of the parent node.</p>
             
             </td>
 
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
             
 
             
@@ -1265,7 +1357,7 @@ It also sets the correct type of the parent node.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ProcessingNode.js.html">ProcessingNode.js</a>, <a href="ProcessingNode.js.html#line37">line 37</a>
+        <a href="ProcessingNode.js.html">ProcessingNode.js</a>, <a href="ProcessingNode.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -1275,6 +1367,8 @@ It also sets the correct type of the parent node.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1313,7 +1407,7 @@ It also sets the correct type of the parent node.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Mar 12 2017 20:16:20 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Feb 22 2018 22:41:29 GMT+0200 (EET)
 </footer>
 
 <script> prettyPrint(); </script>
