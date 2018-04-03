@@ -98,11 +98,9 @@ const Rendering = Class(Parent, function() {
 	rescale() {
 		const {dimensions, spacing} = this.properties.node;
 
-		/* eslint-disable no-magic-numbers */
 		// 2 means for both sides
 		this._scale.x = dimensions.width + (2 * spacing.horizontal);
 		this._scale.y = dimensions.height + (2 * spacing.vertical);
-		/* eslint-enable no-magic-numbers */
 	},
 
 	/**
@@ -163,7 +161,6 @@ const Rendering = Class(Parent, function() {
 		});
 		// --------------------------------------------------
 
-		/* eslint-disable no-magic-numbers */
 		const endMarker = this.properties.line.endMarker;
 		domDefs.append('marker')
 			.attr('id', 'Arrow')
@@ -172,7 +169,6 @@ const Rendering = Class(Parent, function() {
 			.style('overflow', 'visible')
 			.append('path')
 			.attr('d', `M 0 0 L ${endMarker.height} ${endMarker.width / 2} L 0 ${endMarker.height} z`);
-		/* eslint-enable no-magic-numbers */
 
 		// Render connection lines
 		// --------------------------------------------------
@@ -265,7 +261,6 @@ const Rendering = Class(Parent, function() {
 	renderConnections(noi, endMarkerId, domContainer) {
 		// Connect parents
 		const parentStack = noi.parentStack;
-		/* eslint-disable no-magic-numbers */
 		if (parentStack.length > 0) {
 			this._renderVerticalConnection(noi, parentStack[0], endMarkerId, domContainer, 'parent');
 
@@ -273,7 +268,6 @@ const Rendering = Class(Parent, function() {
 				this._renderVerticalConnection(parentStack[n], parentStack[n + 1], endMarkerId, domContainer, 'parent');
 			}
 		}
-		/* eslint-enable no-magic-numbers */
 
 		// Connect children
 		this._connectChildren(noi, endMarkerId, domContainer);
@@ -394,7 +388,6 @@ const Rendering = Class(Parent, function() {
 	_buildOffsetForHorizontalPath(nodeA) {
 		const dimensions = this.properties.node.dimensions;
 
-		// eslint-disable-next-line no-magic-numbers
 		return `translate(${nodeA.x}, ${nodeA.y + (dimensions.height / 2)})`;
 	},
 
@@ -410,7 +403,6 @@ const Rendering = Class(Parent, function() {
 	_buildOffsetForVerticalPath(nodeA) {
 		const dimensions = this.properties.node.dimensions;
 
-		// eslint-disable-next-line no-magic-numbers
 		return `translate(${nodeA.x + (dimensions.width / 2)}, ${nodeA.y})`;
 	}
 });

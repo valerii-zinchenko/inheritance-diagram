@@ -86,7 +86,6 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 * @param {Array[]} grid - 2D grid
 	 */
 	_positionNOI(grid) {
-		// eslint-disable-next-line no-magic-numbers
 		this.noi.x = 0;
 		this.noi.y = grid.length;
 
@@ -101,7 +100,6 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 	_positionParents(grid) {
 		this.noi.parentStack.forEach((node, index) => {
 			node.x = this.noi.x;
-			// eslint-disable-next-line no-magic-numbers
 			node.y = -1 - index;
 
 			grid.unshift([node]);
@@ -115,13 +113,11 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 */
 	_positionChildNodes(grid) {
 		const nextY = grid.length;
-		// eslint-disable-next-line no-magic-numbers
 		const row = grid[nextY - 1];
 		const nextRow = [];
 		let anyMoreChildren = false;
 
 		row.forEach(item => {
-			// eslint-disable-next-line no-magic-numbers
 			if (item && item.children.length > 0) {
 				anyMoreChildren = true;
 
@@ -163,7 +159,6 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 */
 	_center(grid) {
 		const offsets = [];
-		/* eslint-disable no-magic-numbers */
 		grid[grid.length - 1].forEach(() => offsets.push(0));
 
 		// The centering is going from bottom to top relative to the last row. So the last row is taking as is and there is no reason to center it.
@@ -191,7 +186,6 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 				}
 			});
 		}
-		/* eslint-disable no-magic-numbers */
 	}
 });
 

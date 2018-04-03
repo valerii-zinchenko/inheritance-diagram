@@ -67,7 +67,6 @@ const Diagram = Class(function(noiName, nodeMap, options) {
 		}
 	];
 	instructions.forEach(function(instruction, index) {
-		// eslint-disable-next-line no-magic-numbers
 		process.stdout.write(`\t${index + 1}/${instructions.length}: ${instruction.title}...`);
 
 		instruction.action();
