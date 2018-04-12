@@ -4,8 +4,10 @@ This builds an inheritance diagram for some node of interest. Initially it is de
 
 Nodes that contains `link` property will be highlighted and behave as usual link element to allow fast jumping to the next interested node in the documentation.
 
+Mainly this library was created for JSDoc (the JSDoc plugin is [`jsdoc-inheritance-diagram`](https://www.npmjs.com/package/jsdoc-inheritance-diagram)), but it can be used as a core for other plugins.
 
-## Limitations
+
+## Limitations and known issues
 
 1. Rectangle dimensions around the text (node name) and text offset should be defined manually. SVG v1.1 does not have the feature like `box-model` for an element in HTML+CSS, so it is not possible to automatically calculate the border for a text by taking into account the font size and paddings.
 
@@ -15,12 +17,16 @@ Nodes that contains `link` property will be highlighted and behave as usual link
 
 	* [SVG v2](https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html) will fix this by defining the context: [Specifying paint](https://www.w3.org/TR/2016/CR-SVG2-20160915/painting.html#TermContextElement)
 
-Due to upcomming features/improvements in [SVG v2](https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html) the above limitations will not have coded workarounds and you should manually tune them.
+Due to upcomming features/improvements in [SVG v2](https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html) the above limitations will not have coded workarounds.
 
-Hope [SVG v2](https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html) will be released and implemented by browsers soon :)
+Hope [SVG v2](https://www.w3.org/TR/2016/CR-SVG2-20160915/Overview.html) will be released and implemented by browsers soon, or maybe some other idea comes to me :)
 
 
 ## Usage exmaple
+
+```
+npm install inheritance-diagram
+```
 
 ```js
 var graph = new (require('inheritance-diagram'))(
@@ -32,11 +38,12 @@ var graph = new (require('inheritance-diagram'))(
 		Node: {
 			parent: 'Parent',
 			children: ['Child', 'Child2'],
-			mixes:['Mixin', 'Mixin2', 'Mixin3']
+			mixes:['Mixin', 'Mixin2']
 		},
 		Parent: {
 			parent: 'Object',
 			children: ['Node'],
+			mixes: ['MixinP1', 'MixinP2'],
 			link: '#Parent'
 		},
 		Child: {
@@ -52,8 +59,8 @@ var graph = new (require('inheritance-diagram'))(
 		Child4: {
 			link: '#Child4',
 		},
-		Mixin3: {
-			link: '#Mixin3'
+		Mixin2: {
+			link: '#Mixin2'
 		}
 	},
 
@@ -65,14 +72,13 @@ var graph = new (require('inheritance-diagram'))(
 		// Customize rendering properties
 		node: {
 			dimensions: {
-				width: 80
+				height: 25
 			},
 			spacing: {
-				horizontal: 30,
-				vertical: 30
+				horizontal: 10
 			},
 			text: {
-				dx: 10
+				dx: 5
 			}
 		}
 	}
@@ -101,13 +107,15 @@ require('fs').readFile('styles.css', 'utf8', (err, data) => {
 });
 ```
 
+The example can be found in [`example.js`](https://github.com/valerii-zinchenko/inheritance-diagram/blob/master/example.js).
 
-## Output example
+
+### Result
 
 ![Example of an inheritance diagram](example.png)
 
 
-## Useful links
+## Links
 
 * [API](http://valerii-zinchenko.github.io/inheritance-diagram/doc/nightly/index.html)
 * [Code coverage](http://valerii-zinchenko.github.io/inheritance-diagram/coverage/lcov-report/index.html)

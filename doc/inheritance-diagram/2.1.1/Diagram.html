@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: Class: Diagram</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">Class: Diagram</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Diagram<span class="signature">(noiName, nodeMap, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
         
     
 </header>
@@ -38,7 +38,153 @@
     
         
 
+    
+
+    
+    <h4 class="name" id="Diagram"><span class="type-signature"></span>new Diagram<span class="signature">(noiName, nodeMap, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <div class="class-diagram"><svg width="150" height="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"><defs><marker id="Arrow" refY="2.5" orient="auto" style="overflow: visible;"><path d="M 0 0 L 5 2.5 L 0 5 z"></path></marker><style type="text/css"><![CDATA[rect {stroke-width: 2; stroke: black; fill: white;} a {cursor: pointer;} a text {fill: blue; text-decoration: underline;} path {stroke-width: 2; stroke: black; fill: none;} marker path {stroke-width:0; fill:black;} .child rect, .parent rect {stroke: blue;} .mixin rect {stroke: green;}]]></style></defs><g transform="translate(0, 20)"><g class="noi" transform="translate(10, 0)"><rect width="130" height="30"></rect><text dx="10" dy="20">Diagram</text></g></g></svg></div><p>Diagram builder</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
         
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>noiName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of a node for what the diagram should be built</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>nodeMap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Map of nodes, where key is a node name and the value is an object of node properties</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Options for processing nodes: <a href="InputAdapter.html#properties">InputAdapter</a>, <a href="Position.html#properties">Position</a>, <a href="Rendering.html#properties">Rendering</a>, <a href="OutputAdapter.html#properties">OutputAdapter</a></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
 
 
 <dl class="details">
@@ -68,6 +214,11 @@
     
 
     
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
 
     
 
@@ -77,7 +228,22 @@
 </dl>
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     </div>
 
@@ -87,7 +253,9 @@
 
     
 
-     
+    
+
+    
 
     
 
@@ -150,7 +318,79 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line87">line 87</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="grid"><span class="type-signature"></span>grid<span class="type-signature"> :Array.&lt;Array></span></h4>
+
+
+
+
+<div class="description">
+    <p>2D grid with positioned nodes</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Array.&lt;Array></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -222,7 +462,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line94">line 94</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line102">line 102</a>
     </li></ul></dd>
     
 
@@ -294,7 +534,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line81">line 81</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -366,7 +606,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line112">line 112</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line120">line 120</a>
     </li></ul></dd>
     
 
@@ -438,7 +678,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line100">line 100</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line108">line 108</a>
     </li></ul></dd>
     
 
@@ -510,7 +750,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line106">line 106</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line114">line 114</a>
     </li></ul></dd>
     
 
@@ -537,7 +777,9 @@
 
     
 
+    
     <h4 class="name" id="getResult"><span class="type-signature"></span>getResult<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
 
     
 
@@ -588,7 +830,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line119">line 119</a>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line127">line 127</a>
     </li></ul></dd>
     
 
@@ -632,6 +874,8 @@
 
 
 
+
+
         
     
 
@@ -648,13 +892,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Diagram.html">Diagram</a></li><li><a href="GraphNode.html">GraphNode</a></li><li><a href="InputAdapter.html">InputAdapter</a></li><li><a href="OutputAdapter.html">OutputAdapter</a></li><li><a href="Position.html">Position</a></li><li><a href="ProcessingNode.html">ProcessingNode</a></li><li><a href="Rendering.html">Rendering</a></li></ul><h3>Global</h3><ul><li><a href="global.html#domContainer">domContainer</a></li><li><a href="global.html#getResult">getResult</a></li><li><a href="global.html#inAdapter">inAdapter</a></li><li><a href="global.html#noi">noi</a></li><li><a href="global.html#outAdapter">outAdapter</a></li><li><a href="global.html#positioning">positioning</a></li><li><a href="global.html#rendering">rendering</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Diagram.html">Diagram</a></li><li><a href="GraphNode.html">GraphNode</a></li><li><a href="InputAdapter.html">InputAdapter</a></li><li><a href="OutputAdapter.html">OutputAdapter</a></li><li><a href="Position.html">Position</a></li><li><a href="ProcessingNode.html">ProcessingNode</a></li><li><a href="Rendering.html">Rendering</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Feb 19 2017 01:04:22 GMT+0200 (EET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Apr 13 2018 00:19:32 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
