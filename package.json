@@ -1,6 +1,6 @@
 {
   "name": "inheritance-diagram",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Build an inheritance diagram for a class",
   "main": "src/main.js",
   "directories": {
