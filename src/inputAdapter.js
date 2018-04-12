@@ -77,6 +77,7 @@ const InputAdapter = Class(Parent, null, /** @lends InputAdapter.prototype */{
 
 		// the nodes in the map can be already converted into GraphNode
 		let stack = [data instanceof GraphNode ? data : this._createGraphNode(nodeName, map, 'parent')];
+		this._prepareMixinNodes(stack[0], map);
 
 		if (data && data.parent) {
 			stack = stack.concat(this._prepareParentNodes(data.parent, map));

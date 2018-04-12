@@ -98,9 +98,14 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 * @param {Array[]} grid - 2D grid
 	 */
 	_positionParents(grid) {
+		let yoffset = 0;
 		this.noi.parentStack.forEach((node, index) => {
 			node.x = this.noi.x;
-			node.y = -1 - index;
+			node.y = -1 - index - yoffset;
+			if (node.mixes.length > 1) {
+				yoffset += node.mixes.length - 1
+				node.y -= yoffset;
+			}
 
 			grid.unshift([node]);
 		});
@@ -143,13 +148,27 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 	 * @param {Array[]} grid - 2D grid
 	 */
 	_positionMixinNodes(grid) {
+		// I do not like this -1.3, but this is fastest way for now to increase the distance between NOI and mixin
+		const xoffset = -1.3;
+		const allMixes = [];
+
 		this.noi.mixes.forEach((node, index) => {
-			// I do not like this -1.3, but this is fastest way for now to increase the distance between NOI and mixin
-			node.x = -1.3;
+			node.x = xoffset;
 			node.y = index;
+
+			allMixes.push(node);
 		});
 
-		grid.push(this.noi.mixes);
+		this.noi.parentStack.forEach(parent => {
+			parent.mixes.forEach((node, index) => {
+				node.x = xoffset;
+				node.y = parent.y + index;
+
+				allMixes.push(node);
+			});
+		});
+
+		grid.push(allMixes);
 	},
 
 	/**

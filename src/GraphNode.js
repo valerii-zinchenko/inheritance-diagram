@@ -13,7 +13,7 @@ const Class = require('class-wrapper').Class;
  * @class
  *
  * @param {Objcet} data - Raw node data
- * @param {Object} [properties] - Properties for a graph node. Any of already defined properties can be defined and new one can be added. Only property names which are already defined as class methods or if the value is undefined, then such properties will be skipped.
+ * @param {Object} [properties] - Properties for a graph node. Any of already defined properties can be redefined and new one can be added. Only property names which are already defined as class methods or if the value is undefined, then such properties will be skipped.
  */
 const GraphNode = Class(function(data, properties) {
 	if (data) {
@@ -36,7 +36,7 @@ const GraphNode = Class(function(data, properties) {
 	if (properties) {
 		Object.keys(properties).forEach(property => {
 			const value = properties[property];
-			if (typeof value === 'undefined' || typeof this[property] === 'function') {
+			if (value === undefined || typeof this[property] === 'function') {
 				return;
 			}
 

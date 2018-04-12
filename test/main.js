@@ -243,6 +243,25 @@ suite('E2E', function() {
 					link: '#Mixin'
 				}
 			}),
+			new TestSVG('parent with one mixin', 'Class', {
+				Class: {
+					parent: 'Parent'
+				},
+				Parent: {
+					link: '#Parent',
+					mixes: ['Mixin']
+				}
+			}),
+			new TestSVG('two parents with mixins', 'Class', {
+				Class: {
+					parent: 'Parent'
+				},
+				Parent: {
+					parent: 'Object',
+					link: '#Parent',
+					mixes: ['Mixin', 'Mixin2']
+				}
+			}),
 			new TestSVG('one mixin already converted into GraphNode', 'Class', {
 				Class: {
 					mixes: [

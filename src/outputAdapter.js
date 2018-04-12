@@ -38,7 +38,7 @@ const OutputAdapter = Class(Parent, null, /** @lends OutputAdapter.prototype */ 
 	 *
 	 * @type {Object}
 	 *
-	 * @property {String} [css = ''] - Additional CSS for a diagram
+	 * @property {String} [css = ""] - Additional CSS for a diagram
 	 */
 	properties: {
 		css: ''

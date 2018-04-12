@@ -259,22 +259,21 @@ const Rendering = Class(Parent, function() {
 	 * @param {D3Selection} domContainer - DOM comntainer where the rendered connection will be placed
 	 */
 	renderConnections(noi, endMarkerId, domContainer) {
-		// Connect parents
-		const parentStack = noi.parentStack;
-		if (parentStack.length > 0) {
-			this._renderVerticalConnection(noi, parentStack[0], endMarkerId, domContainer, 'parent');
+		const verticalStack = [noi].concat(noi.parentStack);
 
-			for (let n = 0, N = parentStack.length - 1; n < N; n++) {
-				this._renderVerticalConnection(parentStack[n], parentStack[n + 1], endMarkerId, domContainer, 'parent');
-			}
+		// Connect parents
+		for (let n = 0, N = verticalStack.length - 1; n < N; n++) {
+			this._renderVerticalConnection(verticalStack[n], verticalStack[n + 1], endMarkerId, domContainer, 'parent');
 		}
 
 		// Connect children
 		this._connectChildren(noi, endMarkerId, domContainer);
 
 		// Connect mixes
-		noi.mixes.forEach(mixin => {
-			this._renderHorizontalConnection(noi, mixin, endMarkerId, domContainer, 'mixin');
+		verticalStack.forEach(node => {
+			node.mixes.forEach(mixin => {
+				this._renderHorizontalConnection(node, mixin, endMarkerId, domContainer, 'mixin');
+			});
 		});
 	},
 

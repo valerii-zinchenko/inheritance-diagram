@@ -1,6 +1,6 @@
-#!/usr/bin/env node
+const Diagram = require('inheritance-diagram');
 
-var graph = new (require('./'))(
+var graph = new Diagram(
 	// Node for what the diagram will be built
 	'Node',
 
@@ -9,11 +9,12 @@ var graph = new (require('./'))(
 		Node: {
 			parent: 'Parent',
 			children: ['Child', 'Child2'],
-			mixes:['Mixin', 'Mixin2', 'Mixin3']
+			mixes:['Mixin', 'Mixin2']
 		},
 		Parent: {
 			parent: 'Object',
 			children: ['Node'],
+			mixes: ['MixinP1', 'MixinP2'],
 			link: '#Parent'
 		},
 		Child: {
@@ -29,8 +30,8 @@ var graph = new (require('./'))(
 		Child4: {
 			link: '#Child4',
 		},
-		Mixin3: {
-			link: '#Mixin3'
+		Mixin2: {
+			link: '#Mixin2'
 		}
 	},
 
@@ -42,26 +43,20 @@ var graph = new (require('./'))(
 		// Customize rendering properties
 		node: {
 			dimensions: {
-				width: 80
+				height: 25
 			},
 			spacing: {
-				horizontal: 30,
-				vertical: 30
+				horizontal: 10
 			},
 			text: {
-				dx: 10
+				dx: 5
 			}
-		},
-
-		// External links to 3rd-party classes
-		externalLinks: {
-			Mixin: 'http://link.to/mixin/class.html'
 		}
 	}
 );
 
 const fileName = 'out.svg';
-process.stdout.write(`Wrinting to the file "${fileName}"...`);
+process.stdout.write(`Wrinting to "${fileName}"...`);
 require('fs').writeFile(fileName, graph.getResult(), err => {
 	if (err) {
 		throw err;

@@ -60,7 +60,7 @@ const Diagram = Class(function(noiName, nodeMap, options) {
 			}
 		},
 		{
-			title: 'Adapting the output',
+			title: 'Creating the output',
 			action: () => {
 				this.out = this.outAdapter.process(this.domContainer);
 			}
