@@ -103,7 +103,7 @@ const Position = Class(Parent, null, /** @lends Position.prototype */ {
 			node.x = this.noi.x;
 			node.y = -1 - index - yoffset;
 			if (node.mixes.length > 1) {
-				yoffset += node.mixes.length - 1
+				yoffset += node.mixes.length - 1;
 				node.y -= yoffset;
 			}
 
