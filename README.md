@@ -118,4 +118,4 @@ The example can be found in [`example.js`](https://github.com/valerii-zinchenko/
 ## Links
 
 * [API](http://valerii-zinchenko.github.io/inheritance-diagram/doc/nightly/index.html)
-* [Code coverage](http://valerii-zinchenko.github.io/inheritance-diagram/coverage/lcov-report/index.html)
+* [Code coverage](http://valerii-zinchenko.github.io/inheritance-diagram/coverage/index.html)
